@@ -1,0 +1,10 @@
+databases:
+- database:
+    name: Leaderboard
+    use:
+    - uri: .sqlcmd\database.sql
+addons:
+- addon:
+    type: dab
+    use: 
+    - uri: swa-db-connection\staticwebapp.database.config.json

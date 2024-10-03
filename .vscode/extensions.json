@@ -1,6 +1,10 @@
 {
     "recommendations": [
         "ms-mssql.sql-database-projects-vscode",
-        "ms-mssql.mssql"
+        "ms-mssql.mssql",
+		"platform.uno",
+		"ms-mssql.mssql",
+		"ms-dotnettools.csdevkit",
+		"github.copilot"
     ]
 }
