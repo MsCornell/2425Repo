@@ -1,0 +1,43 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"label": "build",
+		"command": "dotnet",
+		"type": "process",
+		"args": [
+		  "build",
+		  "${workspaceFolder}/client/client.csproj"
+		],
+		"problemMatcher": "$msCompile",
+		"group": {
+		  "kind": "build",
+		  "isDefault": true
+		}
+	  },
+	  {
+		"label": "run",
+		"command": "dotnet",
+		"type": "process",
+		"args": [
+		  "run",
+		  "--project",
+		  "${workspaceFolder}/client/client.csproj"
+		],
+		"group": "none",
+		"isBackground": true,
+		"problemMatcher": "$msCompile"
+	  },
+	  {
+		"label": "clean",
+		"command": "dotnet",
+		"type": "process",
+		"args": [
+		  "clean",
+		  "${workspaceFolder}/client/client.csproj"
+		],
+		"problemMatcher": "$msCompile",
+		"group": "build"
+	  }
+	]
+  }  
