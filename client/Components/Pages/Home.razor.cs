@@ -4,13 +4,27 @@ namespace Client.Components.Pages
 {
     public partial class Home : ComponentBase
     {
-        public string text = string.Empty;
+        public string text1 = string.Empty;
+        public string text2 = string.Empty;
+        public string text3 = string.Empty;
 
-        public Logic.Class1 Information = new();
+        [Inject]
+        public required IHttpClientFactory HttpClientFactory { get; set; }
 
         protected override void OnInitialized()
         {
-            text = Information.GetMessage();
+            text1 = Logic.Class1.GetMessage1();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            var logic = new Logic.Class1();
+
+            var functionClient = HttpClientFactory.CreateClient("FunctionClient");
+            text2 = await logic.GetMessage2Async(functionClient);
+
+            var databaseClient = HttpClientFactory.CreateClient("DatabaseClient");
+            text3 = await logic.GetMessage3Async(databaseClient);
         }
     }
 }

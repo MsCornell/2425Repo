@@ -6,6 +6,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// Named HttpClient for API_Prefix
+builder.Services.AddHttpClient("FunctionClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["API_Prefix"]
+        ?? throw new Exception("Missing ENV VAR API_Prefix for Function, check that /Client/appsettings.Development.json reflects /Api/Properties/launchSettings.json"));
+});
+
+// Named HttpClient for DATAAPI_Prefix
+builder.Services.AddHttpClient("DatabaseClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["DATAAPI_Prefix"]
+        ?? throw new Exception("Missing ENV VAR DATAAPI_Prefix for Function, check that /Client/appsettings.Development.json reflects /Api/Properties/launchSettings.json"));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
