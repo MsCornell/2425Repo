@@ -13,11 +13,11 @@ builder.Services.AddHttpClient("FunctionClient", client =>
         ?? throw new Exception("Missing ENV VAR API_Prefix for Function, check that /Client/appsettings.Development.json reflects /Api/Properties/launchSettings.json"));
 });
 
-// Named HttpClient for DATAAPI_Prefix
+// Named HttpClient for DATA_API_Prefix
 builder.Services.AddHttpClient("DatabaseClient", client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration["DATAAPI_Prefix"]
-        ?? throw new Exception("Missing ENV VAR DATAAPI_Prefix for Function, check that /Client/appsettings.Development.json reflects /Api/Properties/launchSettings.json"));
+    client.BaseAddress = new Uri(builder.Configuration["DATA_API_Prefix"]
+        ?? throw new Exception("Missing ENV VAR DATA_API_Prefix for Function, check that /Client/appsettings.Development.json reflects /Api/Properties/launchSettings.json"));
 });
 
 var app = builder.Build();

@@ -1,0 +1,1 @@
+CREATE PROC SimpleTest AS RETURN 'Hello from SQL Server';

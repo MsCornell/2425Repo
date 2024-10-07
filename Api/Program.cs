@@ -11,4 +11,6 @@ var host = new HostBuilder()
     })
     .Build();
 
+// Do you have the local tools installed?
+// https://github.com/Azure/azure-functions-core-tools#installing
 host.Run();

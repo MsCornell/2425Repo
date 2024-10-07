@@ -7,14 +7,14 @@
             return "Hello from Logic!";
         }
 
-        public async Task<string> GetMessage2Async(HttpClient httpClient)
+        public async Task<string> GetFunctionSample(HttpClient httpClient)
         {
-            return await httpClient.GetStringAsync("/api/Function1");
+            return await httpClient.GetStringAsync("/Function1");
         }
 
-        public async Task<string> GetMessage3Async(HttpClient httpClient)
+        public async Task<string> GetDatabaseSample(HttpClient httpClient)
         {
-            return await httpClient.GetStringAsync("/api/Function1");
+            return "";//await httpClient.GetStringAsync("/Function1");
         }
     }
 }

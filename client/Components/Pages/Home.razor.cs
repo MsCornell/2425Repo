@@ -21,10 +21,10 @@ namespace Client.Components.Pages
             var logic = new Logic.Class1();
 
             var functionClient = HttpClientFactory.CreateClient("FunctionClient");
-            text2 = await logic.GetMessage2Async(functionClient);
+            text2 = await logic.GetFunctionSample(functionClient);
 
             var databaseClient = HttpClientFactory.CreateClient("DatabaseClient");
-            text3 = await logic.GetMessage3Async(databaseClient);
+            text3 = await logic.GetDatabaseSample(databaseClient);
         }
     }
 }

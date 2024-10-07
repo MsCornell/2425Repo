@@ -1,33 +1,56 @@
 {
 	"$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.2.10/dab.draft.schema.json",
 	"data-source": {
-	  "database-type": "mssql",
-	  "connection-string": "Server=xyz;User Id=@env('CONN_STRING')",
-	  "options": {
-		"set-session-context": false
-	  }
+		"database-type": "mssql",
+		"connection-string": "",
+		"options": {
+			"set-session-context": false
+		}
 	},
 	"runtime": {
-	  "rest": {
-		"enabled": true,
-		"path": "/api",
-		"request-body-strict": true
-	  },
-	  "graphql": {
-		"enabled": true,
-		"path": "/graphql",
-		"allow-introspection": true
-	  },
-	  "host": {
-		"cors": {
-		  "origins": [],
-		  "allow-credentials": false
+		"rest": {
+			"enabled": true,
+			"path": "/api",
+			"request-body-strict": true
 		},
-		"authentication": {
-		  "provider": "StaticWebApps"
+		"graphql": {
+			"enabled": true,
+			"path": "/graphql",
+			"allow-introspection": true
 		},
-		"mode": "development"
-	  }
+		"host": {
+			"cors": {
+				"origins": [],
+				"allow-credentials": false
+			},
+			"authentication": {
+				"provider": "StaticWebApps"
+			},
+			"mode": "development"
+		}
 	},
-	"entities": {}
-  }
+	"entities": {
+		"SimpleTest": {
+			"source": {
+				"object": "SimpleTest",
+				"type": "stored-procedure"
+			},
+			"rest": {
+				"methods": [
+					"get"
+				]
+			},
+			"graphql": {
+				"operation": "query"
+			},
+			"permissions": [
+				{
+					"role": "anonymous",
+					"actions": [
+						"execute"
+					]
+				}
+			]
+		}
+	}
+}
