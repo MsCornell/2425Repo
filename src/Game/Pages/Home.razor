@@ -1,0 +1,56 @@
+﻿@page "/"
+@using Logic
+
+<PageTitle>Game</PageTitle>
+
+<h2>@($"Current Turn: {game.NextPlayer}")</h2> <!-- Display current player's turn -->
+
+<div class="ultimate-tic-tac-toe">
+    @foreach (BoardIndex board in Enum.GetValues(typeof(BoardIndex)))
+    {
+        <div class="board @(IsBoardPlayable(board) ? "active-board" : "")">
+            @foreach (CellIndex cell in Enum.GetValues(typeof(CellIndex)))
+            {
+                <div class="cell-container">
+                    <a href="javascript:void(0);" @onclick="() => Play(board, cell)">
+                        <img src="@GetCellImage(board, cell)" class="cell" />
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .ultimate-tic-tac-toe {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Use 1fr for equal spacing */
+        gap: 10px;
+    }
+
+    .board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Use 1fr for equal spacing */
+        gap: 5px;
+        border: 1px solid #000;
+        padding: 10px;
+        background-color: lightblue; /* Set a background color for better visibility */
+    }
+
+    .cell-container {
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 50px; /* Ensure consistent height */
+        width: 50px; /* Ensure consistent width */
+    }
+
+    .cell {
+        width: 50px; /* Ensure consistent width */
+        height: 50px; /* Ensure consistent height */
+    }
+
+    .active-board {
+        background-color: lightgreen; /* Highlight active boards */
+    }
+</style>
