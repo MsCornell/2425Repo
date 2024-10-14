@@ -13,4 +13,7 @@
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="container.publish.xml" />
+  </ItemGroup>
 </Project>

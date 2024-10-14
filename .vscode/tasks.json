@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run-blazor-server",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/src/game/Game.csproj",
+                "--urls",
+                "https://localhost:1234"
+            ],
+            "problemMatcher": [],
+            "isBackground": true
+        }
+    ]
+}

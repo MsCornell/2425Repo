@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Blazor WebAssembly (HTTPS)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "https://localhost:1234",
+            "webRoot": "${workspaceFolder}/src/game",
+            "preLaunchTask": "run-blazor-server"
+        }
+    ]
+}
