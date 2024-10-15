@@ -75,3 +75,314 @@
 code {
     color: #c02d76;
 }
+
+
+/* UI Styles in Login & Signup Steps */
+/* Start Page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #809ED3; 
+    overflow: hidden;
+    font-family: 'Rubik', sans-serif;
+}
+
+.eye-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    margin-bottom: 40px;
+}
+
+.eye {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 6px solid black;
+}
+
+.pupil {
+    width: 35px;
+    height: 35px;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.x-eye {
+    color: black;
+    font-size: 3.5rem;
+    font-weight: bold;
+    position: absolute;
+}
+
+.o-eye {
+    color: black;
+    font-size: 3.5rem;
+    font-weight: bold;
+    position: absolute;
+}
+
+.center-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 80px;
+    cursor: pointer;
+    animation: pulse 2s infinite; 
+    transition: all 0.3s ease;
+}
+
+.center-text:hover {
+    transform: scale(1.1);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.footer-text {
+    position: absolute;
+    font-size: 0.9rem;
+    color: black;
+    text-align: center;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+    .eye-container {
+        gap: 80px;
+    }
+
+    .eye {
+        width: 90px;
+        height: 90px;
+    }
+
+    .pupil {
+        width: 25px;
+        height: 25px;
+    }
+
+    .x-eye, .o-eye {
+        font-size: 2.5rem;
+    }
+
+    .center-text {
+        font-size: 1.5rem;
+    }
+
+    .footer-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Start1 Page */
+* {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Rubik, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #809ED3;
+    margin: 0;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 375px;
+    padding: 10px;
+    background: #809ED3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 343px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 16px;
+    border: 1px solid;
+    position: relative;
+  }
+
+  .login-header {
+    text-align: center;
+    color: black;
+    font-size: 1.52rem;
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+
+  .login-description {
+    text-align: center;
+    color: #858494;
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+
+  .button {
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    display: block;
+    border: 2px solid;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  .login-button {
+    background-color: #809ED3;
+    color: white;
+    border-color: #809ED3;
+  }
+
+  .signup-button {
+    background-color: black;
+    color: white;
+    border-color: black;
+  }
+
+  .later-button {
+    color: #809ED3;
+    border-color: #809ED3;
+  }
+
+  @media (max-width: 400px) {
+    .container {
+      gap: 10px;
+    }
+
+    .login-header {
+      font-size: 1.3rem;
+    }
+
+    .login-description {
+      font-size: 0.8rem;
+    }
+  }
+
+/* Login Page Styles */
+.login-container {
+    width: 100%;
+    max-width: 375px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.2rem;
+    color: #809ED3;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+    font-size: 1rem;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #809ED3;
+    color: white;
+}
+
+.btn-google {
+    background-color: white;
+    border: 2px solid #E6E6E6;
+    color: black;
+}
+
+.btn-microsoft {
+    background-color: white;
+    border: 2px solid #E6E6E6;
+    color: black;
+}
+
+.external-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.forgot-password {
+    color: #809ED3;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.terms {
+    color: black;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
