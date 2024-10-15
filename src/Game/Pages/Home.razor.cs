@@ -15,12 +15,17 @@ namespace Game.Pages
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
+            // todo
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await Task.Delay(100);
         }
 
         private bool IsBoardPlayable(BoardIndex boardIndex)
         {
-            return game.NextBoards.Contains(boardIndex);
+            return game.NextBoards.Contains(boardIndex); //logic
         }
 
         private string GetCellImage(BoardIndex boardIndex, CellIndex cellIndex)
