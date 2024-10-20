@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Game.Pages
+namespace Game.Pages.Admin
 {
     public partial class Start1 : ComponentBase
     {
