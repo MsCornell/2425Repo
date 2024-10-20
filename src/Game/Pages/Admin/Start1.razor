@@ -1,0 +1,13 @@
+@page "/Start1"
+@using Microsoft.AspNetCore.Components
+
+<div class="login-box">
+    <div class="login-header">Login or Sign Up</div>
+    <div class="login-description">
+        Log in or create an account to play games, participate in challenges, and more.
+    </div>
+    <div class="button login-button" @onclick="NavigateToLogin">Login</div>
+    <div class="button signup-button" @onclick="NavigateToSignup">Create an account</div>
+    <div class="button later-button" @onclick="NavigateToStart">Later</div>
+</div>
+

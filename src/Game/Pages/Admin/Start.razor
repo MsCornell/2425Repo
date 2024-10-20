@@ -1,0 +1,16 @@
+@page "/"
+@using Microsoft.AspNetCore.Components
+
+<div class="eye-container">
+    <div class="eye">
+        <div class="pupil" id="pupilX"></div>
+        <div class="x-eye">X</div>
+    </div>
+    <div class="eye">
+        <div class="pupil" id="pupilO"></div>
+        <div class="o-eye">O</div>
+    </div>
+</div>
+
+<div class="center-text" @onclick="NavigateToStart1">Tap to Start</div>
+<div class="footer-text">Ultimate Tic-Tac-Toe</div>
