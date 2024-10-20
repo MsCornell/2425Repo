@@ -1,5 +1,6 @@
 @page "/"
-@using Microsoft.AspNetCore.Components
+
+<PageTitle>Start</PageTitle>
 
 <div class="eye-container">
     <div class="eye">
@@ -14,3 +15,97 @@
 
 <div class="center-text" @onclick="NavigateToStart1">Tap to Start</div>
 <div class="footer-text">Ultimate Tic-Tac-Toe</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #809ED3; 
+        overflow: hidden;
+        font-family: 'Rubik', sans-serif;
+    }
+
+    .eye-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 100px;
+        margin-bottom: 40px;
+    }
+
+    .eye {
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border: 6px solid black;
+    }
+
+    .pupil {
+        width: 35px;
+        height: 35px;
+        background-color: black;
+        border-radius: 50%;
+        position: absolute;
+        }
+
+    .x-eye {
+        color: black;
+        font-size: 3.5rem;
+        font-weight: bold;
+        position: absolute;
+        }
+
+    .o-eye {
+        color: black;
+        font-size: 3.5rem;
+        font-weight: bold;
+        position: absolute;
+        }
+
+    .center-text {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        letter-spacing: 2px;
+        margin-bottom: 80px;
+        cursor: pointer;
+        animation: pulse 2s infinite; 
+        transition: all 0.3s ease;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .center-text:hover {
+            transform: scale(1.1);
+        }
+
+    .footer-text {
+        position: absolute;
+        bottom: 0;        
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        color: black;
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    </style>

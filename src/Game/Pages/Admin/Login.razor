@@ -1,0 +1,172 @@
+@page "/Login"
+
+<PageTitle>Login</PageTitle>
+
+<div class="container">
+    <div class="inner-container">
+        <div class="back-button" @onclick="NavigateToStart1">
+            <div class="arrow"></div>
+        </div>
+
+        <div class="header">Login</div>
+
+        <label for="username" class="input-label">Username</label>
+        <div class="input-container">
+            <img src="/Images/name-icon.jpg" alt="User Icon">
+            <InputText id="username" @bind-Value="loginModel.Username" placeholder="Your username" class="form-control" />
+        </div>
+
+        <label for="password" class="input-label">Password</label>
+        <div class="input-container">
+            <img src="/Images/lock-icon.jpg" alt="Lock Icon">
+            <InputText id="password" type="@(showPassword ? "text" : "password")" @bind-Value="loginModel.Password" placeholder="Your password" class="form-control" />
+             <span class="toggle-password" @onclick="TogglePassword">👀</span>
+        </div>
+
+        <div class="remember-me">
+            <InputCheckbox id="remember" @bind-Value="loginModel.RememberMe" />
+            <label for="remember">Remember me</label>
+        </div>
+
+        <div class="login-btn" @onclick="NavigateToMain">Login</div>
+
+         <div class="forgot-password" @onclick="NavigateToReset">Forgot password?</div>
+        <div class="terms">
+            By continuing, you agree to the <span @onclick="NavigateToTerms">Terms of Services & Privacy Policy</span>.
+        </div>
+    </div>
+</div>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Rubik, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #809ED3;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 375px;
+        height: 100vh;
+        position: relative;
+        background-color: #809ED3;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .inner-container {
+        background-color: white;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 354px;
+        padding: 20px;
+        position: relative;
+        border: 1px solid;
+    }
+
+    .header {
+        text-align: center;
+        color: black;
+        font-size: 1.7rem;
+        font-weight: 500;
+        margin-bottom: 25px;
+    }
+
+    .input-label {
+        margin-bottom: 5px;
+        font-size: 0.95rem;
+        color: black;
+        display: block;
+    }
+
+    .input-container {
+        width: 100%;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .input-container img {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .input-container input {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        border: 2px solid #CCCCCC;
+        border-radius: 20px;
+        font-size: 16px;
+        }
+
+        .input-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
+
+    .login-btn {
+        width: 100%;
+        background-color: black;
+        color: white;
+        border-radius: 20px;
+        padding: 16px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .forgot-password {
+        text-align: center;
+        color: black;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .terms {
+        text-align: center;
+        color: black;
+        font-size: 13px;
+        margin-top: 20px;
+    }
+
+        .terms span {
+            font-weight: 500;
+            cursor: pointer;
+        }
+</style>
