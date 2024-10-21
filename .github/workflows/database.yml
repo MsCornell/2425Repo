@@ -1,4 +1,4 @@
-name: Publish Database Project to Azure SQL
+name: Publish SQLPROJ to Azure SQL
 
 # on: [push]
 on: [workflow_dispatch]
