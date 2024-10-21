@@ -1,20 +1,19 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Game.Pages.Admin
 {
-    public partial class Signup : ComponentBase
+    public partial class Email : ComponentBase
     {
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;
 
-         private void NavigateToStart1()
-        {
-            Navigation.NavigateTo("/Start1");
-        }
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; } = default!;
 
-        private void NavigateToEmail()
+         private void NavigateToSignup()
         {
-            Navigation.NavigateTo("/Email");
+            Navigation.NavigateTo("/Signup");
         }
 
         private void NavigateToLogin()

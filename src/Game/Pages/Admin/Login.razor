@@ -10,6 +10,18 @@
 
         <div class="header">Login</div>
 
+        <div class="microsoft-login">
+            <img src="/Images/microsoftlogo.jpg" alt="Microsoft Logo">
+                <div class="microsoft-login-text">Login with Microsoft</div>
+            </div>
+
+        <div class="google-login">
+            <img src="/Images/googlelogo.jpg" alt="Google Logo">
+                <div class="google-login-text">Login with Google</div>
+            </div>
+
+        <div class="divider">OR</div>
+
         <label for="username" class="input-label">Username</label>
         <div class="input-container">
             <img src="/Images/name-icon.jpg" alt="User Icon">
@@ -82,8 +94,73 @@
         color: black;
         font-size: 1.7rem;
         font-weight: 500;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
     }
+
+    .microsoft-login {
+        background-color: white;
+        border-radius: 20px;
+        border: 2px solid #CCCCCC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        padding: 12px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .microsoft-login img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .microsoft-login-text {
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+    .google-login {
+        background-color: white;
+        border-radius: 20px;
+        border: 2px solid #CCCCCC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        padding: 12px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .google-login img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .google-login-text {
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        color: black;
+    }
+
+        .divider:before, .divider:after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: black;
+            margin: 0 10px;
+        }
 
     .input-label {
         margin-bottom: 5px;
@@ -163,6 +240,7 @@
         color: black;
         font-size: 13px;
         margin-top: 20px;
+        margin-bottom: 10px;
     }
 
         .terms span {

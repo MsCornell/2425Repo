@@ -1,0 +1,162 @@
+@page "/Email"
+
+<PageTitle>Email</PageTitle>
+
+    <div class="container">
+        <div class="inner-container">
+            <div class="back-button" @onclick="NavigateToSignup">
+                <div class="arrow"></div>
+            </div>
+
+            <div class="title">Sign Up With Email</div>
+
+            <div>
+                <label class="input-label" for="username">Username</label>
+                <div class="input-box">
+                    <img src="/Images/name-icon.jpg" alt="Username Icon">
+                    <input type="text" id="username" placeholder="Your username" />
+                </div>
+                <div class="description">Must contain only letters, numbers, and underscores.</div>
+            </div>
+
+            <div>
+                <label class="input-label" for="first-name">First Name</label>
+                <div class="input-box">
+                    <img src="/Images/name-icon.jpg" alt="First Name Icon">
+                    <input type="text" id="first-name" placeholder="Your first name" />
+                </div>
+            </div>
+
+            <div>
+                <label class="input-label" for="last-name">Last Name</label>
+                <div class="input-box">
+                    <img src="/Images/name-icon.jpg" alt="Last Name Icon">
+                    <input type="text" id="last-name" placeholder="Your last name" />
+                </div>
+            </div>
+
+            <div>
+                <label class="input-label" for="email">Email Address</label>
+                <div class="input-box">
+                    <img src="/Images/envelope-icon.jpg" alt="Email Icon">
+                    <input type="email" id="email" placeholder="Your email address">
+                </div>
+            </div>
+
+            <div>
+                <label class="input-label" for="password">Password</label>
+                <div class="input-box">
+                    <img src="/Images/lock-icon.jpg" alt="Password Icon">
+                    <input type="password" id="password" placeholder="Your password">
+                </div>
+                <div class="description">Must be at least 8 characters.</div>
+            </div>        
+
+            <div>
+                <label class="input-label" for="password">Confirm Password</label>
+                <div class="input-box">
+                    <img src="/Images/lock-icon.jpg" alt="Password Icon">
+                    <input type="password" id="confirm-password" placeholder="Confirm your password">
+                </div>
+            </div>
+
+            <div class="submit-btn" @onclick="NavigateToLogin">Sign Up</div>
+        </div>
+    </div>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Rubik, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #809ED3;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 360px;
+            background-color: #809ED3;
+        }
+
+        .inner-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            border: 1px solid;
+        }
+
+        .title {
+            text-align: center;
+            color: black;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        .input-label {
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            color: black;
+            display: block;
+        }
+
+        .input-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px solid #CCCCCC;
+            gap: 10px;
+        }
+
+            .input-box img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .input-box input {
+                flex-grow: 1;
+                border: none;
+                font-size: 14px;
+            }
+
+            .input-box input:focus {
+                outline: none;
+            }
+
+        .description {
+            font-size: 12px;
+            color: black;
+            margin-top: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: black;
+            color: white;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-bottom: 6px;
+        }
+</style>

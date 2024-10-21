@@ -1,0 +1,129 @@
+ @page "/Reset"
+
+<PageTitle>Reset</PageTitle>
+ 
+    <div class="container">
+        <div class="inner-container">
+            <div class="back-button" @onclick="NavigateToLogin">
+                <div class="arrow"></div>
+            </div>
+
+            <div class="title">Reset Password</div>
+            <div class="reset-description">Enter your email and we will send you a link to reset your password.</div>
+
+            <div>
+                <label class="input-label" for="email">Email Address</label>
+                <div class="input-box">
+                    <img src="/Images/envelope-icon.jpg" alt="Email Icon">
+                    <input type="email" id="email" placeholder="Your email address">
+                </div>
+            </div>
+
+            <div class="submite-btn">Reset Password</div>
+        </div>
+  </div>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Rubik, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #809ED3;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 375px;
+        height: 100vh;
+        position: relative;
+        background-color: #809ED3;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .inner-container {
+        background-color: white;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 354px;
+        padding: 20px;
+        position: relative;
+        border: 1px solid;
+    }
+
+    .title {
+        text-align: center;
+        color: black;
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-top: 6px;
+        margin-bottom: 10px;
+    }
+
+    .reset-description {
+      text-align: center;
+      color: #858494;
+      font-size: 0.9rem;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .input-label {
+        margin-bottom: 5px;
+        font-size: 0.95rem;
+        color: black;
+        display: block;
+    }
+
+    .input-box {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        padding: 12px;
+        border-radius: 15px;
+        border: 2px solid #CCCCCC;
+        gap: 10px;
+    }
+
+            .input-box img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .input-box input {
+                flex-grow: 1;
+                border: none;
+                font-size: 14px;
+            }
+
+            .input-box input:focus {
+                outline: none;
+            }
+
+    .submite-btn {
+        width: 100%;
+        background-color: black;
+        color: white;
+        border-radius: 20px;
+        padding: 16px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 30px;
+        margin-bottom: 6px;
+    }
+</style>
