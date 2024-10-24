@@ -1,56 +1,86 @@
 {
-	"$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.2.10/dab.draft.schema.json",
-	"data-source": {
-		"database-type": "mssql",
-		"connection-string": "",
-		"options": {
-			"set-session-context": false
-		}
-	},
-	"runtime": {
-		"rest": {
-			"enabled": true,
-			"path": "/api",
-			"request-body-strict": true
-		},
-		"graphql": {
-			"enabled": true,
-			"path": "/graphql",
-			"allow-introspection": true
-		},
-		"host": {
-			"cors": {
-				"origins": [],
-				"allow-credentials": false
-			},
-			"authentication": {
-				"provider": "StaticWebApps"
-			},
-			"mode": "development"
-		}
-	},
-	"entities": {
-		"SimpleTest": {
-			"source": {
-				"object": "SimpleTest",
-				"type": "stored-procedure"
-			},
-			"rest": {
-				"methods": [
-					"get"
-				]
-			},
-			"graphql": {
-				"operation": "query"
-			},
-			"permissions": [
-				{
-					"role": "anonymous",
-					"actions": [
-						"execute"
-					]
-				}
-			]
-		}
-	}
+  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.2.10/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "",
+    "options": {
+      "set-session-context": false
+    }
+  },
+  "runtime": {
+    "rest": {
+      "enabled": true,
+      "path": "/api",
+      "request-body-strict": true
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "host": {
+      "cors": {
+        "origins": [],
+        "allow-credentials": false
+      },
+      "authentication": {
+        "provider": "StaticWebApps"
+      },
+      "mode": "development"
+    }
+  },
+  "entities": {
+    "Player": {
+      "source": {
+        "object": "Player",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Player",
+          "plural": "Players"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*"
+            }
+          ]
+        }
+      ]
+    },
+    "Score": {
+      "source": {
+        "object": "Score",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Score",
+          "plural": "Scores"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*"
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

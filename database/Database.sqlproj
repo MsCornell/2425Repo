@@ -8,6 +8,7 @@
     <ProjectGuid>{00000000-0000-0000-0000-000000000000}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Functions" />
     <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
