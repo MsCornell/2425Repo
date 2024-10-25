@@ -6,7 +6,9 @@ public enum GameResult
     O,
     Cat, // For a tie
     InProgress,
-    Unknown
+    Unknown,
+    XWins,
+    OWins
 }
 
 public enum CellValue
