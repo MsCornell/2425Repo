@@ -1,4 +1,4 @@
-﻿@page "/home"
+﻿@page "/GameBoard"
 @using Logic
 <PageTitle>Ultimate-tic-tac-toe Game</PageTitle>
 
@@ -21,6 +21,19 @@
 </div>
 
 <style>
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #809ED3; 
+        overflow: hidden;
+        font-family: 'Rubik', sans-serif;
+    }
+
     .ultimate-tic-tac-toe {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Use 1fr for equal spacing */
@@ -52,4 +65,6 @@
     .active-board {
         background-color: lightgreen; /* Highlight active boards */
     }
+
+    
 </style>
