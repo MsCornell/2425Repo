@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Game.Pages.Admin
 {
-    public partial class Start1 : ComponentBase
+    public partial class LoginBox : ComponentBase
     {
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;

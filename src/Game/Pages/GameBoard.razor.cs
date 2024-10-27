@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace Game.Pages
 {
-    public partial class Home : ComponentBase
+    public partial class GameBoard : ComponentBase
     {
         private readonly GameInfo game;
 
-        public Home()
+        public GameBoard()
         {
             game = new();
         }

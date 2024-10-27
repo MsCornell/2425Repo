@@ -31,9 +31,9 @@ namespace Game.Pages.Admin
             }
         }
 
-         private void NavigateToStart1()
+         private void NavigateToLoginBox()
         {
-            Navigation.NavigateTo("/Start1");
+            Navigation.NavigateTo("/LoginBox");
         }
 
         private void NavigateToReset()
@@ -49,6 +49,10 @@ namespace Game.Pages.Admin
         private void NavigateToMain()
         {
             Navigation.NavigateTo("/Main");
+        }
+
+        private void NavigateToGameBoard(){
+            Navigation.NavigateTo("/GameBoard");
         }
 
         public class LoginModel
