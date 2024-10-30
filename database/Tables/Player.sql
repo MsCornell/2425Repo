@@ -6,12 +6,3 @@ CREATE TABLE Player(
     _username varchar(150),
     _password varchar(150)
 );
-
-/*
-GO
-
-ALTER TABLE Player
-	ALTER COLUMN _password 
-		ADD MASKED 
-			WITH (FUNCTION = 'default()');
-*/
