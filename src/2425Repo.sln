@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{6982E91F-776A-472A-B3D7-7A881E14B34D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Tests", "Logic.Tests\Logic.Tests.csproj", "{B1D1256E-9192-401B-9487-EFCB9C2F3669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6982E91F-776A-472A-B3D7-7A881E14B34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6982E91F-776A-472A-B3D7-7A881E14B34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6982E91F-776A-472A-B3D7-7A881E14B34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D1256E-9192-401B-9487-EFCB9C2F3669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D1256E-9192-401B-9487-EFCB9C2F3669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D1256E-9192-401B-9487-EFCB9C2F3669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D1256E-9192-401B-9487-EFCB9C2F3669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
