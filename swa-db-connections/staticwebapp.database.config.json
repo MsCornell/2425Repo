@@ -7,6 +7,9 @@
   "runtime": {
     "host": {
       "mode": "development"
+    },
+    "rest": {
+      "request-body-strict": false
     }
   },
   "entities": {
