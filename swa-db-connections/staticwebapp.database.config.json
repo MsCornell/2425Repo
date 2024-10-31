@@ -2,10 +2,7 @@
   "$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.2.10/dab.draft.schema.json",
   "data-source": {
     "database-type": "mssql",
-    "connection-string": "",
-    "options": {
-      "set-session-context": false
-    }
+    "connection-string": "@env('my-connection-string')"
   },
   "runtime": {
     "rest": {
@@ -30,28 +27,86 @@
     }
   },
   "entities": {
-    "Player": {
+    "Audit_Operation": {
       "source": {
-        "object": "Player",
+        "object": "Audit_Operation",
         "type": "table"
-      },
-      "graphql": {
-        "enabled": true,
-        "type": {
-          "singular": "Player",
-          "plural": "Players"
-        }
-      },
-      "rest": {
-        "enabled": true
       },
       "permissions": [
         {
           "role": "anonymous",
           "actions": [
-            {
-              "action": "*"
-            }
+            "*"
+          ]
+        }
+      ]
+    },
+    "Board": {
+      "source": {
+        "object": "Board",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "Character": {
+      "source": {
+        "object": "Character",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "Game_Board": {
+      "source": {
+        "object": "Game_Board",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "Game": {
+      "source": {
+        "object": "Game",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "Player": {
+      "source": {
+        "object": "Player",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
           ]
         }
       ]
@@ -61,23 +116,11 @@
         "object": "Score",
         "type": "table"
       },
-      "graphql": {
-        "enabled": true,
-        "type": {
-          "singular": "Score",
-          "plural": "Scores"
-        }
-      },
-      "rest": {
-        "enabled": true
-      },
       "permissions": [
         {
           "role": "anonymous",
           "actions": [
-            {
-              "action": "*"
-            }
+            "*"
           ]
         }
       ]
