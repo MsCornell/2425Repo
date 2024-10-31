@@ -5,11 +5,25 @@
     "connection-string": "@env('my-connection-string')"
   },
   "runtime": {
-    "host": {
-      "mode": "development"
-    },
     "rest": {
+      "enabled": true,
+      "path": "/api",
       "request-body-strict": false
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "host": {
+      "cors": {
+        "origins": [],
+        "allow-credentials": false
+      },
+      "authentication": {
+        "provider": "StaticWebApps"
+      },
+      "mode": "production"
     }
   },
   "entities": {
