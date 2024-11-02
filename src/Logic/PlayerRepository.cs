@@ -13,9 +13,9 @@ public class PlayerRepository
         this.baseUrl = baseUrl;
     }
 
-    public async Task<Player?> GetAsync(int Id)
+    public async Task<Player?> GetAsync(int id)
     {
-        var url = $"{baseUrl}/Id/{Id}";
+        var url = $"{baseUrl}/Id/{id}";
         var response = await http.GetAsync(url);
         var root = await GetRootFromResponseAsync(response);
         return root.Players.FirstOrDefault();

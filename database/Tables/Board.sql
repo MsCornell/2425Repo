@@ -1,5 +1,5 @@
 CREATE TABLE Board (
-    Id INT PRIMARY KEY,
+    Id INT PRIMARY KEY IDENTITY(1,1),
     Started DATETIME,
     Ended DATETIME,
     BoardWinner VARCHAR(255),
