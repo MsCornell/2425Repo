@@ -1,5 +1,4 @@
 ﻿using Logic;
-
 using Microsoft.AspNetCore.Components;
 
 namespace Game.Pages
@@ -15,7 +14,7 @@ namespace Game.Pages
 
         protected override void OnInitialized()
         {
-            // todo
+            // Optional initialization logic
         }
 
         protected override async Task OnInitializedAsync()
@@ -25,12 +24,20 @@ namespace Game.Pages
 
         private bool IsBoardPlayable(BoardIndex boardIndex)
         {
-            return game.NextBoards.Contains(boardIndex); //logic
+            return game.NextBoards.Contains(boardIndex);
         }
 
         private string GetCellImage(BoardIndex boardIndex, CellIndex cellIndex)
         {
-            return game.GetBoard(boardIndex).GetCell(cellIndex).ImageName;
+            // If the board has a winner, show the winning mark for all cells on this board
+            var board = game.GetBoard(boardIndex);
+            if (board.Winner != GameResult.InProgress)
+            {
+                return board.WinningMark;
+            }
+
+            // Otherwise, return the normal cell image
+            return board.GetCell(cellIndex).ImageName;
         }
 
         private void Play(BoardIndex boardIndex, CellIndex cellIndex)
@@ -40,6 +47,15 @@ namespace Game.Pages
                 game.Play(boardIndex, cellIndex);
                 StateHasChanged();
             }
+        }
+
+        private string GetCellStyle(BoardIndex boardIndex, CellIndex cellIndex)
+        {
+            var board = game.GetBoard(boardIndex);
+            var cell = board.GetCell(cellIndex);
+
+            // Apply a different style if the cell is part of the winning combination
+            return cell.IsWinningCell ? "winning-cell" : "normal-cell";
         }
     }
 }

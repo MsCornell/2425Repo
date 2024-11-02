@@ -20,6 +20,9 @@ public class BoardInfo
         }
     }
 
+    // Winning mark image path
+    public string WinningMark => winner != GameResult.InProgress ? UtilityExtensions.GetWinImage() : string.Empty;
+
     public BoardInfo()
     {
         cells = new Dictionary<CellIndex, CellInfo>
@@ -66,6 +69,7 @@ public class BoardInfo
         Winner = CalculateWinner();
     }
 
+    // Define the CanPlay method
     public bool CanPlay(CellIndex cellIndex)
     {
         if (!Enum.IsDefined(typeof(CellIndex), cellIndex))
@@ -78,63 +82,42 @@ public class BoardInfo
     }
 
     private GameResult CalculateWinner()
+{
+    // Reset all cells to non-winning status before recalculating
+    foreach (var cell in cells.Values)
     {
+        cell.IsWinningCell = false;
+    }
+
     // Check if any row has a winner
-        if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell2, CellIndex.Cell3))
-        {
-        
-            return GetWinner(CellIndex.Cell1);
-        }
-        if (IsWinningCombination(CellIndex.Cell4, CellIndex.Cell5, CellIndex.Cell6))
-        {
-            
-            return GetWinner(CellIndex.Cell4);
-        }
-        if (IsWinningCombination(CellIndex.Cell7, CellIndex.Cell8, CellIndex.Cell9))
-        {
-            
-            return GetWinner(CellIndex.Cell7);
-        }
+    if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell2, CellIndex.Cell3)) return MarkWinningCells(CellIndex.Cell1, CellIndex.Cell2, CellIndex.Cell3);
+    if (IsWinningCombination(CellIndex.Cell4, CellIndex.Cell5, CellIndex.Cell6)) return MarkWinningCells(CellIndex.Cell4, CellIndex.Cell5, CellIndex.Cell6);
+    if (IsWinningCombination(CellIndex.Cell7, CellIndex.Cell8, CellIndex.Cell9)) return MarkWinningCells(CellIndex.Cell7, CellIndex.Cell8, CellIndex.Cell9);
 
     // Check if any column has a winner
-        if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell4, CellIndex.Cell7))
-        {
-            
-            return GetWinner(CellIndex.Cell1);
-        }
-        if (IsWinningCombination(CellIndex.Cell2, CellIndex.Cell5, CellIndex.Cell8))
-        {
-        
-            return GetWinner(CellIndex.Cell2);
-        }
-        if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell6, CellIndex.Cell9))
-        {
-            
-            return GetWinner(CellIndex.Cell3);
-        }
+    if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell4, CellIndex.Cell7)) return MarkWinningCells(CellIndex.Cell1, CellIndex.Cell4, CellIndex.Cell7);
+    if (IsWinningCombination(CellIndex.Cell2, CellIndex.Cell5, CellIndex.Cell8)) return MarkWinningCells(CellIndex.Cell2, CellIndex.Cell5, CellIndex.Cell8);
+    if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell6, CellIndex.Cell9)) return MarkWinningCells(CellIndex.Cell3, CellIndex.Cell6, CellIndex.Cell9);
 
     // Check if any diagonal has a winner
-        if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell5, CellIndex.Cell9))
-        {
-            
-            return GetWinner(CellIndex.Cell1);
-        }
-        if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell5, CellIndex.Cell7))
-        {
-            
-            return GetWinner(CellIndex.Cell3);
-        }
+    if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell5, CellIndex.Cell9)) return MarkWinningCells(CellIndex.Cell1, CellIndex.Cell5, CellIndex.Cell9);
+    if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell5, CellIndex.Cell7)) return MarkWinningCells(CellIndex.Cell3, CellIndex.Cell5, CellIndex.Cell7);
 
-        // If all cells are filled and there is no winner, return a draw
-        if (cells.Values.All(cell => cell.Value != CellValue.Blank))
-        {
-            
-            return GameResult.Cat;
-        }
+    // If all cells are filled and there is no winner, return a draw
+    if (cells.Values.All(cell => cell.Value != CellValue.Blank)) return GameResult.Cat;
 
-        // Otherwise, the game is still in progress
-        return GameResult.InProgress;
-    }
+    // Otherwise, the game is still in progress
+    return GameResult.InProgress;
+}
+
+// Helper method to mark the winning cells
+private GameResult MarkWinningCells(CellIndex a, CellIndex b, CellIndex c)
+{
+    cells[a].IsWinningCell = true;
+    cells[b].IsWinningCell = true;
+    cells[c].IsWinningCell = true;
+    return GetWinner(a);
+}
 
 
     // Check if the three specified cells form a winning combination
