@@ -8,6 +8,9 @@ namespace Game.Pages
     {
         private readonly GameInfo game;
 
+        [Inject]
+        private PlayerRepository PlayerRepository { get; set; }
+
         public GameBoard()
         {
             game = new();
