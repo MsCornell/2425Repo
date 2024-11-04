@@ -11,6 +11,8 @@ namespace Game.Pages
         [Inject]
         private PlayerRepository PlayerRepository { get; set; }
 
+        private NavigationManager Navigation { get; set; } = default!;
+
         public GameBoard()
         {
             game = new();
