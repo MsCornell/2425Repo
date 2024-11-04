@@ -23,6 +23,11 @@ namespace Game.Pages
             // todo
         }
 
+        private void NavigateToStart()
+        {
+            Navigation.NavigateTo("/");
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await Task.Delay(100);
