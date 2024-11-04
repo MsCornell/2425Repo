@@ -1,5 +1,5 @@
 CREATE TABLE Game (
-    Id INT PRIMARY KEY,
+    Id INT PRIMARY KEY IDENTITY(1,1),
     Started DATETIME,
     Ended DATETIME,
     NextBoard INT,

@@ -1,8 +1,8 @@
 CREATE TABLE Player(
-    Id int PRIMARY KEY,
-    OAuthId varchar(150) NOT NULL,
-    Name varchar(150),
-    Created datetime DEFAULT GETDATE(),
-    _username varchar(150),
-    _password varchar(150)
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    OAuthId VARCHAR(150) NOT NULL UNIQUE,
+    Name VARCHAR(150) NOT NULL,
+    Created DATETIME DEFAULT GETDATE(),
+    _username VARCHAR(150) NOT NULL UNIQUE,
+    _password VARCHAR(150) NOT NULL
 );
