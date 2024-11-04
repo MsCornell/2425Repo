@@ -11,6 +11,9 @@ namespace Game.Pages
         [Inject]
         private PlayerRepository PlayerRepository { get; set; }
 
+        [Inject]
+        private NavigationManager Navigation { get; set; }
+
         public GameBoard()
         {
             game = new();
@@ -43,6 +46,11 @@ namespace Game.Pages
                 game.Play(boardIndex, cellIndex);
                 StateHasChanged();
             }
+        }
+
+        private void GoToHomePage()
+        {
+            Navigation.NavigateTo("/");
         }
     }
 }

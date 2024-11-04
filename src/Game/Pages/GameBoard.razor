@@ -20,6 +20,10 @@
     }
 </div>
 
+<div class="menu-item">
+    <button class="btn" @onclick="GoToHomePage">Return to Home</button>
+</div>
+
 <style>
 
     body {
@@ -64,6 +68,25 @@
 
     .active-board {
         background-color: lightgreen; /* Highlight active boards */
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+    }
+
+    .btn:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    .menu-item {
+        margin: 10px 0;
     }
 
     
