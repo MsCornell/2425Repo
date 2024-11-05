@@ -8,7 +8,7 @@
 
     <div class="menu-item">
         <button class="btn">Single Player</button>
-        <button class="btn">Multiple Player</button>
+        <button class="btn" @onclick="NavigateToGameBoard">Multiple Player</button>
     </div>
 
     <div class="menu-item">
@@ -25,6 +25,7 @@
     <div class="menu-item">
         <button class="btn">Settings</button>
         <button class="btn">Instructions</button>
+         <button class="btn" @onclick="NavigateToHome">Return to Home Page</button>
     </div>
 </div>
 
@@ -78,3 +79,18 @@
         margin: 0;
     }
 </style>
+
+@code {
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private void NavigateToGameBoard()
+    {
+        Navigation.NavigateTo("/GameBoard");
+    }
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+}
