@@ -21,7 +21,8 @@ public enum CellValue
 public enum Players
 {
     X,
-    O
+    O,
+    cat
 }
 
 public enum CellIndex : int { Cell1 = 1, Cell2 = 2, Cell3 = 3, Cell4 = 4, Cell5 = 5, Cell6 = 6, Cell7 = 7, Cell8 = 8, Cell9 = 9 }
