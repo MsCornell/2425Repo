@@ -33,11 +33,10 @@ VALUES
 -- DELETE FROM Game;
 -- DELETE From Game_Board;
 -- DELETE FROM Board;
-
 -- Seed the Game table with 10 records
+DBCC CHECKIDENT ('Game', RESEED, 0);
 IF NOT EXISTS(SELECT TOP 1 Id FROM Game)
 -- reset the identity seed
-DBCC CHECKIDENT ('Game', RESEED, 0);
 INSERT INTO Game (Started, Ended, NextBoard, NextPlayer, AiCharacter, PlayerId, PlayerCharacter, GameWinner)
 VALUES 
     ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 1, 'JaneDoe', 'JohnDoe'),
@@ -52,8 +51,8 @@ VALUES
     ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 10, 'JaneDoe', 'JohnDoe');
 
 -- seed Board table
-IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
 DBCC CHECKIDENT ('Board', RESEED, 0);
+IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
 INSERT INTO Board (Started, Ended, BoardWinner, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8, Cell9)
 VALUES
 -- seed 10 records
@@ -92,10 +91,10 @@ VALUES
     (8, 8, 8),
     (9, 9, 9);
 
-
+Delete from Audit_Operation;
 -- seed the Audit_Operation table with 10 records
+DBCC CHECKIDENT ('Audit_Operation', RESEED, 0);
 IF NOT EXISTS(SELECT TOP 1 Id FROM Audit_Operation)
-DBCC CHECKIDENT ('Audit_Operation', RESEED, 1);
 INSERT INTO Audit_Operation (Name)
 VALUES
     ('Create'),
