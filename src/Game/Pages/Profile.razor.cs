@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game.Pages
 {
-    public partial class Profile
+    public partial class Profile : ComponentBase
     {
         // Player Info
         private string PlayerName = "Player Name";

@@ -1,0 +1,139 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("http://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+    /*=============== COLOR ===============*/
+    --primary-color: #809ED3;
+    --primary-light: #A7BDE3;
+    --primary-dark: #5C7FB3;
+    --background-color: #F5F7FA;
+    --text-color: #2C3E50;
+    --border-color: #E1E8ED;
+    --white: #FFFFFF;
+    --gray-light: #F8F9FA;
+    --gray: #6C757D;
+}
+
+/*=============== BASE ===============*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*=============== GAME MODES ===============*/
+.game-modes {
+    text-align: center;
+}
+
+.game-modes h2 {
+    margin-bottom: 2rem;
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+}
+
+.modes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.mode-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.mode-card:hover {
+    transform: translateY(-5px);
+}
+
+.mode-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.mode-card h3 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.mode-card p {
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+}
+
+.difficulty-selector {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.difficulty-btn {
+    background: var(--gray-light);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.difficulty-btn:hover {
+    background: var(--primary-light);
+    color: var(--white);
+}
+
+.play-btn {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.play-btn:hover {
+    background: var(--primary-dark);
+}
+
+.back-button {
+    background: var(--gray);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background: var(--text-color);
+}
+
+.coming-soon-message {
+    background: var(--primary-light);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    display: none;
+    font-weight: 400;
+    font-size: 0.9rem;
+}
