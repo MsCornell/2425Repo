@@ -1,0 +1,157 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("http://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+    /*=============== COLOR ===============*/
+    --primary-color: #809ED3;
+    --primary-light: #A7BDE3;
+    --primary-dark: #5C7FB3;
+    --background-color: #F5F7FA;
+    --text-color: #2C3E50;
+    --border-color: #E1E8ED;
+    --white: #FFFFFF;
+    --gray-light: #F8F9FA;
+    --gray: #6C757D;
+}
+
+/*=============== BASE ===============*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/*=============== Nav Bar ===============*/
+/* Nav Bar */
+.navbar {
+    background-color: var(--white);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+        height: 4rem;
+    }
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+
+.nav-toggle span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: var(--primary-color);
+    transition: all 0.3s ease;
+    }
+
+.nav-toggle span:nth-child(1) {
+    top: 8px;
+}
+
+.nav-toggle span:nth-child(2) {
+    top: 16px;
+}
+
+.nav-toggle span:nth-child(3) {
+    top: 24px;
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 16px;
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 16px;
+}
+
+/* Nav Menu */
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-item {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
+/* Main Content */
+main {
+    margin-top: 4.5rem;
+    padding: 2rem;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        width:100%;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+}

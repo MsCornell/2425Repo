@@ -23,7 +23,7 @@ namespace Game.Pages.Admin
         {
             if (loginModel.Username == "user123" && loginModel.Password == "pass123")
             {
-                Navigation.NavigateTo("/Main");
+                Navigation.NavigateTo("/Home");
             }
             else
             {
@@ -46,13 +46,9 @@ namespace Game.Pages.Admin
             Navigation.NavigateTo("/Terms");
         }
 
-        private void NavigateToMain()
+        private void NavigateToHome()
         {
-            Navigation.NavigateTo("/Main");
-        }
-
-        private void NavigateToGameBoard(){
-            Navigation.NavigateTo("/GameBoard");
+            Navigation.NavigateTo("/Home");
         }
 
         public class LoginModel

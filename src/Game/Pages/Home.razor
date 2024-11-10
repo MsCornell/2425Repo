@@ -1,0 +1,57 @@
+@page "/Home"
+
+@inject NavigationManager Navigation
+
+<PageTitle>Home</PageTitle>
+
+<link rel="stylesheet" href="/css/home.css">
+
+<body>
+    <NavMenu />
+    <main>
+<div class="game-container">
+    <div class="scanline"></div>
+    <div class="crt-overlay"></div>
+
+    <div class="game-boy">
+        <div class="screen">
+            <div class="corner-star-tl">★</div>
+            <div class="corner-star-tr">★</div>
+            <div class="corner-star-bl">★</div>
+            <div class="corner-star-br">★</div>
+            <div class="screen-content">
+                <div class="tic-tac-toe">
+                    <div></div><div></div><div></div>
+                    <div></div><div></div><div></div>
+                    <div></div><div></div><div></div>
+                </div>
+                <button class="start-btn" @onclick="NavigateToStartGame">
+                    <span class="btn-text">START GAME!</span>
+                    <div class="stars top">
+                        <span>✦</span><span>✦</span><span>✦</span>
+                    </div>
+                    <div class="stars bottom">
+                        <span>✦</span><span>✦</span><span>✦</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+            <div class="controls">
+                <div class="d-pad">
+                    <div class="d-up"></div>
+                    <div class="d-right"></div>
+                    <div class="d-down"></div>
+                    <div class="d-left"></div>
+                </div>
+                <div class="action-buttons">
+                    <div class="btn-x">X</div>
+                    <div class="btn-o">O</div>
+                </div>
+            </div>
+    </div>
+</div>
+    </main>
+</body>
+
+<script src="/js/home.js"></script>

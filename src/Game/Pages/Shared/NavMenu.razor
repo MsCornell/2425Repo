@@ -1,0 +1,22 @@
+@namespace Game.Pages.Shared
+@inject NavigationManager NavigationManager
+
+<link rel="stylesheet" href="/css/navmenu.css">
+
+<nav class="navbar">
+    <div class="nav-brand">
+        <img src="/Images/logo2.png" alt="Logo" class="logo">
+    </div>
+    <button class="nav-toggle @(isNavActive ? "active" : "")" @onclick="ToggleNav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-menu @(isNavActive ? "active" : "")">
+        <a @onclick="NavigateToHome" class="nav-item @(IsActive("/Home") ? "active" : "")">Home</a>
+        <a @onclick="NavigateToStartGame" class="nav-item @(IsActive("/StartGame") ? "active" : "")">Game</a>
+        <a @onclick="NavigateToLeaderboard" class="nav-item @(IsActive("/Leaderboard") ? "active" : "")">Leaderboard</a>
+        <a @onclick="NavigateToProfile" class="nav-item @(IsActive("/Profile") ? "active" : "")">Profile</a>
+    </div>
+</nav>
+
