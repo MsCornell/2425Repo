@@ -168,7 +168,7 @@ public class GameInfo
         return GameResult.InProgress;
     }
 
-    private bool IsWinningCombination(BoardIndex a, BoardIndex b, BoardIndex c)
+    public bool IsWinningCombination(BoardIndex a, BoardIndex b, BoardIndex c)
     {
         // Check if all three small boards have the same winner, and the winner is not a draw or in progress
         return boards[a].Winner != GameResult.InProgress &&
@@ -176,8 +176,26 @@ public class GameInfo
                boards[a].Winner == boards[c].Winner;
     }
 
-    private GameResult GetBoardWinner(BoardIndex board)
+    public GameResult GetBoardWinner(BoardIndex board)
     {
         return boards[board].Winner;
     }
+
+   public Players GetBoardWinnerPlayer(BoardIndex boardIndex)
+    {
+    var winner = GetBoardWinner(boardIndex);
+    if (winner == GameResult.XWins)
+    {
+        return Players.X;
+    }
+    else if (winner == GameResult.OWins)
+    {
+        return Players.O;
+    }
+    else{
+        return Players.cat;
+    }
+    throw new InvalidOperationException("Board does not have a valid winner.");
+    }
+
 }

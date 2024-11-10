@@ -2,15 +2,24 @@
 @using Logic
 <PageTitle>Ultimate-tic-tac-toe Game</PageTitle>
 
-<h2>@($"Current Turn: {game.NextPlayer}")</h2> <!-- Display current player's turn -->
+<h2>
+    @if (game.Winner == GameResult.InProgress)
+    {
+        @($"Current Turn: {game.NextPlayer}")
+    }
+    else
+    {
+        @GetOverallWinner()
+    }
+</h2>
 
 <div class="ultimate-tic-tac-toe">
     @foreach (BoardIndex board in Enum.GetValues(typeof(BoardIndex)))
     {
-        <div class="board @(IsBoardPlayable(board) ? "active-board" : "")">
+        <div class="board @(IsBoardPlayable(board) ? "active-board" : "") @(IsWinningLine(board) ? GetBoardStyle(board) : "")">
             @foreach (CellIndex cell in Enum.GetValues(typeof(CellIndex)))
             {
-                <div class="cell-container">
+                <div class="cell-container @(GetCellStyle(board, cell))">
                     <a href="javascript:void(0);" @onclick="() => Play(board, cell)">
                         <img src="@GetCellImage(board, cell)" class="cell" />
                     </a>
@@ -18,6 +27,10 @@
             }
         </div>
     }
+</div>
+
+<div class="menu-item">
+    <button class="btn" @onclick="ConfirmAndGoToHomePage">Return to Home</button>
 </div>
 
 <style>
@@ -62,8 +75,47 @@
         height: 50px; /* Ensure consistent height */
     }
 
+    .x-cell {
+        background-color: #f3b241; /* X player color */
+    }
+
+    .o-cell {
+        background-color: #c7173b; /* O player color */
+    }
+
     .active-board {
         background-color: lightgreen; /* Highlight active boards */
+    }
+
+    .winning-line-x {
+        background-color: #f3b241; /* Highlight winning line for X */
+    }
+
+    .winning-line-o {
+        background-color: #c7173b; /* Highlight winning line for O */
+    }
+
+    .no-winner {
+        background-color: lightblue ; /* Highlight original color; */
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+    }
+
+    .btn:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    .menu-item {
+        margin: 10px 0;
     }
 
     
