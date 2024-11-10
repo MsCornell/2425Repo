@@ -1,0 +1,153 @@
+@page "/Leaderboard"
+@using Game.Pages
+
+<PageTitle>Leaderboard</PageTitle>
+
+<link rel="stylesheet" href="/css/leaderboard.css">
+
+<body>
+<NavMenu />
+<div class="container">
+
+    <!-- Game Mode Switcher -->
+    <header>
+        <div class="mode-switcher">
+            <button class="@GetGameModeButtonClass(GameModeEnum.Single)" @onclick="() => SetGameMode(GameModeEnum.Single)">Single Player</button>
+            <button class="@GetGameModeButtonClass(GameModeEnum.LocalMulti)" @onclick="() => SetGameMode(GameModeEnum.LocalMulti)">Local Multiplayer</button>
+            <button class="@GetGameModeButtonClass(GameModeEnum.OnlineMulti)" @onclick="() => SetGameMode(GameModeEnum.OnlineMulti)">Online Multiplayer</button>
+        </div>
+    </header>
+
+    <!-- AI Statistics Section -->
+    <div id="aiStats" class="ai-stats" style="display:@(GameMode == GameModeEnum.Single ? "block" : "none")">
+        <h2>AI Statistics</h2>
+        <div class="difficulty-switcher">
+            <button class="@GetDifficultyButtonClass(DifficultyEnum.Easy)" @onclick="() => SetDifficulty(DifficultyEnum.Easy)">Easy</button>
+            <button class="@GetDifficultyButtonClass(DifficultyEnum.Medium)" @onclick="() => SetDifficulty(DifficultyEnum.Medium)">Medium</button>
+            <button class="@GetDifficultyButtonClass(DifficultyEnum.Hard)" @onclick="() => SetDifficulty(DifficultyEnum.Hard)">Hard</button>
+        </div>
+        <div class="ai-win-rate">
+            <div class="rate-circle">
+                <span class="rate">@WinRate</span>
+                <span class="label">Win Rate</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coming Soon Section for Online Multiplayer -->
+    <div id="onlineComingSoon" class="coming-soon" style="display:@(GameMode == GameModeEnum.OnlineMulti ? "block" : "none")">
+        <h2>Coming Soon!</h2>
+        <p>Online multiplayer mode is under development.</p>
+    </div>
+
+    <!-- Leaderboard Content -->
+    <div id="leaderboardContent" class="leaderboard" style="display:@(GameMode == GameModeEnum.OnlineMulti ? "none" : "block")">
+        <!-- Top Three Players -->
+        <div class="top-three">
+            <!-- The second player -->
+            <div class="player second">
+                <div class="medal">🥈</div>
+                <div class="avatar">
+                    <img src="@SecondPlacePlayer?.AvatarUrl" alt="Avatar">
+                </div>
+                <div class="player-info">
+                    <span class="name">@SecondPlacePlayer?.Name</span>
+                    <span class="score">@SecondPlacePlayer?.Score</span>
+                </div>
+            </div>
+
+            <!-- The first player -->
+            <div class="player first">
+                <div class="medal">🥇</div>
+                <div class="avatar">
+                    <img src="@FirstPlacePlayer?.AvatarUrl" alt="Avatar">
+                </div>
+                <div class="player-info">
+                    <span class="name">@FirstPlacePlayer?.Name</span>
+                    <span class="score">@FirstPlacePlayer?.Score</span>
+                </div>
+            </div>
+
+            <!-- The third player -->
+            <div class="player third">
+                <div class="medal">🥉</div>
+                <div class="avatar">
+                    <img src="@ThirdPlacePlayer?.AvatarUrl" alt="Avatar">
+                </div>
+                <div class="player-info">
+                    <span class="name">@ThirdPlacePlayer?.Name</span>
+                    <span class="score">@ThirdPlacePlayer?.Score</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls: Search and Time Filter -->
+        <div class="controls">
+            <div class="search-bar">
+                <input type="text" placeholder="Search players..." @bind="SearchTerm" @bind:event="oninput" />
+                <button @onclick="HandleSearch">Search</button>
+            </div>
+            <div class="time-filter @(IsDropdownOpen ? "active" : "")">
+                <button class="time-dropdown-btn" @onclick="ToggleDropdown">
+                    <span class="selected-time">@SelectedTime</span>
+                    <span class="arrow">▼</span>
+                </button>
+                @if (IsDropdownOpen)
+                {
+                    <div class="time-dropdown-content">
+                        <button class="@GetTimeFilterButtonClass(TimeFilterEnum.Today)" @onclick="() => SetTimeFilter(TimeFilterEnum.Today)">Today</button>
+                        <button class="@GetTimeFilterButtonClass(TimeFilterEnum.Week)" @onclick="() => SetTimeFilter(TimeFilterEnum.Week)">This Week</button>
+                        <button class="@GetTimeFilterButtonClass(TimeFilterEnum.Month)" @onclick="() => SetTimeFilter(TimeFilterEnum.Month)">This Month</button>
+                        <button class="@GetTimeFilterButtonClass(TimeFilterEnum.All)" @onclick="() => SetTimeFilter(TimeFilterEnum.All)">All Time</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Rankings List -->
+        <div class="rankings">
+            <div class="ranking-header">
+                <span>Rank</span>
+                <span>Player</span>
+                <span>Score</span>
+            </div>
+            <div class="ranking-list">
+                @foreach (var player in FilteredPlayers)
+                {
+                    <div class="rank-item">
+                        <span>#@player.Rank</span>
+                        <span>@player.Name</span>
+                        <span>@player.Score</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- User's Rank Card -->
+        <div class="my-rank">
+            <div class="rank-card">
+                <div class="avatar">
+                    <img src="/Images/Avatar/Avatar1.png" alt="Your Avatar">
+                </div>
+                <div class="info">
+                    <span class="label">Your Rank</span>
+                    <span class="value">#42</span>
+                </div>
+                <div class="info">
+                    <span class="label">Score</span>
+                    <span class="value">1850</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Last Updated and Refresh Button -->
+    <footer>
+        <div class="last-updated">
+            Last updated: <span>@LastUpdated.ToString("T")</span>
+            <button @onclick="RefreshLeaderboard" class="refresh-btn" title="Refresh">↻</button>
+        </div>
+    </footer>
+
+</div>
+</body>
