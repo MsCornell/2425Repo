@@ -1,128 +1,134 @@
-﻿using Logic;
-
 using Microsoft.AspNetCore.Components;
-
+using Logic;
 using Microsoft.JSInterop;
-
 using System.Threading.Tasks;
 
 namespace Game.Pages
 {
     public partial class GameBoard : ComponentBase
     {
-        private readonly GameInfo game;
-
-        [Inject]
-        private PlayerRepository PlayerRepository { get; set; }
-
-        [Inject]
-        private NavigationManager Navigation { get; set; }
-
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
 
-        public GameBoard()
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        private GameInfo game = new GameInfo();
+        private bool ShowResultModal { get; set; } = false;
+        private string ResultTitle { get; set; } = string.Empty;
+        private string ResultMessage { get; set; } = string.Empty;
+
+        private void NavigateToStartGame()
         {
-            game = new();
+            NavigationManager.NavigateTo("/StartGame");
         }
 
         protected override void OnInitialized()
         {
-            // todo
+            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
         }
 
-        protected override async Task OnInitializedAsync()
+        private async Task OnWinnerChanged(object sender, GameResult e)
         {
-            await Task.Delay(100);
-        }
+            ShowResultModal = true;
 
-        private bool IsBoardPlayable(BoardIndex boardIndex)
-        {
-            if (HasOverallWinner())
+            if (e == GameResult.XWins || e == GameResult.OWins)
             {
-                return false;
+                var winner = e == GameResult.XWins ? "X" : "O";
+                ResultTitle = $"Player {winner} Wins!";
+                ResultMessage = "Congratulations! Would you like to play again?";
+
+                if (JSRuntime != null)
+                {
+                    await JSRuntime.InvokeVoidAsync("triggerConfetti", winner);
+                }
             }
-            return game.NextBoards.Contains(boardIndex); //logic
+            else if (e == GameResult.Cat)
+            {
+                ResultTitle = "It's a Draw!";
+                ResultMessage = "Good game! Would you like to play again?";
+            }
+
+            await InvokeAsync(StateHasChanged);
         }
 
-        private string GetCellImage(BoardIndex boardIndex, CellIndex cellIndex)
-        {
-            return game.GetBoard(boardIndex).GetCell(cellIndex).ImageName;
-        }
-
-        private void Play(BoardIndex boardIndex, CellIndex cellIndex)
+        private async Task HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
                 game.Play(boardIndex, cellIndex);
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged);
             }
         }
 
-        private async Task ConfirmAndGoToHomePage()
+        private async Task ResetGame()
         {
-            bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to return to the home page?");
-            if (confirmed)
-            {
-                Navigation.NavigateTo("/");
-            }
+            game = new GameInfo();
+            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
+            ShowResultModal = false;
+            await InvokeAsync(StateHasChanged);
         }
 
-        private bool IsWinningLine(BoardIndex boardIndex)
+        private string GetCellContent(BoardIndex boardIndex, CellIndex cellIndex)
         {
-            // check the winning line
-            return game.GetBoardWinner(boardIndex) != GameResult.InProgress;
+            var board = game.GetBoard(boardIndex);
+            var cellInfo = board.GetCell(cellIndex);
+            var cellValue = cellInfo.Value;
+            return cellValue == CellValue.Blank ? string.Empty : cellValue.ToString();
         }
 
-        private string GetCellStyle(BoardIndex boardIndex, CellIndex cellIndex)
+        private string GetCellClasses(BoardIndex boardIndex, CellIndex cellIndex)
         {
-            var cell = game.GetBoard(boardIndex).GetCell(cellIndex);
-            if (cell.Value == CellValue.X)
+            var board = game.GetBoard(boardIndex);
+            var cellInfo = board.GetCell(cellIndex);
+            var cellValue = cellInfo.Value;
+
+            var classes = new List<string> { "cell" };
+
+            if (cellValue != CellValue.Blank)
             {
-                return "x-cell";
+                classes.Add(cellValue == CellValue.X ? "x" : "o");
             }
-            else if (cell.Value == CellValue.O)
-            {
-                return "o-cell";
-            }
-            return string.Empty;
+
+            return string.Join(" ", classes);
         }
 
-        private string GetBoardStyle(BoardIndex boardIndex)
+        private string GetSubBoardClasses(BoardIndex boardIndex)
         {
-            var winnerPlayer = game.GetBoardWinnerPlayer(boardIndex);
-            if (winnerPlayer == Players.X)
+            var classes = new List<string> { "sub-board" };
+
+            var board = game.GetBoard(boardIndex);
+
+            // Mark the sub-board as active if it's still in progress
+            if (board.Winner == GameResult.InProgress)
             {
-                return "winning-line-x";
+                classes.Add("active");
             }
-            else if (winnerPlayer == Players.O)
+
+            if (board.Winner == GameResult.XWins)
             {
-                return "winning-line-o";
+                classes.Add("won-x");
             }
-            return "no-winner";
+            else if (board.Winner == GameResult.OWins)
+            {
+                classes.Add("won-o");
+            }
+            else if (board.Winner == GameResult.Cat)
+            {
+                classes.Add("draw");
+            }
+
+            return string.Join(" ", classes);
         }
 
-        private string GetOverallWinner()
+        private IEnumerable<BoardIndex> GetAllBoardIndices()
         {
-            var winner = game.Winner;
-            if (winner == GameResult.XWins)
-            {
-                return "X is the winner!";
-            }
-            else if (winner == GameResult.OWins)
-            {
-                return "O is the winner!";
-            }
-            else if (winner == GameResult.Cat)
-            {
-                return "It's a draw!";
-            }
-            return string.Empty;
+            return Enum.GetValues(typeof(BoardIndex)).Cast<BoardIndex>();
         }
 
-        private bool HasOverallWinner()
+        private IEnumerable<CellIndex> GetAllCellIndices()
         {
-            return game.Winner != GameResult.InProgress;
+            return Enum.GetValues(typeof(CellIndex)).Cast<CellIndex>();
         }
     }
 }

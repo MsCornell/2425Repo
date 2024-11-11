@@ -1,0 +1,94 @@
+@page "/Profile"
+@using Game.Pages.Shared
+
+<PageTitle>Profile</PageTitle>
+
+<link rel="stylesheet" href="/css/profile.css" />
+
+<body>
+    <NavMenu />
+<main>
+<div class="container">
+    <aside class="profile-card">
+        <div class="profile-header">
+            <div class="avatar-frame">
+                <img src="@AvatarUrl" alt="Profile Avatar" class="avatar" />
+            </div>
+        </div>
+        <h2>@PlayerName</h2>
+        <p class="rank">@PlayerRank</p>
+        <div class="stats">
+            @foreach (var stat in Stats)
+            {
+                <div class="stat-item">
+                    <h3>@stat.Title</h3>
+                    <p>@stat.Value</p>
+                </div>
+            }
+        </div>
+        <div class="badges">
+            @foreach (var badge in UnlockedBadges)
+            {
+                <div class="badge">
+                    <span class="badge-icon">@badge.Icon</span>
+                    @badge.Name
+                </div>
+            }
+        </div>
+    </aside>
+
+    <main class="content">
+        <div class="tabs">
+            @foreach (var tab in Tabs)
+            {
+                <button class="tab-btn @(ActiveTab == tab.Id ? "active" : string.Empty)" @onclick="() => SwitchTab(tab.Id)">@tab.Title</button>
+            }
+        </div>
+
+        @if (ActiveTab == "history")
+        {
+            <div class="tab-content" id="history">
+                <div class="match-list">
+                    @foreach (var match in MatchHistory)
+                    {
+                        <div class="match-item">
+                            <div class="match-result @match.Result.ToLowerInvariant()">@match.Result</div>
+                            <div class="match-details">
+                                <div class="match-mode">@((MarkupString)match.ModeDisplay)</div>
+                                <div class="match-score">Score: @match.Score | Time: @match.Time</div>
+                            </div>
+                            <div class="match-date">@match.Date.ToString("yyyy-MM-dd")</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else if (ActiveTab == "achievements")
+        {
+            <div class="tab-content" id="achievements">
+                <div class="achievements-grid">
+                    @foreach (var achievement in Achievements)
+                    {
+                        <div class="achievement-card @(achievement.Unlocked ? string.Empty : "achievement-locked")">
+                            <div class="achievement-icon">@achievement.Icon</div>
+                            <div class="achievement-info">
+                                <h4>@achievement.Title</h4>
+                                <p>@achievement.Description</p>
+                                <div class="achievement-progress">
+                                    <div class="achievement-progress-bar" style="width:@(achievement.ProgressPercentage)%"></div>
+                                </div>
+                                <p class="achievement-progress-text">@achievement.Progress/@achievement.Total</p>
+                                @if (achievement.Unlocked)
+                                {
+                                    <p class="badge">Badge: @achievement.Badge</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </main>
+</div>
+</main>
+</body>

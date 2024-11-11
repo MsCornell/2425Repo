@@ -59,30 +59,15 @@ public class GameInfo
 
         var board = boards[boardIndex];
         board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
-        
 
-        // Check if the current board has ended (there is a winner or it's full)
-        if (board.Winner != GameResult.InProgress)
-        {
-            // Let the player choose from other unfinished boards
-            NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
+        // Update the overall game winner if necessary
+        Winner = CalculateOverallWinner();
 
-            // If all boards are completed, end the game
-            Winner = CalculateOverallWinner();
-            if (Winner != GameResult.InProgress)
-            {
-                return;
-            }
-        }
-        else
-        {
-            // If the current board is not finished, restrict the next move to this board
-            NextBoards = new[] { boardIndex };
-        }
+        // After each move, the next player can choose from any unfinished boards
+        NextBoards = Boards(GameResult.InProgress);
 
         // Switch player
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
-        
     }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
@@ -103,12 +88,6 @@ public class GameInfo
         if (Winner != GameResult.InProgress)
         {
             return false;  // The game is over
-        }
-
-        // Ensure the current board is one of the playable boards
-        if (!NextBoards.Contains(boardIndex))
-        {
-            return false;  // The current board is not in the selectable boards
         }
 
         // Check if the board exists
