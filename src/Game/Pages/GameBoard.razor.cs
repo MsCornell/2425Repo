@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Logic;
 using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Game.Pages
@@ -8,10 +11,10 @@ namespace Game.Pages
     public partial class GameBoard : ComponentBase
     {
         [Inject]
-        private IJSRuntime JSRuntime { get; set; }
+        private IJSRuntime? JSRuntime { get; set; }
 
         [Inject]
-        private NavigationManager NavigationManager { get; set; }
+        private NavigationManager? NavigationManager { get; set; }
 
         private GameInfo game = new GameInfo();
         private bool ShowResultModal { get; set; } = false;
@@ -20,53 +23,81 @@ namespace Game.Pages
 
         private void NavigateToStartGame()
         {
-            NavigationManager.NavigateTo("/StartGame");
+            NavigationManager?.NavigateTo("/StartGame");
         }
 
         protected override void OnInitialized()
         {
-            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
+            game.WinnerChanged += async (_, e) => await OnWinnerChanged(this, e);
         }
 
         private async Task OnWinnerChanged(object sender, GameResult e)
         {
-            ShowResultModal = true;
-
-            if (e == GameResult.XWins || e == GameResult.OWins)
+            try
             {
-                var winner = e == GameResult.XWins ? "X" : "O";
-                ResultTitle = $"Player {winner} Wins!";
-                ResultMessage = "Congratulations! Would you like to play again?";
+                ShowResultModal = true;
 
-                if (JSRuntime != null)
+                if (e == GameResult.XWins || e == GameResult.OWins)
                 {
-                    await JSRuntime.InvokeVoidAsync("triggerConfetti", winner);
-                }
-            }
-            else if (e == GameResult.Cat)
-            {
-                ResultTitle = "It's a Draw!";
-                ResultMessage = "Good game! Would you like to play again?";
-            }
+                    var winner = e == GameResult.XWins ? "X" : "O";
+                    ResultTitle = $"Player {winner} Wins!";
+                    ResultMessage = "Congratulations! Would you like to play again?";
 
-            await InvokeAsync(StateHasChanged);
+                    if (JSRuntime != null)
+                    {
+                        try
+                        {
+                            await JSRuntime.InvokeVoidAsync("triggerConfetti", winner);
+                        }
+                        catch (JSException jsEx)
+                        {
+                            Console.WriteLine($"JavaScript function 'triggerConfetti' was not found: {jsEx.Message}");
+                        }
+                    }
+                }
+                else if (e == GameResult.Cat)
+                {
+                    ResultTitle = "It's a Draw!";
+                    ResultMessage = "Good game! Would you like to play again?";
+                }
+
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in OnWinnerChanged: {ex.Message}");
+            }
         }
 
         private async Task HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
-            if (game.CanPlay(boardIndex, cellIndex))
+            try
             {
-                game.Play(boardIndex, cellIndex);
-                await InvokeAsync(StateHasChanged);
+                if (game.CanPlay(boardIndex, cellIndex))
+                {
+                    game.Play(boardIndex, cellIndex);
+                    await InvokeAsync(StateHasChanged);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HandleCellClick: {ex.Message}");
             }
         }
 
         private async Task ResetGame()
         {
-            game = new GameInfo();
-            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
-            ShowResultModal = false;
-            await InvokeAsync(StateHasChanged);
+            try
+            {
+                game = new GameInfo();
+                game.WinnerChanged += async (_, e) => await OnWinnerChanged(this, e);
+                ShowResultModal = false;
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ResetGame: {ex.Message}");
+            }
         }
 
         private string GetCellContent(BoardIndex boardIndex, CellIndex cellIndex)
@@ -96,26 +127,22 @@ namespace Game.Pages
         private string GetSubBoardClasses(BoardIndex boardIndex)
         {
             var classes = new List<string> { "sub-board" };
-
             var board = game.GetBoard(boardIndex);
 
-            // Mark the sub-board as active if it's still in progress
-            if (board.Winner == GameResult.InProgress)
+            switch (board.Winner)
             {
-                classes.Add("active");
-            }
-
-            if (board.Winner == GameResult.XWins)
-            {
-                classes.Add("won-x");
-            }
-            else if (board.Winner == GameResult.OWins)
-            {
-                classes.Add("won-o");
-            }
-            else if (board.Winner == GameResult.Cat)
-            {
-                classes.Add("draw");
+                case GameResult.XWins:
+                    classes.Add("won-x");
+                    break;
+                case GameResult.OWins:
+                    classes.Add("won-o");
+                    break;
+                case GameResult.Cat:
+                    classes.Add("draw");
+                    break;
+                case GameResult.InProgress:
+                    classes.Add("active");
+                    break;
             }
 
             return string.Join(" ", classes);
