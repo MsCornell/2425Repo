@@ -61,10 +61,23 @@ body::before {
 }
 
 /*=============== HOME PAGE ===============*/
+/* logo */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.logo-container .logo-img {
+    max-width: 600px;
+    height: auto;
+}
+
+/* game machine */
 .game-container {
     position: relative;
     width: 100vw;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -405,6 +418,13 @@ body::before {
     }
     50% { 
         transform: translateY(-10px) rotate(2deg); 
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logo-container .logo-img {
+        width: 360px; 
     }
 }
 
