@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Logic;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;

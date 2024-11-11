@@ -51,6 +51,10 @@ namespace Game.Pages.Admin
             Navigation.NavigateTo("/Home");
         }
 
+        private void NavigateToMenu(){
+            Navigation.NavigateTo("/Menu");
+        }
+
         public class LoginModel
         {
             public string Username { get; set; } = string.Empty;
