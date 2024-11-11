@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Logic;
 using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace Game.Pages
 {
@@ -24,14 +25,15 @@ namespace Game.Pages
 
         protected override void OnInitialized()
         {
-            game.WinnerChanged += OnWinnerChanged;
+            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
         }
 
-        private async void OnWinnerChanged(object sender, GameResult e)
+        private async Task OnWinnerChanged(object sender, GameResult e)
         {
+            ShowResultModal = true;
+
             if (e == GameResult.XWins || e == GameResult.OWins)
             {
-                ShowResultModal = true;
                 var winner = e == GameResult.XWins ? "X" : "O";
                 ResultTitle = $"Player {winner} Wins!";
                 ResultMessage = "Congratulations! Would you like to play again?";
@@ -40,33 +42,31 @@ namespace Game.Pages
                 {
                     await JSRuntime.InvokeVoidAsync("triggerConfetti", winner);
                 }
-
-                await InvokeAsync(StateHasChanged);
             }
             else if (e == GameResult.Cat)
             {
-                ShowResultModal = true;
                 ResultTitle = "It's a Draw!";
                 ResultMessage = "Good game! Would you like to play again?";
-                await InvokeAsync(StateHasChanged);
             }
+
+            await InvokeAsync(StateHasChanged);
         }
 
-        private void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
+        private async Task HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
                 game.Play(boardIndex, cellIndex);
-                InvokeAsync(StateHasChanged);
+                await InvokeAsync(StateHasChanged);
             }
         }
 
-        private void ResetGame()
+        private async Task ResetGame()
         {
             game = new GameInfo();
-            game.WinnerChanged += OnWinnerChanged;
+            game.WinnerChanged += async (sender, e) => await OnWinnerChanged(sender, e);
             ShowResultModal = false;
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         }
 
         private string GetCellContent(BoardIndex boardIndex, CellIndex cellIndex)
