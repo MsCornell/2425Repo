@@ -300,9 +300,11 @@ body {
 }
 
 .sub-board.active {
+  border-color: var(--primary-dark);
   box-shadow: 
     0 0 0 calc(var(--board-size) * 0.005) var(--primary-dark),
     0 12px 24px rgba(128, 158, 211, 0.3);
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -452,3 +454,4 @@ body {
   --board-size: min(340px,340px);
 }
 }
+

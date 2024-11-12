@@ -59,15 +59,30 @@ public class GameInfo
 
         var board = boards[boardIndex];
         board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
+        
 
-        // Update the overall game winner if necessary
-        Winner = CalculateOverallWinner();
+        // Check if the current board has ended (there is a winner or it's full)
+        if (board.Winner != GameResult.InProgress)
+        {
+            // Let the player choose from other unfinished boards
+            NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
 
-        // After each move, the next player can choose from any unfinished boards
-        NextBoards = Boards(GameResult.InProgress);
+            // If all boards are completed, end the game
+            Winner = CalculateOverallWinner();
+            if (Winner != GameResult.InProgress)
+            {
+                return;
+            }
+        }
+        else
+        {
+            // If the current board is not finished, restrict the next move to this board
+            NextBoards = new[] { boardIndex };
+        }
 
         // Switch player
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
+        
     }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
@@ -88,6 +103,12 @@ public class GameInfo
         if (Winner != GameResult.InProgress)
         {
             return false;  // The game is over
+        }
+
+        // Ensure the current board is one of the playable boards
+        if (!NextBoards.Contains(boardIndex))
+        {
+            return false;  // The current board is not in the selectable boards
         }
 
         // Check if the board exists
@@ -147,7 +168,7 @@ public class GameInfo
         return GameResult.InProgress;
     }
 
-    public bool IsWinningCombination(BoardIndex a, BoardIndex b, BoardIndex c)
+    private bool IsWinningCombination(BoardIndex a, BoardIndex b, BoardIndex c)
     {
         // Check if all three small boards have the same winner, and the winner is not a draw or in progress
         return boards[a].Winner != GameResult.InProgress &&
@@ -155,26 +176,8 @@ public class GameInfo
                boards[a].Winner == boards[c].Winner;
     }
 
-    public GameResult GetBoardWinner(BoardIndex board)
+    private GameResult GetBoardWinner(BoardIndex board)
     {
         return boards[board].Winner;
     }
-
-   public Players GetBoardWinnerPlayer(BoardIndex boardIndex)
-    {
-    var winner = GetBoardWinner(boardIndex);
-    if (winner == GameResult.XWins)
-    {
-        return Players.X;
-    }
-    else if (winner == GameResult.OWins)
-    {
-        return Players.O;
-    }
-    else{
-        return Players.cat;
-    }
-    throw new InvalidOperationException("Board does not have a valid winner.");
-    }
-
 }
