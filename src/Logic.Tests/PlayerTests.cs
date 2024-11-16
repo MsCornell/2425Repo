@@ -45,4 +45,29 @@ public class PlayerTests
         // act & assert
         await Assert.ThrowsAsync<Exception>(async () => await repository.CreateAsync(player));
     }
+    // update player
+    [Fact]
+    public async void Update_Valid_NoError()
+    {
+        // arrange
+        var player = new Player
+        {
+            OAuthId = Guid.NewGuid().ToString(),
+            Name = "Jerry",
+            Created = DateTime.Now,
+            Username = Guid.NewGuid().ToString(),
+            Password = "password"
+        };
+
+        var created = await repository.CreateAsync(player);
+        created.Name = "Tom";
+
+        // act
+        var updated = await repository.UpdateAsync(created);
+        await repository.DeleteAsync(updated.Id);
+
+        // assert
+        Assert.NotNull(updated);
+        Assert.Equal("Tom", updated.Name);
+    }
 }

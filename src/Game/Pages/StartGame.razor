@@ -1,0 +1,44 @@
+﻿@page "/StartGame"
+@using Game.Pages.Shared
+
+<PageTitle>Profile</PageTitle>
+
+<link rel="stylesheet" href="/css/startgame.css" />
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<body>
+    <NavMenu />
+    <main>
+        <div class="game-modes" id="gameModes">
+            <div class="modes-container">
+                <div class="mode-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>Single Player</h3>
+                    <p>Challenge our AI in three difficulty levels: Easy, Medium, or Hard. Perfect for practice!</p>
+                    <div class="difficulty-selector">
+                        <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+
+                <div class="mode-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Local Multiplayer</h3>
+                    <p>Challenge your friend right next to you! Share the same device for an intense battle.</p>
+                    <button class="play-btn" @onclick="NavigateToGameBoard">Play Now</button>
+                </div>
+
+                <div class="mode-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Online Multiplayer</h3>
+                    <p>Connect with players worldwide and prove your skills in real-time matches!</p>
+                    <button class="play-btn" @onclick="ShowComingSoonMessage">Find Match</button>
+                    <div class="coming-soon-message" style="@(isComingSoonVisible ? "display: block;" : "display: none;")">
+                        Coming Soon! This mode is currently under development.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>

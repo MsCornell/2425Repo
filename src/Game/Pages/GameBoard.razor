@@ -1,70 +1,49 @@
-﻿@page "/GameBoard"
+@page "/GameBoard"
 @using Logic
+
 <PageTitle>Ultimate-tic-tac-toe Game</PageTitle>
 
-<h2>@($"Current Turn: {game.NextPlayer}")</h2> <!-- Display current player's turn -->
+<link rel="stylesheet" href="/css/gameboard.css" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
 
-<div class="ultimate-tic-tac-toe">
-    @foreach (BoardIndex board in Enum.GetValues(typeof(BoardIndex)))
+<body>
+    <nav class="navbar">
+        <button class="back-button" @onclick="NavigateToStartGame">
+            <span class="material-icons">arrow_back</span>
+        </button>
+        <h1>Ultimate Tic Tac Toe</h1>
+        <div class="spacer"></div>
+    </nav>
+
+    <div class="player-indicator">
+        Player <span class="@(game.NextPlayer == Players.X ? "player-x" : "player-o")">@game.NextPlayer</span>'s Turn
+    </div>
+
+    <div class="ultimate-board" id="ultimate-board">
+        @foreach (var boardIndex in GetAllBoardIndices())
+        {
+            <div class="@GetSubBoardClasses(boardIndex)" data-index="@((int)boardIndex)">
+                @foreach (var cellIndex in GetAllCellIndices())
+                {
+                    <div class="@GetCellClasses(boardIndex, cellIndex)"
+                         data-index="@((int)cellIndex)"
+                         @onclick="() => HandleCellClick(boardIndex, cellIndex)">
+                        @GetCellContent(boardIndex, cellIndex)
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Result Modal -->
+    @if (ShowResultModal)
     {
-        <div class="board @(IsBoardPlayable(board) ? "active-board" : "")">
-            @foreach (CellIndex cell in Enum.GetValues(typeof(CellIndex)))
-            {
-                <div class="cell-container">
-                    <a href="javascript:void(0);" @onclick="() => Play(board, cell)">
-                        <img src="@GetCellImage(board, cell)" class="cell" />
-                    </a>
-                </div>
-            }
+        <div class="modal show" id="resultModal">
+            <div class="modal-content">
+                <h2 id="resultTitle">@ResultTitle</h2>
+                <p id="resultMessage">@ResultMessage</p>
+                <button @onclick="ResetGame" class="play-again-btn">Play Again</button>
+            </div>
         </div>
     }
-</div>
-
-<style>
-
-    body {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #809ED3; 
-        overflow: hidden;
-        font-family: 'Rubik', sans-serif;
-    }
-
-    .ultimate-tic-tac-toe {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Use 1fr for equal spacing */
-        gap: 10px;
-    }
-
-    .board {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Use 1fr for equal spacing */
-        gap: 5px;
-        border: 1px solid #000;
-        padding: 10px;
-        background-color: lightblue; /* Set a background color for better visibility */
-    }
-
-    .cell-container {
-        display: flex; /* Use flexbox for centering */
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        height: 50px; /* Ensure consistent height */
-        width: 50px; /* Ensure consistent width */
-    }
-
-    .cell {
-        width: 50px; /* Ensure consistent width */
-        height: 50px; /* Ensure consistent height */
-    }
-
-    .active-board {
-        background-color: lightgreen; /* Highlight active boards */
-    }
-
-    
-</style>
+</body>

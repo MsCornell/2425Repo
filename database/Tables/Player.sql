@@ -4,5 +4,6 @@ CREATE TABLE Player(
     Name VARCHAR(150) NOT NULL,
     Created DATETIME DEFAULT GETDATE(),
     _username VARCHAR(150) NOT NULL UNIQUE,
-    _password VARCHAR(150) NOT NULL
+    _password VARCHAR(150) NOT NULL,
+    cumulative_score INT NOT NULL
 );
