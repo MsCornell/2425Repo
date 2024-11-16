@@ -1,7 +1,14 @@
 name: Publish SQLPROJ to Azure SQL
 
-# on: [push]
-on: [workflow_dispatch]
+on:
+  push:
+    paths:
+      - 'database/**'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - 'database/**'
+  workflow_dispatch:
 
 jobs:
   build:
