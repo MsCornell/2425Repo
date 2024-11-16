@@ -7,6 +7,8 @@
 
 <body>
 <NavMenu />
+<main>
+
 <div class="container">
 
     <!-- Game Mode Switcher -->
@@ -141,6 +143,36 @@
         </div>
     </div>
 
+    <!-- Scoring rubric--> 
+    <div class="rules-container">
+        <button id="rulesBtn" @onclick="ShowRulesModal" class="rules-btn">Ranking Rules</button>
+    </div>
+
+@if (IsRulesModalVisible)
+{
+    <div id="rulesModal" class="modal" style="display: block;">
+        <div class="modal-content">
+            <span class="close" @onclick="CloseRulesModal">&times;</span>
+            <h2>Ranking Rules</h2>
+            <div class="rules-content">
+                <h3>Single-Player Mode</h3>
+                <ul>
+                    <li>Easy: Win +10-points, Draw +5-points, Loss +0-points</li>
+                    <li>Medium: Win +20-points, Draw +10-points, Loss +0-points</li>
+                    <li>Hard: Win +40-points, Draw +20-points, Loss +0-points</li>
+                    <li>Bonus: If the player wins in 3 minutes, add a 10-point bonus</li>
+                </ul>
+                <h3>Local Multiplayer Mode</h3>
+                <ul>
+                    <li>Win: +30-points</li>
+                    <li>Draw: +10-points</li>
+                    <li>Loss: +0-points</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
     <!-- Footer with Last Updated and Refresh Button -->
     <footer>
         <div class="last-updated">
@@ -150,4 +182,5 @@
     </footer>
 
 </div>
+</main>
 </body>

@@ -15,13 +15,16 @@
                 <img src="@AvatarUrl" alt="Profile Avatar" class="avatar" />
             </div>
         </div>
+
         <h2>@PlayerName</h2>
-        <p class="rank">@PlayerRank</p>
+        <p class="rank" @onmouseover="(e) => ShowRankTooltip(e)" @onmouseout="HideTooltip">
+         @PlayerRank</p>
+
         <div class="stats">
             @foreach (var stat in Stats)
             {
                 <div class="stat-item">
-                    <h3>@stat.Title</h3>
+                    <h3 @onmouseover="(e) => ShowStatTooltip(stat, e)" @onmouseout="HideTooltip">@stat.Title</h3>
                     <p>@stat.Value</p>
                 </div>
             }
@@ -90,5 +93,13 @@
         }
     </main>
 </div>
+
+@if (IsTooltipVisible)
+{
+    <div class="tooltip" style="top:@TooltipPosition.Top; left:@TooltipPosition.Left;">
+        @TooltipContent
+    </div>
+}
+
 </main>
 </body>

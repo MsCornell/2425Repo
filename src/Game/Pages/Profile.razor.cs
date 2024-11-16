@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Game.Pages
 {
@@ -190,15 +191,68 @@ namespace Game.Pages
                     .Average() * 100;
                 double pointsPerGame = points / (double)totalGames;
 
-                if (points >= 2000 && pointsPerGame >= 50 && totalProgress >= 80) return "Grandmaster";
-                if (points >= 1500 && pointsPerGame >= 40 && totalProgress >= 60) return "Master";
-                if (points >= 1000 && pointsPerGame >= 30 && totalProgress >= 40) return "Expert";
-                if (points >= 500 && pointsPerGame >= 20 && totalProgress >= 20) return "Veteran";
-                if (points >= 200 && pointsPerGame >= 10) return "Skilled";
+                if (points >= 2000) return "Grandmaster";
+                if (points >= 1500) return "Master";
+                if (points >= 1000) return "Expert";
+                if (points >= 500) return "Veteran";
+                if (points >= 200) return "Skilled";
                 if (points >= 100) return "Apprentice";
                 return "Novice";
             }
         }
+
+     // Tooltip State
+    private bool IsTooltipVisible { get; set; } = false;
+    private string TooltipContent { get; set; } = string.Empty;
+    private (string Top, string Left) TooltipPosition { get; set; } = ("0px", "0px");
+
+    // Tooltip Mappings
+    private readonly Dictionary<string, string> StatTooltips = new()
+    {
+        { "Win Rate", "Percentage of games won" },
+        { "Games", "Total number of games played" },
+        { "Points", "Total score points earned" }
+    };
+
+    private readonly Dictionary<string, string> RankTooltips = new()
+    {
+        { "Grandmaster", "2000+ points, exceptional achievement progress" },
+        { "Master", "1500-1999 points, strong performance" },
+        { "Expert", "1000-1499 points, solid progress" },
+        { "Veteran", "500-999 points, consistent play" },
+        { "Skilled", "200-499 points, improving" },
+        { "Apprentice", "100-199 points, beginner level" },
+        { "Novice", "0-99 points, just starting out" }
+    };
+
+    // Show Tooltip for PlayerRank
+    private void ShowRankTooltip(MouseEventArgs e)
+    {
+        if (RankTooltips.TryGetValue(PlayerRank, out var tooltipText))
+        {
+            TooltipContent = tooltipText;
+            TooltipPosition = ($"{e.ClientY - 10}px", $"{e.ClientX + 10}px");
+            IsTooltipVisible = true;
+        }
+    }
+
+    // Show Tooltip for Stats
+    private void ShowStatTooltip(Stat stat, MouseEventArgs e)
+    {
+        if (StatTooltips.TryGetValue(stat.Title, out var tooltipText))
+        {
+            TooltipContent = tooltipText;
+            TooltipPosition = ($"{e.ClientY - 10}px", $"{e.ClientX + 10}px");
+            IsTooltipVisible = true;
+        }
+    }
+
+    private void HideTooltip()
+    {
+        IsTooltipVisible = false;
+        TooltipContent = string.Empty;
+    }
+
     }
 }
 

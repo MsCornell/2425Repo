@@ -4,7 +4,7 @@
 <PageTitle>Ultimate-tic-tac-toe Game</PageTitle>
 
 <link rel="stylesheet" href="/css/gameboard.css" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <body>
     <nav class="navbar">
@@ -34,6 +34,38 @@
             </div>
         }
     </div>
+
+   <!-- Game Rules -->
+    <button id="rulesBtn" @onclick="ShowRulesModal" class="btn">Basic Rules</button>
+
+@if (IsRulesModalVisible)
+{
+    <div id="rulesModal" class="modal" style="display: block;">
+        <div class="modal-content">
+            <span class="close" @onclick="CloseRulesModal">&times;</span>
+            <h2>Basic Rules</h2>
+            <div class="rules-content">
+                <p>
+                    1. Board Setup: At the beginning of the game, there are multiple Tic Tac Toe boards,
+                    all in an empty state. Players take turns making moves on the boards until one of the boards is completed.
+                </p>
+                <p>
+                    2. Move Rules: Players take turns choosing an unfinished board and making a move on it.
+                    Each board follows the traditional Tic Tac Toe rules: a player wins by getting three in a row
+                    (horizontally, vertically, or diagonally).
+                </p>
+                <p>
+                    3. Board Completion and Selection: When a player wins on a board or it ends in a draw, that board is considered completed.
+                    The next player then selects an unfinished board to continue the game.
+                </p>
+                <p>
+                    4. Winning the Game: The game continues until all boards are completed.
+                    The player who wins the majority of the boards is declared the overall winner.
+                </p>
+            </div>
+        </div>
+    </div>
+}
 
     <!-- Result Modal -->
     @if (ShowResultModal)
