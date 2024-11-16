@@ -5,20 +5,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Api
 {
-    public class Function1
+    public class DateTimeFunction
     {
-        private readonly ILogger<Function1> _logger;
+        private readonly ILogger<DateTimeFunction> _logger;
 
-        public Function1(ILogger<Function1> logger)
+        public DateTimeFunction(ILogger<DateTimeFunction> logger)
         {
             _logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("Now")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
+            return new OkObjectResult($"The current UTC date time is {DateTime.UtcNow}");
         }
     }
 }
