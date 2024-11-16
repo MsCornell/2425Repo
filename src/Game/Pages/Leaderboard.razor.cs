@@ -11,6 +11,7 @@ namespace Game.Pages
         public enum DifficultyEnum { Easy, Medium, Hard }
         public enum GameModeEnum { Single, LocalMulti, OnlineMulti }
         public enum TimeFilterEnum { Today, Week, Month, All }
+        private bool IsRulesModalVisible { get; set; } = false;
 
         // Game Mode
         private GameModeEnum GameMode = GameModeEnum.Single;
@@ -193,6 +194,18 @@ namespace Game.Pages
             public string? Name { get; set; }
             public int Score { get; set; }
             public string? AvatarUrl { get; set; }
+        }
+
+        // Method to show the modal
+        private void ShowRulesModal()
+        {
+            IsRulesModalVisible = true;
+        }
+
+        // Method to hide the modal
+        private void CloseRulesModal()
+        {
+            IsRulesModalVisible = false;
         }
     }
 }
