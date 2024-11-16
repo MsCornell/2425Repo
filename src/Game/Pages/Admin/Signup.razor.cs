@@ -7,9 +7,9 @@ namespace Game.Pages.Admin
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;
 
-         private void NavigateToStart1()
+         private void NavigateToLoginBox()
         {
-            Navigation.NavigateTo("/Start1");
+            Navigation.NavigateTo("/LoginBox");
         }
 
         private void NavigateToEmail()

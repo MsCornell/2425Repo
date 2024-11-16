@@ -76,7 +76,7 @@ body::before {
 /* game machine */
 .game-container {
     position: relative;
-    width: 88vw;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -422,6 +422,10 @@ body::before {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .logo-container {
+        margin-top: 1.3rem;
+    }
+    
     .logo-container .logo-img {
         width: 360px; 
     }

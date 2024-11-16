@@ -52,7 +52,7 @@ body {
 }
 
 button {
-    padding: 0.7rem 1.2rem;
+    padding: 0.8rem 1.3rem;
     border: none;
     border-radius: 20px;
     background-color: var(--gray-light);
@@ -458,4 +458,14 @@ footer {
     .ranking-header, .ranking-list .rank-item {
         grid-template-columns: 60px 1fr 80px;
     }
+
+    button {
+        padding: 0.5rem 1.1rem;
+        font-size: 0.9rem;
+    }
+
+    .mode-switcher {
+        margin-bottom: 1rem;
+    }
+
 }
