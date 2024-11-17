@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url("http://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Varela+Round&display=swap");
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -31,11 +31,10 @@ body {
     background-size: 40px 40px;
     background-color: var(--background-color);
     animation: backgroundMove 30s linear infinite;
-    min-height: 100vh;
+    font-family: 'Varela Round', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Varela Round', sans-serif;
     overflow: hidden;
     position: relative;
 }
@@ -66,7 +65,7 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 .logo-container .logo-img {
@@ -423,6 +422,10 @@ body::before {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .logo-container {
+        margin-top: 1.3rem;
+    }
+    
     .logo-container .logo-img {
         width: 360px; 
     }

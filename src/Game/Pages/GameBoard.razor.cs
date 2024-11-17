@@ -16,6 +16,7 @@ namespace Game.Pages
         private bool ShowResultModal { get; set; } = false;
         private string ResultTitle { get; set; } = string.Empty;
         private string ResultMessage { get; set; } = string.Empty;
+        private bool IsRulesModalVisible { get; set; } = false;
 
         private void NavigateToStartGame()
         {
@@ -121,6 +122,16 @@ namespace Game.Pages
         private IEnumerable<CellIndex> GetAllCellIndices()
         {
             return Enum.GetValues(typeof(CellIndex)).Cast<CellIndex>();
+        }
+
+        private void ShowRulesModal()
+        {
+            IsRulesModalVisible = true;
+        }
+
+        private void CloseRulesModal()
+        {
+            IsRulesModalVisible = false;
         }
     }
 }

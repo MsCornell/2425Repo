@@ -13,11 +13,28 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="loader-container">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <div class="game-controller">
+                <div class="controller-body"></div>
+                <div class="controller-btn"></div>
+                <div class="controller-btn"></div>
+                <div class="controller-btn"></div>
+                <div class="controller-btn"></div>
+            </div>
+            <div class="loading-text">Loading Game</div>
+            <div class="loading-bar">
+                <div class="progress"></div>
+                <div class="percentage"></div>
+            </div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
