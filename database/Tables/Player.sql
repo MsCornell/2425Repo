@@ -1,9 +1,10 @@
-CREATE TABLE Player(
+CREATE TABLE Player
+(
     Id INT PRIMARY KEY IDENTITY(1,1),
     OAuthId VARCHAR(150) NOT NULL UNIQUE,
     Name VARCHAR(150) NOT NULL,
     Created DATETIME DEFAULT GETDATE(),
     _username VARCHAR(150) NOT NULL UNIQUE,
     _password VARCHAR(150) NOT NULL,
-    cumulative_score INT NOT NULL
+    cumulative_score INT DEFAULT ((0))
 );
