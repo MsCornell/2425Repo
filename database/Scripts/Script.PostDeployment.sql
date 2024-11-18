@@ -1,7 +1,10 @@
 -- seed player table
-IF NOT EXISTS(SELECT TOP 1 Id FROM Player)
-INSERT INTO Player (OAuthId, Name, Created, _username, _password)
-VALUES 
+IF NOT EXISTS(SELECT TOP 1
+    Id
+FROM Player)
+INSERT INTO Player
+    (OAuthId, Name, Created, _username, _password)
+VALUES
     ('123456', 'John Doe', '2021-01-01', 'JohnDoe', 'password'),
     ('123457', 'Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
     ('123458', 'John Smith', '2021-01-01', 'JohnSmith', 'password'),
@@ -16,7 +19,9 @@ VALUES
 -- SEED CHARACTER TABLE
 
 --DELETE FROM Character;
-IF NOT EXISTS(SELECT TOP 1 [Character] FROM Character)
+IF NOT EXISTS(SELECT TOP 1
+    [Character]
+FROM Character)
 INSERT INTO Character
 VALUES
     ('JohnDoe'),
@@ -35,27 +40,33 @@ VALUES
 -- DELETE FROM Board;
 -- Seed the Game table with 10 records
 DBCC CHECKIDENT ('Game', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Game)
+IF NOT EXISTS(SELECT TOP 1
+    Id
+FROM Game)
 -- reset the identity seed
-INSERT INTO Game (Started, Ended, NextBoard, NextPlayer, AiCharacter, PlayerId, PlayerCharacter, GameWinner)
-VALUES 
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 1, 'JaneDoe', 'JohnDoe'),
+INSERT INTO Game
+    (Started, Ended, NextBoard, NextPlayer, AiCharacter, PlayerId, PlayerCharacter, GameWinner)
+VALUES
     ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 3, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 4, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 5, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 6, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 7, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 8, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 9, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 10, 'JaneDoe', 'JohnDoe');
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
+    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe');
 
 -- seed Board table
 DBCC CHECKIDENT ('Board', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
-INSERT INTO Board (Started, Ended, BoardWinner, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8, Cell9)
+IF NOT EXISTS(SELECT TOP 1
+    Id
+FROM Board)
+INSERT INTO Board
+    (Started, Ended, BoardWinner, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8, Cell9)
 VALUES
--- seed 10 records
+    -- seed 10 records
     ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
     ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'),
     ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
@@ -68,7 +79,7 @@ VALUES
     ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O');
 
 -- seed the Gameboard table with 10 records
-    /*
+/*
     CREATE TABLE Game_Board (
     GameId INT,
     BoardId INT,
@@ -78,8 +89,11 @@ VALUES
     FOREIGN KEY (BoardId) REFERENCES Board(Id)
 );
     */
-IF NOT EXISTS(SELECT TOP 1 GameId FROM Game_Board)
-INSERT INTO Game_Board (GameId, BoardId, Position)
+IF NOT EXISTS(SELECT TOP 1
+    GameId
+FROM Game_Board)
+INSERT INTO Game_Board
+    (GameId, BoardId, Position)
 VALUES
     (1, 1, 1),
     (2, 2, 2),
@@ -94,8 +108,11 @@ VALUES
 Delete from Audit_Operation;
 -- seed the Audit_Operation table with 10 records
 DBCC CHECKIDENT ('Audit_Operation', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Audit_Operation)
-INSERT INTO Audit_Operation (Name)
+IF NOT EXISTS(SELECT TOP 1
+    Id
+FROM Audit_Operation)
+INSERT INTO Audit_Operation
+    (Name)
 VALUES
     ('Create'),
     ('Read'),
