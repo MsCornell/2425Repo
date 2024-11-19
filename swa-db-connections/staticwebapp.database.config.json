@@ -27,20 +27,6 @@
     }
   },
   "entities": {
-    "Audit_Operation": {
-      "source": {
-        "object": "Audit_Operation",
-        "type": "table"
-      },
-      "permissions": [
-        {
-          "role": "anonymous",
-          "actions": [
-            "*"
-          ]
-        }
-      ]
-    },
     "Board": {
       "source": {
         "object": "Board",
@@ -100,20 +86,6 @@
     "Player": {
       "source": {
         "object": "Player",
-        "type": "table"
-      },
-      "permissions": [
-        {
-          "role": "anonymous",
-          "actions": [
-            "*"
-          ]
-        }
-      ]
-    },
-    "Score": {
-      "source": {
-        "object": "Score",
         "type": "table"
       },
       "permissions": [

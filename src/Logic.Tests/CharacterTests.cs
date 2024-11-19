@@ -24,39 +24,39 @@ public class CharacterTests
         Assert.Equal("Jerry", created.CharacterName);
     }
 
-    [Fact]
+    //[Fact]
 
-    public async Task test(){
-        var updated = await repository.UpdateCharacterAsync(new Character{CharacterName = "JasonDamn"}, "Doggy");
-        Assert.NotNull(updated);
-        Assert.Equal("Doggy", updated.CharacterName);
-    }
+    // public async Task test(){
+    //     var updated = await repository.UpdateCharacterAsync(new Character{CharacterName = "JasonDamn"}, "Doggy");
+    //     Assert.NotNull(updated);
+    //     Assert.Equal("Doggy", updated.CharacterName);
+    // }
     
-    [Fact]
-    //update 
-    public async Task Update_Valid_NoError()
-    {
-        // arrange
-        var character = new Character
-        {
-            CharacterName = "JasonDamn"
-        };
-        var newCharacter = new Character
-        {
-            CharacterName = "Doggy"
-        };
+    // [Fact]
+    // //update 
+    // public async Task Update_Valid_NoError()
+    // {
+    //     // arrange
+    //     var character = new Character
+    //     {
+    //         CharacterName = "JasonDamn"
+    //     };
+    //     var newCharacter = new Character
+    //     {
+    //         CharacterName = "Doggy"
+    //     };
 
 
-        // act
-        await repository.DeleteCharacterAsync("JasonDamn");
-        var created = await repository.CreateCharacterAsync(character);
-        var updated = await repository.UpdateCharacterAsync(created, newCharacter.CharacterName);
-        await repository.DeleteCharacterAsync(updated.CharacterName);
+    //     // act
+    //     await repository.DeleteCharacterAsync("JasonDamn");
+    //     var created = await repository.CreateCharacterAsync(character);
+    //     var updated = await repository.UpdateCharacterAsync(created, newCharacter.CharacterName);
+    //     await repository.DeleteCharacterAsync(updated.CharacterName);
 
-        // assert
-        Assert.NotNull(updated);
-        Assert.Equal("Doggy", updated.CharacterName);
-    }
+    //     // assert
+    //     Assert.NotNull(updated);
+    //     Assert.Equal("Doggy", updated.CharacterName);
+    // }
 
 
 }

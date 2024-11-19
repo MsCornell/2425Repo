@@ -22,22 +22,6 @@ builder.Services.AddScoped(serviceProvider =>
 
     return new Logic.PlayerRepository(url);
 });
-//player audit
-builder.Services.AddScoped(serviceProvider =>
-{
-    string url;
-
-    if (builder.HostEnvironment.IsDevelopment())
-    {
-        url = "http://localhost:5000/api/Player_Audit";
-    }
-    else
-    {
-        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/Player_Audit";
-    }
-
-    return new Logic.PlayerAuditRepository(url);
-});
 //game
 builder.Services.AddScoped(serviceProvider =>
 {
@@ -80,11 +64,11 @@ builder.Services.AddScoped(serviceProvider =>
 
     if (builder.HostEnvironment.IsDevelopment())
     {
-        url = "http://localhost:5000/api/GameBoard";
+        url = "http://localhost:5000/api/Game_Board";
     }
     else
     {
-        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/GameBoard";
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/Game_Board";
     }
 
     return new Logic.GameBoardRepository(url);
@@ -107,22 +91,6 @@ builder.Services.AddScoped(serviceProvider =>
     return new Logic.BoardRepository(url);
 });
 
-//audit operation
-builder.Services.AddScoped(serviceProvider =>
-{
-    string url;
-
-    if (builder.HostEnvironment.IsDevelopment())
-    {
-        url = "http://localhost:5000/api/AuditOperation";
-    }
-    else
-    {
-        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/AuditOperation";
-    }
-
-    return new Logic.AuditOperationRepository(url);
-});
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
