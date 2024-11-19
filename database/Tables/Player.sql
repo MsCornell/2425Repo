@@ -3,6 +3,6 @@ CREATE TABLE Player (
     Name VARCHAR(150) NOT NULL,
     Created DATETIME DEFAULT GETDATE(),
     _username VARCHAR(150) NOT NULL UNIQUE,
-    _password VARBINARY(64) NOT NULL
+    _password VARCHAR(150) NOT NULL
 );
 
