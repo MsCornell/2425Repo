@@ -79,56 +79,56 @@ public class BoardInfo
 
     private GameResult CalculateWinner()
     {
-    // Check if any row has a winner
+        // Check if any row has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell2, CellIndex.Cell3))
         {
-        
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell4, CellIndex.Cell5, CellIndex.Cell6))
         {
-            
+
             return GetWinner(CellIndex.Cell4);
         }
         if (IsWinningCombination(CellIndex.Cell7, CellIndex.Cell8, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell7);
         }
 
-    // Check if any column has a winner
+        // Check if any column has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell4, CellIndex.Cell7))
         {
-            
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell2, CellIndex.Cell5, CellIndex.Cell8))
         {
-        
+
             return GetWinner(CellIndex.Cell2);
         }
         if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell6, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell3);
         }
 
-    // Check if any diagonal has a winner
+        // Check if any diagonal has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell5, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell5, CellIndex.Cell7))
         {
-            
+
             return GetWinner(CellIndex.Cell3);
         }
 
         // If all cells are filled and there is no winner, return a draw
         if (cells.Values.All(cell => cell.Value != CellValue.Blank))
         {
-            
+
             return GameResult.Cat;
         }
 
