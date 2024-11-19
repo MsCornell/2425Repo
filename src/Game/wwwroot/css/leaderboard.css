@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@500&display=swap");
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -23,7 +23,7 @@
 }
 
 body {
-    font-family: 'Quicksand', system-ui, -apple-system, sans-serif;
+    font-family: 'Quicksand', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
