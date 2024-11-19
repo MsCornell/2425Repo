@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@500&display=swap");
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -26,7 +26,7 @@ body {
   justify-content: center;
   align-items: center;
   background: var(--background-color);
-  font-family: 'Jost', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   padding: 20px;
   box-sizing: border-box;
   padding-top: 80px;
