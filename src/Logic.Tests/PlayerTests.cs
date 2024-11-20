@@ -12,7 +12,6 @@ public class PlayerTests
         // arrange
         var player = new Player
         {
-            OAuthId = Guid.NewGuid().ToString(),
             Name = "Jerry",
             Created = DateTime.Now,
             Username = Guid.NewGuid().ToString(),
@@ -25,7 +24,6 @@ public class PlayerTests
 
         // assert
         Assert.NotNull(created);
-        Assert.Equal(player.OAuthId, created.OAuthId);
         Assert.NotEqual(player.Id, created.Id);
     }
 
@@ -35,7 +33,6 @@ public class PlayerTests
         // arrange
         var player = new Player
         {
-            OAuthId = null,
             Name = null,
             Created = DateTime.Now,
             Username = null,
@@ -52,7 +49,6 @@ public class PlayerTests
         // arrange
         var player = new Player
         {
-            OAuthId = Guid.NewGuid().ToString(),
             Name = "Jerry",
             Created = DateTime.Now,
             Username = Guid.NewGuid().ToString(),
