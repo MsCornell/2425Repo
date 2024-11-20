@@ -10,7 +10,6 @@ public class GameBoard
         [JsonPropertyName("BoardId")]
         public int BoardId { get; set; }
 
-        [JsonPropertyName("Position")]
-        public int Position { get; set; }
+        [JsonPropertyName("CreatedAt")]
+        public DateTime CreatedAt { get; set; }
     }
-

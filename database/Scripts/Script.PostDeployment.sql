@@ -38,7 +38,7 @@ VALUES
 
 
 
-DELETE FROM Game;
+-- DELETE FROM Game;
 IF NOT EXISTS(SELECT TOP 1 Id FROM Game)
 BEGIN
 -- reset the identity seed
@@ -57,7 +57,7 @@ VALUES
     ('2021-01-01', '2021-01-01', 1, 10, 'O', '-', 'Hard', 20);
 END
 
-DELETE FROM Board;
+-- DELETE FROM Board;
 IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
 BEGIN
 DBCC CHECKIDENT ('Board', RESEED, 0);

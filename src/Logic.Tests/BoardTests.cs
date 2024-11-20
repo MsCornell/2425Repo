@@ -2,6 +2,12 @@ using System;
 
 namespace Logic.Tests;
 
+    /*
+    CREATE TABLE Board (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    BoardWinner CHAR(1) NOT NULL CHECK (BoardWinner IN ('X', 'O', '-'))
+    );
+    */
 public class BoardTests
 {
     private BoardRepository repository = new("http://localhost:5000/api/Board");
@@ -9,22 +15,10 @@ public class BoardTests
     public async void Create_Valid_NoError()
     {
         // arrange
-        var board = new Board
-        {
-            Started = DateTime.Now,
-            Ended = DateTime.Now,
-            BoardWinner = "Jenny",
-            Cell1 = "X",
-            Cell2 = "O",
-            Cell3 = "X",
-            Cell4 = "O",
-            Cell5 = "X",
-            Cell6 = "O",
-            Cell7 = "X",
-            Cell8 = "O",
-            Cell9 = "X"
+        var board = new Board{
+            BoardWinner = "X"
         };
-
+        
         // act
         var created = await repository.CreateBoardAsync(board);
         await repository.DeleteBoardAsync(created.Id);
@@ -42,18 +36,8 @@ public class BoardTests
         // arrange
         var board = new Board
         {
-            Started = DateTime.Now,
-            Ended = DateTime.Now,
-            BoardWinner = "Jerry",
-            Cell1 = "X",
-            Cell2 = "X",
-            Cell3 = "X",
-            Cell4 = "O",
-            Cell5 = "O",
-            Cell6 = "X",
-            Cell7 = "O",
-            Cell8 = "O",
-            Cell9 = "X"
+            BoardWinner = "O"
+           
         };
 
         var created = await repository.CreateBoardAsync(board);
@@ -75,22 +59,12 @@ public class BoardTests
         // arrange
         var board = new Board
         {
-            Started = DateTime.Now,
-            Ended = DateTime.Now,
-            BoardWinner = "Hinton",
-            Cell1 = "O",
-            Cell2 = "O",
-            Cell3 = "O",
-            Cell4 = "O",
-            Cell5 = "X",
-            Cell6 = "X",
-            Cell7 = "X",
-            Cell8 = "X",
-            Cell9 = "X"
+            BoardWinner = "X"
+            
         };
 
         var created = await repository.CreateBoardAsync(board);
-        created.BoardWinner = "Tom";
+        created.BoardWinner = "O";
 
         // act
         var updated = await repository.UpdateBoardAsync(created);
@@ -98,7 +72,7 @@ public class BoardTests
 
         // assert
         Assert.NotNull(updated);
-        Assert.Equal("Tom", updated.BoardWinner);
+        Assert.Equal("O", updated.BoardWinner);
         Assert.Equal(created.Id, updated.Id);
     }
 }
