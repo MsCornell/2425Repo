@@ -74,6 +74,7 @@ VALUES
     ('-');
 END
 
+--DELETE FROM Game_Board;
 -- seed Game_Board table
 IF NOT EXISTS(SELECT TOP 1 GameId FROM Game_Board)
 INSERT INTO Game_Board (GameId, BoardId)
