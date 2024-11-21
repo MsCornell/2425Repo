@@ -15,4 +15,7 @@
     <None Include="demo.publish.xml" />
     <None Include="LocalDb.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views" />
+  </ItemGroup>
 </Project>
