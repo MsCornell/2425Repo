@@ -96,6 +96,49 @@
           ]
         }
       ]
+    },
+    "PlayerWinRate": {
+      "source": {
+        "object": "PlayerWinRate",
+        "type": "view"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "GameDetail": {
+      "source": {
+        "object": "GameDetail",
+        "type": "view"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "GameBoardDetail": {
+      "source": {
+        "object": "GameBoardDetail",
+        "type": "view",
+        "key-fields": ["GameId", "BoardId"]
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
     }
   }
 }
