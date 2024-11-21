@@ -14,6 +14,22 @@
             ],
             "problemMatcher": [],
             "isBackground": true
+        },
+        {
+            "label": "Start ML API",
+            "command": "func start",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src/Api"
+            }
+        },
+        {
+            "label": "Start Data API",
+            "command": "dab start -c staticwebapp.database.config.json",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/swa-db-connections"
+            }
         }
     ]
 }
