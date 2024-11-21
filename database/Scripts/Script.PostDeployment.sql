@@ -1,3 +1,5 @@
+/*
+
 -- seed player table
 -- INITIALIZE THE DATABASE
 -- DELETE FROM Player;
@@ -88,3 +90,5 @@ VALUES
     (1, 7),
     (1, 8),
     (1, 9);
+
+*/
