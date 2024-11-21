@@ -8,6 +8,22 @@
             "url": "https://localhost:1234",
             "webRoot": "${workspaceFolder}/src/game",
             "preLaunchTask": "run-blazor-server"
+        },
+        {
+            "label": "Start ML API",
+            "command": "func start",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src/Api"
+            }
+        },
+        {
+            "label": "Start Data API",
+            "command": "dab start -c staticwebapp.database.config.json",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/swa-db-connections"
+            }
         }
     ]
 }
