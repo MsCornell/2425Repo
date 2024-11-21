@@ -91,6 +91,55 @@ builder.Services.AddScoped(serviceProvider =>
     return new Logic.BoardRepository(url);
 });
 
+//PlayerWinRate
+builder.Services.AddScoped(serviceProvider =>
+{
+    string url;
+
+    if (builder.HostEnvironment.IsDevelopment())
+    {
+        url = "http://localhost:5000/api/PalyerWinRate";
+    }
+    else
+    {
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/PalyerWinRate";
+    }
+
+    return new Logic.PlayerWinRateRepository(url);
+});
+//GameBoardDetail
+builder.Services.AddScoped(serviceProvider =>
+{
+    string url;
+
+    if (builder.HostEnvironment.IsDevelopment())
+    {
+        url = "http://localhost:5000/api/GameBoardDetail";
+    }
+    else
+    {
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/GameBoardDetail";
+    }
+
+    return new Logic.GameBoardDetailRepository(url);
+});
+//GameDetail
+builder.Services.AddScoped(serviceProvider =>
+{
+    string url;
+
+    if (builder.HostEnvironment.IsDevelopment())
+    {
+        url = "http://localhost:5000/api/GameDetail";
+    }
+    else
+    {
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/GameDetail";
+    }
+
+    return new Logic.GameDetailRepository(url);
+});
+
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
