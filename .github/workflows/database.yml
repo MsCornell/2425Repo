@@ -4,10 +4,6 @@ on:
   push:
     paths:
       - 'database/**'
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    paths:
-      - 'database/**'
   workflow_dispatch:
 
 jobs:
