@@ -1,72 +1,73 @@
-if (db_name() = '2425cornell-db')
- RETURN;
--- seed player table
--- INITIALIZE THE DATABASE
-DELETE FROM Game_Board;
-DELETE FROM Game;
-DELETE FROM Board;
-DELETE FROM Character;
-DELETE FROM Player;
+DELETE FROM Game_Board WHERE GameId BETWEEN 10000 AND 10010
+DELETE FROM Game WHERE Id BETWEEN 10000 AND 10010
+DELETE FROM Board WHERE Id BETWEEN 10000 AND 10010
+DELETE FROM Player WHERE Id BETWEEN 10000 AND 10010
 
-INSERT INTO Player (Name, Created, _username, _password)
+SET IDENTITY_INSERT Player ON;
+
+INSERT INTO Player (Id, Name, Created, _username, _password)
 VALUES
-    ('John Doe', '2021-01-01', 'JohnDoe', 'password'),
-    ('Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
-    ('John Smith', '2021-01-01', 'JohnSmith', 'password'),
-    ('Jane Smith', '2021-01-01', 'JaneSmith', 'password'),
-    ('John Johnson', '2021-01-01', 'JohnJohnson', 'password'),
-    ('Jane Johnson', '2021-01-01', 'JaneJohnson', 'password'),
-    ('John Jackson', '2021-01-01', 'JohnJackson', 'password'),
-    ('Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
-    ('John Brown', '2021-01-01', 'JohnBrown', 'password'),
-    ('Jane Brown', '2021-01-01', 'JaneBrown', 'password');
- 
--- SEED CHARACTER TABLE
- 
+    (10000, 'John Doe', '2021-01-01', 'JohnDoe', 'password'),
+    (10001, 'Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
+    (10002, 'John Smith', '2021-01-01', 'JohnSmith', 'password'),
+    (10003, 'Jane Smith', '2021-01-01', 'JaneSmith', 'password'),
+    (10004, 'John Johnson', '2021-01-01', 'JohnJohnson', 'password'),
+    (10005, 'Jane Johnson', '2021-01-01', 'JaneJohnson', 'password'),
+    (10006, 'John Jackson', '2021-01-01', 'JohnJackson', 'password'),
+    (10007, 'Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
+    (10008, 'John Brown', '2021-01-01', 'JohnBrown', 'password'),
+    (10009, 'Jane Brown', '2021-01-01', 'JaneBrown', 'password');
+
+SET IDENTITY_INSERT Player OFF;
+
 --DELETE FROM Character;
 INSERT INTO Character
 VALUES
     ('X'),
     ('O');
 
--- reset the identity seed
-DBCC CHECKIDENT ('Game', RESEED, 0);
-INSERT INTO Game (Started, Ended, AiCharacter, PlayerId, PlayerCharacter, GameWinner, GameMode, GameScore)
+SET IDENTITY_INSERT Game ON;
+
+INSERT INTO Game (Id, Started, Ended, AiCharacter, PlayerId, PlayerCharacter, GameWinner, GameMode, GameScore)
 VALUES
-    ('2021-01-01', '2021-01-01', 0, 1, 'X', 'X', 'Local', 30),
-    ('2021-01-01', '2021-01-01', 0, 2, 'O', 'O', 'Local', 30),
-    ('2021-01-01', '2021-01-01', 1, 3, 'X', 'X', 'Hard', 40),
-    ('2021-01-01', '2021-01-01', 1, 4, 'X', 'X', 'Medium', 20),
-    ('2021-01-01', '2021-01-01', 1, 5, 'X', 'X', 'Easy', 10),
-    ('2021-01-01', '2021-01-01', 0, 6, 'X', '-', 'Local', 10),
-    ('2021-01-01', '2021-01-01', 0, 7, 'O', '-', 'Local', 10),
-    ('2021-01-01', '2021-01-01', 1, 8, 'O', '-', 'Easy', 5),
-    ('2021-01-01', '2021-01-01', 1, 9, 'X', '-', 'Medium', 10),
-    ('2021-01-01', '2021-01-01', 1, 10, 'O', '-', 'Hard', 20);
- 
-DBCC CHECKIDENT ('Board', RESEED, 0);
-INSERT INTO Board (BoardWinner)
+    (10000, '2021-01-01', '2021-01-01', 0, 10000, 'X', 'X', 'Local', 30),
+    (10001, '2021-01-01', '2021-01-01', 0, 10001, 'O', 'O', 'Local', 30),
+    (10002, '2021-01-01', '2021-01-01', 1, 10002, 'X', 'X', 'Hard', 40),
+    (10003, '2021-01-01', '2021-01-01', 1, 10003, 'X', 'X', 'Medium', 20),
+    (10004, '2021-01-01', '2021-01-01', 1, 10004, 'X', 'X', 'Easy', 10),
+    (10005, '2021-01-01', '2021-01-01', 0, 10005, 'X', '-', 'Local', 10),
+    (10006, '2021-01-01', '2021-01-01', 0, 10006, 'O', '-', 'Local', 10),
+    (10007, '2021-01-01', '2021-01-01', 1, 10007, 'O', '-', 'Easy', 5),
+    (10008, '2021-01-01', '2021-01-01', 1, 10008, 'X', '-', 'Medium', 10),
+    (10009, '2021-01-01', '2021-01-01', 1, 10009, 'O', '-', 'Hard', 20);
+
+SET IDENTITY_INSERT Game ON;
+
+SET IDENTITY_INSERT Board ON;
+
+INSERT INTO Board (Id, BoardWinner)
 VALUES
-    ('X'),
-    ('O'),
-    ('-'),
-    ('X'),
-    ('O'),
-    ('-'),
-    ('X'),
-    ('-'),
-    ('-');
- 
--- seed Game_Board table
+    (10000, 'X'),
+    (10001, 'O'),
+    (10002, '-'),
+    (10003, 'X'),
+    (10004, 'O'),
+    (10005, '-'),
+    (10006, 'X'),
+    (10007, '-'),
+    (10008, '-');
+
+SET IDENTITY_INSERT Board OFF;
+
 INSERT INTO Game_Board (GameId, BoardId)
 VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3),
-    (1, 4),
-    (1, 5),
-    (1, 6),
-    (1, 7),
-    (1, 8),
-    (1, 9);
+    (10000, 10000),
+    (10000, 10001),
+    (10000, 10002),
+    (10000, 10003),
+    (10000, 10004),
+    (10000, 10005),
+    (10000, 10006),
+    (10000, 10007),
+    (10000, 10008);
  
