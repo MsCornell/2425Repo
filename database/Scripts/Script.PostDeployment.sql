@@ -21,6 +21,7 @@ VALUES
 SET IDENTITY_INSERT Player OFF;
 
 --DELETE FROM Character;
+IF NOT EXISTS (SELECT TOP 1 1 FROM Character)
 INSERT INTO Character
 VALUES
     ('X'),
@@ -41,7 +42,7 @@ VALUES
     (10008, '2021-01-01', '2021-01-01', 1, 10008, 'X', '-', 'Medium', 10),
     (10009, '2021-01-01', '2021-01-01', 1, 10009, 'O', '-', 'Hard', 20);
 
-SET IDENTITY_INSERT Game ON;
+SET IDENTITY_INSERT Game OFF;
 
 SET IDENTITY_INSERT Board ON;
 
@@ -70,4 +71,3 @@ VALUES
     (10000, 10006),
     (10000, 10007),
     (10000, 10008);
- 
