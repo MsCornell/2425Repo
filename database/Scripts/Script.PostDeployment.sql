@@ -1,18 +1,15 @@
-/*
-
+if (db_name() = '2425cornell-db')
+ RETURN;
 -- seed player table
 -- INITIALIZE THE DATABASE
--- DELETE FROM Player;
--- DELETE FROM Game_Board;
--- DELETE FROM Game;
--- DELETE FROM Board;
--- DELETE FROM Character;
--- DELETE FROM Player_Audit;
--- DELETE FROM Audit_Operation;
+DELETE FROM Game_Board;
+DELETE FROM Game;
+DELETE FROM Board;
+DELETE FROM Character;
+DELETE FROM Player;
 
-IF NOT EXISTS(SELECT TOP 1 Id FROM Player)
 INSERT INTO Player (Name, Created, _username, _password)
-VALUES 
+VALUES
     ('John Doe', '2021-01-01', 'JohnDoe', 'password'),
     ('Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
     ('John Smith', '2021-01-01', 'JohnSmith', 'password'),
@@ -23,26 +20,15 @@ VALUES
     ('Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
     ('John Brown', '2021-01-01', 'JohnBrown', 'password'),
     ('Jane Brown', '2021-01-01', 'JaneBrown', 'password');
-
+ 
 -- SEED CHARACTER TABLE
-
+ 
 --DELETE FROM Character;
-IF NOT EXISTS(SELECT TOP 1 CharacterName FROM Character)
 INSERT INTO Character
 VALUES
     ('X'),
     ('O');
 
-
-/*
-
-*/
-
-
-
--- DELETE FROM Game;
-IF NOT EXISTS(SELECT TOP 1 Id FROM Game)
-BEGIN
 -- reset the identity seed
 DBCC CHECKIDENT ('Game', RESEED, 0);
 INSERT INTO Game (Started, Ended, AiCharacter, PlayerId, PlayerCharacter, GameWinner, GameMode, GameScore)
@@ -57,11 +43,7 @@ VALUES
     ('2021-01-01', '2021-01-01', 1, 8, 'O', '-', 'Easy', 5),
     ('2021-01-01', '2021-01-01', 1, 9, 'X', '-', 'Medium', 10),
     ('2021-01-01', '2021-01-01', 1, 10, 'O', '-', 'Hard', 20);
-END
-
--- DELETE FROM Board;
-IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
-BEGIN
+ 
 DBCC CHECKIDENT ('Board', RESEED, 0);
 INSERT INTO Board (BoardWinner)
 VALUES
@@ -74,11 +56,8 @@ VALUES
     ('X'),
     ('-'),
     ('-');
-END
-
---DELETE FROM Game_Board;
+ 
 -- seed Game_Board table
-IF NOT EXISTS(SELECT TOP 1 GameId FROM Game_Board)
 INSERT INTO Game_Board (GameId, BoardId)
 VALUES
     (1, 1),
@@ -90,5 +69,3 @@ VALUES
     (1, 7),
     (1, 8),
     (1, 9);
-
-*/
