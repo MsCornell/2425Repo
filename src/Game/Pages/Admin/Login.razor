@@ -276,8 +276,7 @@
 
 @code{
 
-namespace Game.Pages.Admin
-{
+
 
     public partial class Login : ComponentBase
     {
@@ -292,7 +291,7 @@ namespace Game.Pages.Admin
 
         // Logging in components
         [CascadingParameter]
-        public HttpContext? HttpContext{get;set;}
+        public HttpContext? HttpContext{get;set;};
 
 
         [SupplyParameterFromForm]
@@ -365,5 +364,5 @@ namespace Game.Pages.Admin
             public bool RememberMe { get; set; } = false;
         }
     }
-}
+
 }
