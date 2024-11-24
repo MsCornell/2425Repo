@@ -1,4 +1,26 @@
 @page "/Login"
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.JSInterop;
+@using BlazorWebAppAuthentication.Models.Data;
+@using BlazorWebAppAuthentication.Models.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@inject AppDbContext appDbContext;
+@inject NavigationManager navigationManager;
+
+ builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+            options.Cookie.Name = "auth_token";
+            options.LoginPath = "/login";
+            options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+        })
+
+    builder.Services.AddAuthentication();
+    builder.Services.AddCascadingAuthenticationState();
+
 
 <PageTitle>Login</PageTitle>
 
@@ -49,7 +71,7 @@
     </div>
 </div>
 
-<style>
+<style> 
     * {
         box-sizing: border-box;
         margin: 0;
@@ -69,6 +91,9 @@
         width: 100%;
         max-width: 375px;
         height: 100vh;
+    using Microsoft.AspNetCore.Authentication;
+    using System.Security.Claims;
+    using System.IO.Pipes;
         position: relative;
         background-color: #809ED3;
         border-radius: 20px;
@@ -248,3 +273,97 @@
             cursor: pointer;
         }
 </style>
+
+@code{
+
+namespace Game.Pages.Admin
+{
+
+    public partial class Login : ComponentBase
+    {
+
+   
+
+        [Inject]
+        private NavigationManager Navigation { get; set; } = default!;
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; } = default!;
+
+        // Logging in components
+        [CascadingParameter]
+        public HttpContext? HttpContext{get;set;}
+
+
+        [SupplyParameterFromForm]
+        public LoginModel loginModel{get;set;} = new();
+        public static string? ErrorMessage;
+        private async Task Authenticate(){
+            var userAccount = appDbContext.UserAccounts.Where(x => x.Username == Model.Username).firstOrDefault();
+            if(userAccount is null || userAccount.Password != Model.Password){
+                errorMessage = "Invalid username or password."
+                return;
+            }
+
+            var claims = new List<Claim>{
+                new Claim(ClaimTypes.Name, Model.Username);
+            }
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(principal);
+            navigationManager.NavigateTo("/Home")
+        }
+
+        private bool showPassword = false;
+
+        private void TogglePassword()
+        {
+            showPassword = !showPassword;
+        }
+
+        private void HandleLogin()
+        {
+            if (loginModel.Username == "user123" && loginModel.Password == "pass123")
+            {
+                Navigation.NavigateTo("/Home");
+            }
+            else
+            {
+                JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid username or password.");
+            }
+        }
+
+         private void NavigateToLoginBox()
+        {
+            Navigation.NavigateTo("/LoginBox");
+        }
+
+        private void NavigateToReset()
+        {
+            Navigation.NavigateTo("/Reset");
+        }
+
+        private void NavigateToTerms()
+        {
+            Navigation.NavigateTo("/Terms");
+        }
+
+        private void NavigateToHome()
+        {
+            Navigation.NavigateTo("/Home");
+        }
+
+        public class LoginModel
+        {
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Please provide a username.")]
+            public string? Username { get; set; } = string.Empty;
+
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Please provide a password.")]
+            public string? Password { get; set; } = string.Empty;
+
+            public bool RememberMe { get; set; } = false;
+        }
+    }
+}
+}
