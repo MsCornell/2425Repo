@@ -98,7 +98,7 @@ builder.Services.AddScoped(serviceProvider =>
 
     if (builder.HostEnvironment.IsDevelopment())
     {
-        url = "http://localhost:5000/api/PalyerWinRate";
+        url = "http://localhost:5000/api/PlayerWinRate";
     }
     else
     {
