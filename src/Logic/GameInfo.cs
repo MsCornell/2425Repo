@@ -1,8 +1,15 @@
-﻿namespace Logic;
+﻿using System;
+using System.Net.Http.Json;
+using System.Runtime.InteropServices;
+using System.Text.Json;
+
+namespace Logic;
 
 public class GameInfo
 {
     private readonly Dictionary<BoardIndex, BoardInfo> boards;
+
+    private readonly HttpClient httpClient;
 
     public event EventHandler<GameResult>? WinnerChanged;
 
@@ -25,6 +32,8 @@ public class GameInfo
 
     public GameInfo()
     {
+        httpClient = new HttpClient();
+
         boards = new Dictionary<BoardIndex, BoardInfo>
         {
             { BoardIndex.Board1, new BoardInfo() },
@@ -59,7 +68,7 @@ public class GameInfo
 
         var board = boards[boardIndex];
         board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
-        
+
 
         // Check if the current board has ended (there is a winner or it's full)
         if (board.Winner != GameResult.InProgress)
@@ -82,8 +91,66 @@ public class GameInfo
 
         // Switch player
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
-        
+
+        // Send the current game state to the API after a valid move
+        Task.Run(SendBoardStateToFunctionAsync);
+        Console.WriteLine("1234");
+
     }
+
+    public async Task SendBoardStateToFunctionAsync()
+    {
+        // var gameState = new
+        // {
+        //     Winner = Winner.ToString(),
+        //     NextPlayer = NextPlayer.ToString(),
+        //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
+        // };
+
+        Dictionary<string, string> boardState = new Dictionary<string, string>
+            {
+                { "board", "XOXOXOXOX" },
+                { "next", "O" }
+            };
+
+        var node = JsonSerializer.SerializeToNode(boardState);
+        node?.AsObject();
+        var content = JsonContent.Create(node);
+        Console.WriteLine(content);
+
+        var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        response.EnsureSuccessStatusCode();
+
+        // try
+        // {
+        //     var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        //     response.EnsureSuccessStatusCode(); // Throw if not a success code.
+        // }
+        // catch (Exception ex)
+        // {
+        //     // Handle exceptions (e.g., logging)
+        //     Console.WriteLine($"Error sending game state: {ex.Message}");
+        // }
+    }
+
+    // public async Task<String> CreateBoardAsync()
+    // {
+    //     //ArgumentNullException.ThrowIfNull(board);
+
+    //     Dictionary<string, string> boardState = new Dictionary<string, string>
+    //         {
+    //             { "board", "XOXOXOXOX" },
+    //             { "next", "O" }
+    //         };
+
+    //     var node = JsonSerializer.SerializeToNode(boardState);
+    //     node?.AsObject();
+    //     var content = JsonContent.Create(node);
+    //     var url = $"http://localhost:7071/api/minimax";
+    //     var response = await http.PostAsync(url, content);
+    //     var root = await GetRootFromResponseAsync(response);
+    //     return root.NextMove.Single();
+    // }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
     {

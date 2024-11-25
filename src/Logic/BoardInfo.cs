@@ -1,8 +1,14 @@
-﻿namespace Logic;
+﻿using System;
+using System.Net.Http.Json;
+using System.Text.Json;
+
+namespace Logic;
 
 public class BoardInfo
 {
     private readonly Dictionary<CellIndex, CellInfo> cells;
+
+    private readonly HttpClient http = new();
 
     public event EventHandler<GameResult>? WinnerChanged;
 
@@ -45,6 +51,41 @@ public class BoardInfo
         Winner = CalculateWinner();
     }
 
+    // public async Task<String> CreateBoardAsync()
+    // {
+    //     //ArgumentNullException.ThrowIfNull(board);
+
+    //     Dictionary<string, string> boardState = new Dictionary<string, string>
+    //         {
+    //             { "board", "XOXOXOXOX" },
+    //             { "next", "O" }
+    //         };
+
+    //     var node = JsonSerializer.SerializeToNode(boardState);
+    //     node?.AsObject();
+    //     var content = JsonContent.Create(node);
+    //     var url = $"http://localhost:7071/api/minimax";
+    //     var response = await http.PostAsync(url, content);
+    //     var root = await GetRootFromResponseAsync(response);
+    //     return root.NextMove.Single();
+    // }
+
+    // private static async Task<MLRoot> GetRootFromResponseAsync(HttpResponseMessage response)
+    // {
+    //     var json = await response.Content.ReadAsStringAsync();
+    //     var error = JsonSerializer.Deserialize<ErrorRoot>(json);
+    //     if (error is not null && error.Error is not null)
+    //     {
+    //         throw new Exception(error.Error.Message);
+    //     }
+    //     var root = JsonSerializer.Deserialize<MLRoot>(json);
+    //     if (root is null)
+    //     {
+    //         throw new Exception("Json is invalid.");
+    //     }
+    //     return root;
+    // }
+
     internal void Play(CellIndex cellIndex, Players player)
     {
         if (!Enum.IsDefined(typeof(CellIndex), cellIndex))
@@ -79,56 +120,56 @@ public class BoardInfo
 
     private GameResult CalculateWinner()
     {
-    // Check if any row has a winner
+        // Check if any row has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell2, CellIndex.Cell3))
         {
-        
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell4, CellIndex.Cell5, CellIndex.Cell6))
         {
-            
+
             return GetWinner(CellIndex.Cell4);
         }
         if (IsWinningCombination(CellIndex.Cell7, CellIndex.Cell8, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell7);
         }
 
-    // Check if any column has a winner
+        // Check if any column has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell4, CellIndex.Cell7))
         {
-            
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell2, CellIndex.Cell5, CellIndex.Cell8))
         {
-        
+
             return GetWinner(CellIndex.Cell2);
         }
         if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell6, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell3);
         }
 
-    // Check if any diagonal has a winner
+        // Check if any diagonal has a winner
         if (IsWinningCombination(CellIndex.Cell1, CellIndex.Cell5, CellIndex.Cell9))
         {
-            
+
             return GetWinner(CellIndex.Cell1);
         }
         if (IsWinningCombination(CellIndex.Cell3, CellIndex.Cell5, CellIndex.Cell7))
         {
-            
+
             return GetWinner(CellIndex.Cell3);
         }
 
         // If all cells are filled and there is no winner, return a draw
         if (cells.Values.All(cell => cell.Value != CellValue.Blank))
         {
-            
+
             return GameResult.Cat;
         }
 
