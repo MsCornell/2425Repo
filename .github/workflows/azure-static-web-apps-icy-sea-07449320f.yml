@@ -6,12 +6,7 @@ on:
       - main
     paths:
       - 'src/**'
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
-    paths:
-      - 'src/**'
+  workflow_dispatch:
 
 jobs:
   build_and_deploy_job:

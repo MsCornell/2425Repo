@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 namespace Logic;
 
 // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
-public class AuditOperationRoot
+public class GameBoardDetailRoot
     {
         [JsonPropertyName("value")]
-        public List<AuditOperation> AuditOperations { get; set; }
+        public List<GameBoardDetail> GameBoardDetails { get; set; }
     }
 

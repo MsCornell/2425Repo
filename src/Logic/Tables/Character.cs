@@ -4,7 +4,7 @@ namespace Logic;
 
 public class Character
     {
-        [JsonPropertyName("Character")]
+        [JsonPropertyName("CharacterName")]
         public string CharacterName { get; set; }
     }
 

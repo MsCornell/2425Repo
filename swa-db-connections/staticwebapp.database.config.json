@@ -27,20 +27,6 @@
     }
   },
   "entities": {
-    "Audit_Operation": {
-      "source": {
-        "object": "Audit_Operation",
-        "type": "table"
-      },
-      "permissions": [
-        {
-          "role": "anonymous",
-          "actions": [
-            "*"
-          ]
-        }
-      ]
-    },
     "Board": {
       "source": {
         "object": "Board",
@@ -111,10 +97,39 @@
         }
       ]
     },
-    "Score": {
+    "PlayerWinRate": {
       "source": {
-        "object": "Score",
-        "type": "table"
+        "object": "PlayerWinRate",
+        "type": "view"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "GameDetail": {
+      "source": {
+        "object": "GameDetail",
+        "type": "view"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "GameBoardDetail": {
+      "source": {
+        "object": "GameBoardDetail",
+        "type": "view",
+        "key-fields": ["GameId", "BoardId"]
       },
       "permissions": [
         {

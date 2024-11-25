@@ -11,7 +11,11 @@
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="demo.publish.xml" />
-    <None Include="LocalDb.publish.xml" />
+    <Folder Include="Views" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database_1.publish.xml" />
+    <None Include="local.publish.xml" />
+    <None Include="localhost.xml" />
   </ItemGroup>
 </Project>

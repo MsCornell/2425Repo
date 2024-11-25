@@ -1,127 +1,80 @@
--- seed player table
-IF NOT EXISTS(SELECT TOP 1 Id FROM Player)
-INSERT INTO Player (OAuthId, Name, Created, _username, _password)
-VALUES 
-    ('123456', 'John Doe', '2021-01-01', 'JohnDoe', 'password'),
-    ('123457', 'Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
-    ('123458', 'John Smith', '2021-01-01', 'JohnSmith', 'password'),
-    ('123459', 'Jane Smith', '2021-01-01', 'JaneSmith', 'password'),
-    ('123460', 'John Johnson', '2021-01-01', 'JohnJohnson', 'password'),
-    ('123461', 'Jane Johnson', '2021-01-01', 'JaneJohnson', 'password'),
-    ('123462', 'John Jackson', '2021-01-01', 'JohnJackson', 'password'),
-    ('123463', 'Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
-    ('123464', 'John Brown', '2021-01-01', 'JohnBrown', 'password'),
-    ('123465', 'Jane Brown', '2021-01-01', 'JaneBrown', 'password');
+IF NOT (DB_NAME() = '2425cornell-db')
+BEGIN
+	DELETE FROM Game_Board 
+	DELETE FROM Game 
+	DELETE FROM Board 
+	DELETE FROM Player 
+END
 
--- SEED CHARACTER TABLE
+DELETE FROM Game_Board WHERE GameId BETWEEN 10000 AND 10010
+DELETE FROM Game WHERE Id BETWEEN 10000 AND 10010
+DELETE FROM Board WHERE Id BETWEEN 10000 AND 10010
+DELETE FROM Player WHERE Id BETWEEN 10000 AND 10010
 
---DELETE FROM Character;
-IF NOT EXISTS(SELECT TOP 1 [Character] FROM Character)
+SET IDENTITY_INSERT Player ON;
+
+INSERT INTO Player (Id, Name, Created, _username, _password)
+VALUES
+    (10000, 'John Doe', '2021-01-01', 'JohnDoe', 'password'),
+    (10001, 'Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
+    (10002, 'John Smith', '2021-01-01', 'JohnSmith', 'password'),
+    (10003, 'Jane Smith', '2021-01-01', 'JaneSmith', 'password'),
+    (10004, 'John Johnson', '2021-01-01', 'JohnJohnson', 'password'),
+    (10005, 'Jane Johnson', '2021-01-01', 'JaneJohnson', 'password'),
+    (10006, 'John Jackson', '2021-01-01', 'JohnJackson', 'password'),
+    (10007, 'Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
+    (10008, 'John Brown', '2021-01-01', 'JohnBrown', 'password'),
+    (10009, 'Jane Brown', '2021-01-01', 'JaneBrown', 'password');
+
+SET IDENTITY_INSERT Player OFF;
+
+IF NOT EXISTS (SELECT TOP 1 1 FROM Character)
 INSERT INTO Character
 VALUES
-    ('JohnDoe'),
-    ('JaneDoe'),
-    ('JohnSmith'),
-    ('JaneSmith'),
-    ('JohnJohnson'),
-    ('JaneJohnson'),
-    ('JohnJackson'),
-    ('JaneJackson'),
-    ('JohnBrown'),
-    ('JaneBrown');
+    ('X'),
+    ('O');
 
--- DELETE FROM Game;
--- DELETE From Game_Board;
--- DELETE FROM Board;
--- Seed the Game table with 10 records
-DBCC CHECKIDENT ('Game', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Game)
--- reset the identity seed
-INSERT INTO Game (Started, Ended, NextBoard, NextPlayer, AiCharacter, PlayerId, PlayerCharacter, GameWinner)
-VALUES 
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 1, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 2, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 3, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 4, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 5, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 6, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 7, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 8, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 9, 'JaneDoe', 'JohnDoe'),
-    ('2021-01-01', '2021-01-01', 1, 1, 'JohnDoe', 10, 'JaneDoe', 'JohnDoe');
+SET IDENTITY_INSERT Game ON;
 
--- seed Board table
-DBCC CHECKIDENT ('Board', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Board)
-INSERT INTO Board (Started, Ended, BoardWinner, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8, Cell9)
+INSERT INTO Game (Id, Started, Ended, AiCharacter, PlayerId, PlayerCharacter, GameWinner, GameMode, GameScore)
 VALUES
--- seed 10 records
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'),
-    ('2021-01-01', '2021-01-01', 'JohnDoe', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O');
+    (10000, '2021-01-01', '2021-01-01', 0, 10000, 'X', 'X', 'Local', 30),
+    (10001, '2021-01-01', '2021-01-01', 0, 10001, 'O', 'O', 'Local', 30),
+    (10002, '2021-01-01', '2021-01-01', 1, 10002, 'X', 'X', 'Hard', 40),
+    (10003, '2021-01-01', '2021-01-01', 1, 10003, 'X', 'X', 'Medium', 20),
+    (10004, '2021-01-01', '2021-01-01', 1, 10004, 'X', 'X', 'Easy', 10),
+    (10005, '2021-01-01', '2021-01-01', 0, 10005, 'X', '-', 'Local', 10),
+    (10006, '2021-01-01', '2021-01-01', 0, 10006, 'O', '-', 'Local', 10),
+    (10007, '2021-01-01', '2021-01-01', 1, 10007, 'O', '-', 'Easy', 5),
+    (10008, '2021-01-01', '2021-01-01', 1, 10008, 'X', '-', 'Medium', 10),
+    (10009, '2021-01-01', '2021-01-01', 1, 10009, 'O', '-', 'Hard', 20);
 
--- seed the Gameboard table with 10 records
-    /*
-    CREATE TABLE Game_Board (
-    GameId INT,
-    BoardId INT,
-    Position INT,
-    PRIMARY KEY (GameId, BoardId),
-    FOREIGN KEY (GameId) REFERENCES Game(Id),
-    FOREIGN KEY (BoardId) REFERENCES Board(Id)
-);
-    */
-IF NOT EXISTS(SELECT TOP 1 GameId FROM Game_Board)
-INSERT INTO Game_Board (GameId, BoardId, Position)
+SET IDENTITY_INSERT Game OFF;
+
+SET IDENTITY_INSERT Board ON;
+
+INSERT INTO Board (Id, BoardWinner)
 VALUES
-    (1, 1, 1),
-    (2, 2, 2),
-    (3, 3, 3),
-    (4, 4, 4),
-    (5, 5, 5),
-    (6, 6, 6),
-    (7, 7, 7),
-    (8, 8, 8),
-    (9, 9, 9);
+    (10000, 'X'),
+    (10001, 'O'),
+    (10002, '-'),
+    (10003, 'X'),
+    (10004, 'O'),
+    (10005, '-'),
+    (10006, 'X'),
+    (10007, '-'),
+    (10008, '-');
 
-Delete from Audit_Operation;
--- seed the Audit_Operation table with 10 records
-DBCC CHECKIDENT ('Audit_Operation', RESEED, 0);
-IF NOT EXISTS(SELECT TOP 1 Id FROM Audit_Operation)
-INSERT INTO Audit_Operation (Name)
+SET IDENTITY_INSERT Board OFF;
+
+INSERT INTO Game_Board (GameId, BoardId)
 VALUES
-    ('Create'),
-    ('Read'),
-    ('Update'),
-    ('Delete'),
-    ('Login'),
-    ('Logout'),
-    ('Register'),
-    ('Game'),
-    ('Board'),
-    ('Character');
-
-/*
-We currently don't have this table in our database
-*/
--- seed the Player_Audit table with 10 records
--- IF NOT EXISTS(SELECT TOP 1 PlayerId FROM Player_Audit)
--- INSERT INTO Player_Audit (Date, PlayerId, OperationId)
--- VALUES
---     ('2021-01-01', 1, 1),
---     ('2021-01-01', 2, 2),
---     ('2021-01-01', 3, 3),
---     ('2021-01-01', 4, 4),
---     ('2021-01-01', 5, 5),
---     ('2021-01-01', 6, 6),
---     ('2021-01-01', 7, 7),
---     ('2021-01-01', 8, 8),
---     ('2021-01-01', 9, 9),
---     ('2021-01-01', 10, 10);
+    (10000, 10000),
+    (10000, 10001),
+    (10000, 10002),
+    (10000, 10003),
+    (10000, 10004),
+    (10000, 10005),
+    (10000, 10006),
+    (10000, 10007),
+    (10000, 10008);

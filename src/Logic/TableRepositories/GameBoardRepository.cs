@@ -30,6 +30,8 @@ public class GameBoardRepository
         var root = await GetRootFromResponseAsync(response);
         return root.GameBoards.Single();
     }
+    
+    // Update operation can not be used since we only have primary key in the table(we can not change the PK)
     public async Task<GameBoard> UpdateGameBoardAsync(GameBoard gameBoard)
     {
         ArgumentNullException.ThrowIfNull(gameBoard);

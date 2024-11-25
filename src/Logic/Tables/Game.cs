@@ -12,14 +12,8 @@ public class Game
         [JsonPropertyName("Ended")]
         public DateTime Ended { get; set; }
 
-        [JsonPropertyName("NextBoard")]
-        public int NextBoard { get; set; }
-
-        [JsonPropertyName("NextPlayer")]
-        public int NextPlayer { get; set; }
-
         [JsonPropertyName("AiCharacter")]
-        public string AiCharacter { get; set; }
+        public bool AiCharacter { get; set; }
 
         [JsonPropertyName("PlayerId")]
         public int PlayerId { get; set; }
@@ -29,5 +23,10 @@ public class Game
 
         [JsonPropertyName("GameWinner")]
         public string GameWinner { get; set; }
-    }
 
+        [JsonPropertyName("GameMode")]
+        public string GameMode { get; set; }
+
+        [JsonPropertyName("GameScore")]
+        public int GameScore { get; set; }
+    }
