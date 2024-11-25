@@ -2,6 +2,11 @@ import azure.functions as func
 import datetime
 import json
 import logging
+import sys
+import os
+#from ...src.ML.minimax import minimax
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Ml')))
+from minimax import TicTacToe
 
 app = func.FunctionApp()
 
@@ -29,6 +34,14 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
              status_code=400
         )
 
+    # Check player O has 1 less move than player X (X plays first)
+
+    if board.count("X") != board.count("O") + 1:
+        return func.HttpResponse(
+             "Invalid move numbers on the board.",
+             status_code=400
+        )
+
     board_state = []
     for row in range(3):
         board_row = []
@@ -47,28 +60,38 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
             i += 1
         board_state.append(board_row)
     
-    #next_move = TicTacToe(board_state).best_move()
+    # Check there is a win in the board state
+    # Check the rows
+    for row in board_state:
+        if all(cell == -1 for cell in row) or all(cell == 1 for cell in row):
+            return func.HttpResponse(
+                "There is a win in the board state. Invalid board state",
+                status_code=400
+            )
+    
+    # Check the columns
+    for col in range(3):
+            if all(board_state[row][col] == -1 for row in range(3)) or all(board_state[row][col] == 1 for row in range(3)):
+                return func.HttpResponse(
+                "There is a win in the board state. Invalid board state",
+                status_code=400
+            )
 
+    # Check the diagonals
+    if all(board_state[i][i] == -1 for i in range(3)) or all(board_state[i][2-i] == -1 for i in range(3)) or all(board_state[i][i] == 1 for i in range(3)) or all(board_state[i][i] == -1 for i in range(3)):
+            return func.HttpResponse(
+                "There is a win in the board state. Invalid board state",
+                status_code=400
+            )
+    logging.info(board_state)
+
+    # Use minimax to get the next move
+    next_move = TicTacToe(board_state).best_move()
+
+    logging.info(next_move)
+    
             
     return func.HttpResponse(
-             f"{board_state}",
+             f"{next_move}",
              status_code=200
         )
-
-    # name = req.params.get('name')
-    # if not name:
-    #     try:
-    #         req_body = req.get_json()
-    #     except ValueError:
-    #         pass
-    #     else:
-    #         name = req_body.get('name')
-
-    # if name:
-    #     return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    # else:
-    #     return func.HttpResponse(
-    #          board.best_move(),
-    #          "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-    #          status_code=200
-    #     )
