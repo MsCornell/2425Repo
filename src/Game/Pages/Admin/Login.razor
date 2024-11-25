@@ -91,9 +91,6 @@
         width: 100%;
         max-width: 375px;
         height: 100vh;
-    using Microsoft.AspNetCore.Authentication;
-    using System.Security.Claims;
-    using System.IO.Pipes;
         position: relative;
         background-color: #809ED3;
         border-radius: 20px;
@@ -278,9 +275,6 @@
 
 
 
-    public partial class Login : ComponentBase
-    {
-
    
 
         [Inject]
@@ -291,28 +285,29 @@
 
         // Logging in components
         [CascadingParameter]
-        public HttpContext? HttpContext{get;set;};
+        public HttpContext? HttpContext{get;set;}
 
 
         [SupplyParameterFromForm]
         public LoginModel loginModel{get;set;} = new();
-        public static string? ErrorMessage;
+        public static string? errorMessage;
         private async Task Authenticate(){
             var userAccount = appDbContext.UserAccounts.Where(x => x.Username == Model.Username).firstOrDefault();
             if(userAccount is null || userAccount.Password != Model.Password){
-                errorMessage = "Invalid username or password."
+                errorMessage = "Invalid username or password.";
                 return;
             }
 
             var claims = new List<Claim>{
                 new Claim(ClaimTypes.Name, Model.Username);
-            }
+            };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(principal);
-            navigationManager.NavigateTo("/Home")
-        }
+            navigationManager.NavigateTo("/Home");
+        }   // end of async function
 
         private bool showPassword = false;
 
@@ -363,6 +358,6 @@
 
             public bool RememberMe { get; set; } = false;
         }
-    }
+    
 
 }
