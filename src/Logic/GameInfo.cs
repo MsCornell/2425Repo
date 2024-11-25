@@ -93,7 +93,8 @@ public class GameInfo
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
         // Send the current game state to the API after a valid move
-        Task.Run(() => SendBoardStateToFunctionAsync());
+        Task.Run(SendBoardStateToFunctionAsync);
+        Console.WriteLine("1234");
 
     }
 
@@ -106,23 +107,50 @@ public class GameInfo
         //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
         // };
 
-        var gameState = new { Board = new[] { 1, -1, 1, 0, 0, 0, 0, 0, 0 } };
+        Dictionary<string, string> boardState = new Dictionary<string, string>
+            {
+                { "board", "XOXOXOXOX" },
+                { "next", "O" }
+            };
 
-        var jsonContent = JsonSerializer.Serialize(gameState);
-        var content = new StringContent(jsonContent);
+        var node = JsonSerializer.SerializeToNode(boardState);
+        node?.AsObject();
+        var content = JsonContent.Create(node);
         Console.WriteLine(content);
 
-        try
-        {
-            var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
-            response.EnsureSuccessStatusCode(); // Throw if not a success code.
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (e.g., logging)
-            Console.WriteLine($"Error sending game state: {ex.Message}");
-        }
+        var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        response.EnsureSuccessStatusCode();
+
+        // try
+        // {
+        //     var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        //     response.EnsureSuccessStatusCode(); // Throw if not a success code.
+        // }
+        // catch (Exception ex)
+        // {
+        //     // Handle exceptions (e.g., logging)
+        //     Console.WriteLine($"Error sending game state: {ex.Message}");
+        // }
     }
+
+    // public async Task<String> CreateBoardAsync()
+    // {
+    //     //ArgumentNullException.ThrowIfNull(board);
+
+    //     Dictionary<string, string> boardState = new Dictionary<string, string>
+    //         {
+    //             { "board", "XOXOXOXOX" },
+    //             { "next", "O" }
+    //         };
+
+    //     var node = JsonSerializer.SerializeToNode(boardState);
+    //     node?.AsObject();
+    //     var content = JsonContent.Create(node);
+    //     var url = $"http://localhost:7071/api/minimax";
+    //     var response = await http.PostAsync(url, content);
+    //     var root = await GetRootFromResponseAsync(response);
+    //     return root.NextMove.Single();
+    // }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
     {
