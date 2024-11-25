@@ -26,6 +26,9 @@
       "mode": "development"
     }
   },
+  "platform": {
+    "apiRuntime": "python:3.8"
+  },
   "entities": {
     "Board": {
       "source": {
