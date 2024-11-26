@@ -1,7 +1,7 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
+	"version": "2.0.0",
+	"tasks": [
+		{
             "label": "run-blazor-server",
             "command": "dotnet",
             "type": "process",
@@ -15,15 +15,35 @@
             "problemMatcher": [],
             "isBackground": true
         },
-        {
-            "label": "Start ML API",
-            "command": "func start",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}/src/Api"
-            }
-        },
-        {
+		{
+			"type": "func",
+			"label": "func: host start",
+			"command": "host start",
+			"problemMatcher": "$func-python-watch",
+			"isBackground": true,
+			"dependsOn": "pip install (functions)",
+			"options": {
+				"cwd": "${workspaceFolder}/src/Api"
+			}
+		},
+		{
+			"label": "pip install (functions)",
+			"type": "shell",
+			"osx": {
+				"command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+			},
+			"windows": {
+				"command": "${config:azureFunctions.pythonVenv}\\Scripts\\python -m pip install -r requirements.txt"
+			},
+			"linux": {
+				"command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+			},
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/src/Api"
+			}
+		},
+		{
             "label": "Start Data API",
             "command": "dab start -c staticwebapp.database.config.json",
             "type": "shell",
@@ -31,5 +51,5 @@
                 "cwd": "${workspaceFolder}/swa-db-connections"
             }
         }
-    ]
+	]
 }

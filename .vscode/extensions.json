@@ -1,10 +1,10 @@
 {
   "recommendations": [
     "ms-azuretools.vscode-azurefunctions",
-    "ms-dotnettools.csharp",
     "ms-mssql.sql-database-projects-vscode",
     "ms-mssql.mssql",
     "ms-dotnettools.csdevkit",
-    "github.copilot"
+    "github.copilot",
+    "ms-python.python"
   ]
 }
