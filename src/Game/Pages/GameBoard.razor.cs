@@ -40,7 +40,7 @@ namespace Game.Pages
         {
             currentGame = GameStateService.CurrentGame;
             game.WinnerChanged += OnWinnerChanged;
-            currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
+            //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
         }
 
         private async void OnWinnerChanged(object? sender, GameResult e)
