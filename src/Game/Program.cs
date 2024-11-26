@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddSingleton<Game.Services.GameStateService>();
+builder.Services.AddSingleton<Game.Services.PlayerStateService>();
+
 //player
 builder.Services.AddScoped(serviceProvider =>
 {
