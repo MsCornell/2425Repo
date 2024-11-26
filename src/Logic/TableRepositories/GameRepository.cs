@@ -12,6 +12,11 @@ public class GameRepository
     {
         this.baseUrl = baseUrl;
     }
+
+    public GameRepository()
+    {
+    }
+
     public async Task<Game?> GetGameAsync(int id)
     {
         var url = $"{baseUrl}/Id/{id}";
