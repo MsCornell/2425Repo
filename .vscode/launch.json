@@ -8,6 +8,21 @@
             "url": "https://localhost:1234",
             "webRoot": "${workspaceFolder}/src/game",
             "preLaunchTask": "run-blazor-server"
-        }
-    ]
+        },
+        {
+            "name": "Attach to Python Functions",
+            "type": "python",
+            "request": "attach",
+            "port": 9091,
+            "preLaunchTask": "func: host start"
+        },
+    ],
+    "compounds": [
+    {
+      "name": "Launch Blazor WebAssembly (HTTPS)/Attach to Python Functions",
+      "configurations": ["Launch Blazor WebAssembly (HTTPS)", "Attach to Python Functions"],
+    //   "preLaunchTask": "${defaultBuildTask}",
+      "stopAll": true
+    }
+  ]
 }

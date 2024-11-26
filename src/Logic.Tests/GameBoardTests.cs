@@ -20,8 +20,8 @@ public class GameBoardTests
     public async Task GetGameBoard_NoError()
     {
          // arrange
-         var gameId = 1;
-         var boardId = 1;
+         var gameId = 10000;
+         var boardId = 10000;
          // act
          var gameBoard = await repository.GetGameBoardAsync(gameId, boardId);
          // assert
@@ -33,7 +33,7 @@ public class GameBoardTests
     {
         // arrange
         //await repository.DeleteGameBoardAsync(2, 1);
-        var gameBoard = new GameBoard { GameId = 2, BoardId = 1};
+        var gameBoard = new GameBoard { GameId = 10001, BoardId = 10008};
         // act
         var created = await repository.CreateGameBoardAsync(gameBoard);
         await repository.DeleteGameBoardAsync(created.GameId, created.BoardId);

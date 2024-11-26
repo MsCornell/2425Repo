@@ -25,7 +25,7 @@ public class GameTests
     public async Task GetGame_NoError()
     {
         // arrange
-        var gameId = 1;
+        var gameId = 10000;
         // act
         var game = await repository.GetGameAsync(gameId);
         // assert
@@ -36,7 +36,7 @@ public class GameTests
     public async Task CreateGame_NoError()
     {
         // arrange
-        var game = new Game { Started = DateTime.Now, AiCharacter = false, PlayerId = 1, PlayerCharacter = "X", GameMode = "Local", GameScore = 30};
+        var game = new Game { Started = DateTime.Now, AiCharacter = false, PlayerId = 10000, PlayerCharacter = "X", GameMode = "Local", GameScore = 30};
         // act
         var created = await repository.CreateGameAsync(game);
         await repository.DeleteGameAsync(created.Id);
@@ -54,7 +54,7 @@ public class GameTests
     public async Task UpdateGame_NoError()
     {
         // arrange
-        var game = new Game { Started = DateTime.Now, AiCharacter = false, PlayerId = 1, PlayerCharacter = "X", GameMode = "Local", GameScore = 30};
+        var game = new Game { Started = DateTime.Now, AiCharacter = false, PlayerId = 10000, PlayerCharacter = "X", GameMode = "Local", GameScore = 30};
         var created = await repository.CreateGameAsync(game);
         created.GameScore = 40;
         // act

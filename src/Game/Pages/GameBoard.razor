@@ -36,8 +36,12 @@
         }
     </div>
 
+    <div class="button-container">
    <!-- Game Rules -->
     <button id="rulesBtn" @onclick="ShowRulesModal" class="btn">Basic Rules</button>
+    <!-- Game Rules -->
+    <button id="restartBtn" @onclick="ResetGame" class="btn">Play Again</button>
+    </div>
 
 @if (IsRulesModalVisible)
 {
