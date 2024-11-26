@@ -13,8 +13,8 @@ public class Player
     [JsonPropertyName("Created")]
     public DateTime Created { get; set; }
 
-    [JsonPropertyName("_username")]
-    public string Username { get; set; }
+    [JsonPropertyName("Email")]
+    public string Email { get; set; }
 
     [JsonPropertyName("_password")]
     public string Password { get; set; }

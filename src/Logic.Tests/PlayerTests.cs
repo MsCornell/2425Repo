@@ -10,11 +10,12 @@ public class PlayerTests
     public async void Create_Valid_NoError()
     {
         // arrange
+        
         var player = new Player
         {
             Name = "Jerry",
             Created = DateTime.Now,
-            Username = Guid.NewGuid().ToString(),
+            Email = "testabc@example.com",
             Password = "password"
         };
 
@@ -35,8 +36,8 @@ public class PlayerTests
         {
             Name = null,
             Created = DateTime.Now,
-            Username = null,
-            Password = null
+            Email = null,
+            Password = "12345678"
         };
 
         // act & assert
@@ -51,7 +52,7 @@ public class PlayerTests
         {
             Name = "Jerry",
             Created = DateTime.Now,
-            Username = Guid.NewGuid().ToString(),
+            Email = "Jerry@example.com",
             Password = "password"
         };
 
