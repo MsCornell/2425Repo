@@ -16,7 +16,7 @@ public class GameBoardDetailTests
     //get one game board detail
     public async Task GetOneGameDetail_Valid_NoError()
     {
-        var gameBoardDetail = await repository.GetOneGameBoardAsync(1,1);
+        var gameBoardDetail = await repository.GetOneGameBoardAsync(10000,10000);
         Assert.NotNull(gameBoardDetail);
     }
 }

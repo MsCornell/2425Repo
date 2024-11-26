@@ -16,7 +16,7 @@ public class GameDetailTests
     //get one game detail
     public async Task GetOneGameDetail_Valid_NoError()
     {
-        var gameDetail = await repository.GetOneGameDetailAsync(1);
+        var gameDetail = await repository.GetOneGameDetailAsync(10000);
         Assert.NotNull(gameDetail);
     }
 }
