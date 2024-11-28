@@ -23,11 +23,11 @@ namespace Game.Pages
             {
                 Id = 1,  // TODO:change
                 AiCharacter = false,  
-                GameMode = "Single Player", // bond to botton
+                GameMode = "Local", // bond to botton
                 Started = DateTime.Now,
                 Ended = DateTime.Now,
                 PlayerId = PlayerStateService.CurrentPlayer.Id,  // TODO
-                PlayerCharacter = "X",  // bond to botton
+                PlayerCharacter = "O",  // bond to botton
                 GameWinner = "X",  // bond to botton
                 GameScore = 0  // bond to botton
             };
