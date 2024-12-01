@@ -51,41 +51,6 @@ public class BoardInfo
         Winner = CalculateWinner();
     }
 
-    // public async Task<String> CreateBoardAsync()
-    // {
-    //     //ArgumentNullException.ThrowIfNull(board);
-
-    //     Dictionary<string, string> boardState = new Dictionary<string, string>
-    //         {
-    //             { "board", "XOXOXOXOX" },
-    //             { "next", "O" }
-    //         };
-
-    //     var node = JsonSerializer.SerializeToNode(boardState);
-    //     node?.AsObject();
-    //     var content = JsonContent.Create(node);
-    //     var url = $"http://localhost:7071/api/minimax";
-    //     var response = await http.PostAsync(url, content);
-    //     var root = await GetRootFromResponseAsync(response);
-    //     return root.NextMove.Single();
-    // }
-
-    // private static async Task<MLRoot> GetRootFromResponseAsync(HttpResponseMessage response)
-    // {
-    //     var json = await response.Content.ReadAsStringAsync();
-    //     var error = JsonSerializer.Deserialize<ErrorRoot>(json);
-    //     if (error is not null && error.Error is not null)
-    //     {
-    //         throw new Exception(error.Error.Message);
-    //     }
-    //     var root = JsonSerializer.Deserialize<MLRoot>(json);
-    //     if (root is null)
-    //     {
-    //         throw new Exception("Json is invalid.");
-    //     }
-    //     return root;
-    // }
-
     internal void Play(CellIndex cellIndex, Players player)
     {
         if (!Enum.IsDefined(typeof(CellIndex), cellIndex))

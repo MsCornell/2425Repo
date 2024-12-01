@@ -89,28 +89,42 @@ public class GameInfo
             NextBoards = new[] { boardIndex };
         }
 
+        // For AI player
+        if (NextPlayer == Players.X)
+        {
+            // Convert the board info to a string for the API call
+            string boardStateString = "";
+            for (var cell = 1; cell <= 9; cell++)
+            {
+                string cellString = board.GetCell((CellIndex)cell).Value.ToString();
+                Console.WriteLine(cellString);
+                boardStateString += cellString == "Blank" ? "_" : cellString;
+            }
+            Console.WriteLine(boardStateString);
+
+            var boardState = new Dictionary<string, string>
+            {
+                { "board_state", boardStateString },
+                { "next_player", Players.O.ToString() }
+            };
+            // Send the current game state to the API after a valid move
+            Task.Run(() => SendBoardStateToFunctionAsync(boardState));
+        }
+
         // Switch player
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
-        // Send the current game state to the API after a valid move
-        Task.Run(() => SendBoardStateToFunctionAsync(boardIndex));
-
     }
 
-    public async Task SendBoardStateToFunctionAsync(BoardIndex boardIndex)
+    public async Task SendBoardStateToFunctionAsync(Dictionary<string, string> boardState)
     {
-        // var gameState = new
-        // {
-        //     Winner = Winner.ToString(),
-        //     NextPlayer = NextPlayer.ToString(),
-        //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
-        // };
-        Console.WriteLine("Board", boards.Values);
-        var boardState = new Dictionary<string, string>
-            {
-                { "board_state", "X________" },
-                { "next_player", "O" }
-            };
+
+        // var boardState = new Dictionary<string, string>
+        //     {
+        //         { "board_state", "X________" },
+        //         { "next_player", "O" }
+        //     };
+
 
         var content = JsonContent.Create(boardState);
 
