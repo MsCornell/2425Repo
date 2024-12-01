@@ -107,18 +107,18 @@ public class GameInfo
         //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
         // };
 
-        Dictionary<string, string> boardState = new Dictionary<string, string>
+        var boardState = new Dictionary<string, string>
             {
-                { "board", "XOXOXOXOX" },
+                { "board", "X________" },
                 { "next", "O" }
             };
 
-        var node = JsonSerializer.SerializeToNode(boardState);
-        node?.AsObject();
-        var content = JsonContent.Create(node);
-        Console.WriteLine(content);
+        var content = JsonContent.Create(boardState);
+        // node?.AsObject();
+        // var content = JsonContent.Create(node);
+        Console.WriteLine("Hello World", content);
 
-        var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        var response = await httpClient.PostAsync("http://localhost:7071/api/minimax", content);
         response.EnsureSuccessStatusCode();
 
         // try
