@@ -16,7 +16,7 @@ public class PlayerWinRateTests
     //get one player win rate
     public async Task GetOnePlayerWinRate_Valid_NoError()
     {
-        var playerWinRate = await repository.GetOnePlayerAsync(1);
+        var playerWinRate = await repository.GetOnePlayerAsync(10000);
         Assert.NotNull(playerWinRate);
     }
 }

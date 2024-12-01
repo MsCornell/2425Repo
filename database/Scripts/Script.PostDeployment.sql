@@ -12,20 +12,18 @@ DELETE FROM Board WHERE Id BETWEEN 10000 AND 10010
 DELETE FROM Player WHERE Id BETWEEN 10000 AND 10010
 
 SET IDENTITY_INSERT Player ON;
-
-INSERT INTO Player (Id, Name, Created, _username, _password)
-VALUES
-    (10000, 'John Doe', '2021-01-01', 'JohnDoe', 'password'),
-    (10001, 'Jane Doe', '2021-01-01', 'JaneDoe', 'password'),
-    (10002, 'John Smith', '2021-01-01', 'JohnSmith', 'password'),
-    (10003, 'Jane Smith', '2021-01-01', 'JaneSmith', 'password'),
-    (10004, 'John Johnson', '2021-01-01', 'JohnJohnson', 'password'),
-    (10005, 'Jane Johnson', '2021-01-01', 'JaneJohnson', 'password'),
-    (10006, 'John Jackson', '2021-01-01', 'JohnJackson', 'password'),
-    (10007, 'Jane Jackson', '2021-01-01', 'JaneJackson', 'password'),
-    (10008, 'John Brown', '2021-01-01', 'JohnBrown', 'password'),
-    (10009, 'Jane Brown', '2021-01-01', 'JaneBrown', 'password');
-
+INSERT INTO Player (Id, Name, Email, _password)
+VALUES 
+(10000,'Player1', 'player1@example.com', 'password1'),
+(10001,'Player2', 'player2@example.com', 'password2'),
+(10002,'Player3', 'player3@example.com', 'password3'),
+(10003,'Player4', 'player4@example.com', 'password4'),
+(10004,'Player5', 'player5@example.com', 'password5'),
+(10005,'Player6', 'player6@example.com', 'password6'),
+(10006,'Player7', 'player7@example.com', 'password7'),
+(10007,'Player8', 'player8@example.com', 'password8'),
+(10008,'Player9', 'player9@example.com', 'password9'),
+(10009,'Player10', 'player10@example.com', 'password10');
 SET IDENTITY_INSERT Player OFF;
 
 IF NOT EXISTS (SELECT TOP 1 1 FROM Character)
@@ -78,3 +76,4 @@ VALUES
     (10000, 10006),
     (10000, 10007),
     (10000, 10008);
+

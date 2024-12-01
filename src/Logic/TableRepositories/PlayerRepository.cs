@@ -21,12 +21,12 @@ public class PlayerRepository
         return root.Players.FirstOrDefault();
     }
 
-    public async Task<Player?> GetAsync(string username, string password)
+    public async Task<Player?> GetAsync(string email, string password)
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(username);
+        ArgumentNullException.ThrowIfNullOrEmpty(email);
         ArgumentNullException.ThrowIfNullOrEmpty(password);
 
-        var url = $"{baseUrl}?$filter=_username eq '{username}' and _password eq '{password}'";
+        var url = $"{baseUrl}?$filter=Email '{email}' and _password eq '{password}'";
         var response = await http.GetAsync(url);
         var root = await GetRootFromResponseAsync(response);
         return root.Players.FirstOrDefault();

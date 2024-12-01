@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Game.Services; // Assuming PlayerStateService is in the Game.Services namespace
 
 namespace Game.Pages.Admin
 {
@@ -11,21 +12,35 @@ namespace Game.Pages.Admin
         [Inject]
         private IJSRuntime JSRuntime { get; set; } = default!;
 
+        [Inject]
+        public PlayerStateService PlayerStateService { get; set; } 
+
         private LoginModel loginModel = new LoginModel();
         private bool showPassword = false;
+        //private Logic.Player? currentPlayer;
 
         private void TogglePassword()
         {
             showPassword = !showPassword;
         }
 
-        private void HandleLogin()
+        private async Task HandleLogin()
         {
-            if (loginModel.Username == "user123" && loginModel.Password == "pass123")
+
+            try
             {
+                var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
+                var player = await playerRepository.GetAsync(loginModel.Username, loginModel.Password);
+                // check if player is null
+                if (player == null)
+                {
+                    throw new Exception();
+                }
+
+                PlayerStateService.CurrentPlayer = player;
                 Navigation.NavigateTo("/Home");
             }
-            else
+            catch
             {
                 JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid username or password.");
             }
@@ -46,10 +61,12 @@ namespace Game.Pages.Admin
             Navigation.NavigateTo("/Terms");
         }
 
+        /*
         private void NavigateToHome()
         {
             Navigation.NavigateTo("/Home");
         }
+        */
 
         public class LoginModel
         {
