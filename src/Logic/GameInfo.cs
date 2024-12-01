@@ -89,68 +89,48 @@ public class GameInfo
             NextBoards = new[] { boardIndex };
         }
 
+        // For AI player
+        if (NextPlayer == Players.X)
+        {
+            // Convert the board info to a string for the API call
+            string boardStateString = "";
+            for (var cell = 1; cell <= 9; cell++)
+            {
+                string cellString = board.GetCell((CellIndex)cell).Value.ToString();
+                Console.WriteLine(cellString);
+                boardStateString += cellString == "Blank" ? "_" : cellString;
+            }
+            Console.WriteLine(boardStateString);
+
+            var boardState = new Dictionary<string, string>
+            {
+                { "board_state", boardStateString },
+                { "next_player", Players.O.ToString() }
+            };
+            // Send the current game state to the API after a valid move
+            Task.Run(() => SendBoardStateToFunctionAsync(boardState));
+        }
+
         // Switch player
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
-        // Send the current game state to the API after a valid move
-        Task.Run(SendBoardStateToFunctionAsync);
-        Console.WriteLine("1234");
-
     }
 
-    public async Task SendBoardStateToFunctionAsync()
+    public async Task SendBoardStateToFunctionAsync(Dictionary<string, string> boardState)
     {
-        // var gameState = new
-        // {
-        //     Winner = Winner.ToString(),
-        //     NextPlayer = NextPlayer.ToString(),
-        //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
-        // };
 
-        Dictionary<string, string> boardState = new Dictionary<string, string>
-            {
-                { "board", "XOXOXOXOX" },
-                { "next", "O" }
-            };
+        // var boardState = new Dictionary<string, string>
+        //     {
+        //         { "board_state", "X________" },
+        //         { "next_player", "O" }
+        //     };
 
-        var node = JsonSerializer.SerializeToNode(boardState);
-        node?.AsObject();
-        var content = JsonContent.Create(node);
-        Console.WriteLine(content);
 
-        var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+        var content = JsonContent.Create(boardState);
+
+        var response = await httpClient.PostAsync("http://localhost:7071/api/minimax", content);
         response.EnsureSuccessStatusCode();
-
-        // try
-        // {
-        //     var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
-        //     response.EnsureSuccessStatusCode(); // Throw if not a success code.
-        // }
-        // catch (Exception ex)
-        // {
-        //     // Handle exceptions (e.g., logging)
-        //     Console.WriteLine($"Error sending game state: {ex.Message}");
-        // }
     }
-
-    // public async Task<String> CreateBoardAsync()
-    // {
-    //     //ArgumentNullException.ThrowIfNull(board);
-
-    //     Dictionary<string, string> boardState = new Dictionary<string, string>
-    //         {
-    //             { "board", "XOXOXOXOX" },
-    //             { "next", "O" }
-    //         };
-
-    //     var node = JsonSerializer.SerializeToNode(boardState);
-    //     node?.AsObject();
-    //     var content = JsonContent.Create(node);
-    //     var url = $"http://localhost:7071/api/minimax";
-    //     var response = await http.PostAsync(url, content);
-    //     var root = await GetRootFromResponseAsync(response);
-    //     return root.NextMove.Single();
-    // }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
     {

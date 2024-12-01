@@ -13,11 +13,15 @@ app = func.FunctionApp()
 @app.route(route="minimax", auth_level=func.AuthLevel.ANONYMOUS)
 def minimax(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    print("Hello World")
-    
-    if req is not None:
+    logging.info(req.get_json())
+    if req.get_json() is None:
+        return func.HttpResponse(
+                f"No input data",
+                status_code=400
+            )
+    else:
         req_body = req.get_json()
-        board = req_body['board']
+        board = req_body['board_state']
         next_player = req_body['next_player']
     
         # Check the board state contains 9 cells
@@ -84,14 +88,15 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                     status_code=400
                 )
         logging.info(board_state)
-
-        # Use minimax to get the next move
-        next_move = TicTacToe(board_state).best_move()
-
-        logging.info(next_move)
         
-                
+        # Use minimax to get the next move
+        next_move = {
+            "next_move": 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
+        }
+
+        json_object = json.dumps(next_move)
+        
         return func.HttpResponse(
-                f"{next_move}",
+                f"{json_object}",
                 status_code=200
             )
