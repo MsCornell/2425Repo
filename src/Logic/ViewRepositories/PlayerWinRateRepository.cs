@@ -6,12 +6,26 @@ namespace Logic;
 public class PlayerWinRateRepository
 {
     private readonly string baseUrl;
-    private readonly HttpClient http = new();
+    private readonly HttpClient http;
 
-    public PlayerWinRateRepository(string baseUrl)
+    public PlayerWinRateRepository(string baseUrl, HttpClient http)
     {
         this.baseUrl = baseUrl;
+        this.http = http;
     }
+    // Get win rates based on game mode and start date
+        public async Task<IEnumerable<PlayerWinRate>> GetPlayerWinRatesAsync(string gameMode, DateTime? startDate = null)
+    {
+        var url = $"{baseUrl}?$filter=GameMode eq '{gameMode}'";
+        if (startDate.HasValue)
+        {
+            url += $" and Started ge '{startDate.Value:yyyy-MM-dd}'";
+        }
+        var response = await http.GetAsync(url);
+        var root = await GetRootFromResponseAsync(response);
+        return root.PlayerWinRates;
+    }
+
     public async Task<PlayerWinRate?> GetOnePlayerAsync(int playerId)
     {
         var url = $"{baseUrl}/PlayerId/{playerId}";

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Logic;
+using Game.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,201 +13,218 @@ namespace Game.Pages
         public enum DifficultyEnum { Easy, Medium, Hard }
         public enum GameModeEnum { Single, LocalMulti, OnlineMulti }
         public enum TimeFilterEnum { Today, Week, Month, All }
-        private bool IsRulesModalVisible { get; set; } = false;
 
-        // Game Mode
+        [Inject]
+        private PlayerWinRateRepository PlayerWinRateRepo { get; set; }
+        [Inject]
+        private GameDetailRepository GameDetailRepo { get; set; }
+        [Inject]
+        private PlayerStateService PlayerStateService { get; set; }
+
+        // Initial values
         private GameModeEnum GameMode = GameModeEnum.Single;
-
-        // AI Difficulty
         private DifficultyEnum Difficulty = DifficultyEnum.Easy;
+        private TimeFilterEnum TimeFilter = TimeFilterEnum.All;
 
-        // AI Win Rate
-        private string WinRate = "75%";
-
-        // Time Filter
-        private TimeFilterEnum SelectedTimeFilter = TimeFilterEnum.Today;
-
-        private bool IsDropdownOpen = false;
-
-        // Search Bar
+        private List<PlayerWinRate> AllPlayers = new();
+        private List<PlayerWinRate> FilteredPlayers = new();
+        private PlayerWinRate? FirstPlacePlayer;
+        private PlayerWinRate? SecondPlacePlayer;
+        private PlayerWinRate? ThirdPlacePlayer;
         private string SearchTerm = string.Empty;
+        private bool IsDropdownOpen = false;
+        private DateTime LastUpdated;
 
-        // Player Data
-        private List<Player> Players = new List<Player>();
+        // AI statistics
+        private double WinRate;
 
-        // Player Data after filtering
-        private List<Player> FilteredPlayers = new List<Player>();
+        // Current player statistics
+        private int MyRank;
+        private int MyScore;
 
-        // Individual Top 3 Players
-        private Player? FirstPlacePlayer;
-        private Player? SecondPlacePlayer;
-        private Player? ThirdPlacePlayer;
+        // Modal visibility
+        private bool IsRulesModalVisible = false;
 
-        // Last Updated Time
-        private DateTime LastUpdated = DateTime.Now;
-
-        // Selected Time Filter Display
-        private string SelectedTime => SelectedTimeFilter switch
+        protected override async Task OnInitializedAsync()
         {
-            TimeFilterEnum.Today => "Today",
-            TimeFilterEnum.Week => "This Week",
-            TimeFilterEnum.Month => "This Month",
-            TimeFilterEnum.All => "All Time",
-            _ => "All Time"
-        };
-
-        // init
-        protected override void OnInitialized()
-        {
-            GenerateMockData();
-            FilterPlayers();
-            UpdateTopThree();
+            await LoadLeaderboardData();
         }
 
-        private void GenerateMockData()
+        private async Task LoadLeaderboardData()
         {
-            Random random = new Random();
-            Players = Enumerable.Range(1, 20).Select(i => new Player
-            {
-                Name = $"Player {i}",
-                Score = random.Next(1500, 3500),
-                AvatarUrl = $"/Images/Avatar/Avatar{random.Next(1, 3)}.png" 
-            })
-            .OrderByDescending(p => p.Score)
-            .Select((p, index) => new Player
-            {
-                Rank = index + 1,
-                Name = p.Name,
-                Score = p.Score,
-                AvatarUrl = p.AvatarUrl
-            })
-            .ToList();
-        }
+            LastUpdated = DateTime.Now;
 
-        private void FilterPlayers()
-        {
-            int scoreThreshold = GetScoreThreshold();
-
-            FilteredPlayers = Players.Where(p =>
-                (string.IsNullOrEmpty(SearchTerm) || (p.Name != null && p.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))) &&
-                (SelectedTimeFilter == TimeFilterEnum.All || p.Score >= scoreThreshold)
-            )
-            .OrderByDescending(p => p.Score)
-            .Select((p, index) => new Player
+            // Time filter
+            DateTime? startDate = TimeFilter switch
             {
-                Rank = index + 1,
-                Name = p.Name,
-                Score = p.Score,
-                AvatarUrl = p.AvatarUrl
-            })
-            .ToList();
-        }
-
-        private int GetScoreThreshold()
-        {
-            return SelectedTimeFilter switch
-            {
-                TimeFilterEnum.Today => 2000,
-                TimeFilterEnum.Week => 1800,
-                TimeFilterEnum.Month => 1600,
-                _ => 0
+                TimeFilterEnum.Today => DateTime.Today,
+                TimeFilterEnum.Week => DateTime.Today.AddDays(-7),
+                TimeFilterEnum.Month => DateTime.Today.AddMonths(-1),
+                _ => null
             };
-        }
 
-        // Update Top 3 Players
-        private void UpdateTopThree()
-        {
-            var topThree = FilteredPlayers.Take(3).ToList();
-            FirstPlacePlayer = topThree.ElementAtOrDefault(0);
-            SecondPlacePlayer = topThree.ElementAtOrDefault(1);
-            ThirdPlacePlayer = topThree.ElementAtOrDefault(2);
-        }
-
-        // Set AI Difficulty
-        private void SetDifficulty(DifficultyEnum difficulty)
-        {
-            Difficulty = difficulty;
-            WinRate = difficulty switch
+            // Selected game mode
+            string selectedGameMode = GameMode switch
             {
-                DifficultyEnum.Easy => "75%",
-                DifficultyEnum.Medium => "50%",
-                DifficultyEnum.Hard => "25%",
-                _ => WinRate
+                GameModeEnum.Single => Difficulty.ToString(),
+                GameModeEnum.LocalMulti => "Local",
+                GameModeEnum.OnlineMulti => "Online",
+                _ => string.Empty
             };
+
+            // Get player win rates
+            var playerWinRates = await PlayerWinRateRepo.GetPlayerWinRatesAsync(selectedGameMode, startDate);
+
+            // Order players by total score in selected game mode
+            AllPlayers = playerWinRates
+                .OrderByDescending(p => p.TotalScoreInMode)
+                .ToList();
+
+            for (int i = 0; i < AllPlayers.Count; i++)
+            {
+                AllPlayers[i].Rank = i + 1;
+            }
+
+            // Set top 3 players
+            FirstPlacePlayer = AllPlayers.ElementAtOrDefault(0);
+            SecondPlacePlayer = AllPlayers.ElementAtOrDefault(1);
+            ThirdPlacePlayer = AllPlayers.ElementAtOrDefault(2);
+
+            // Calculate AI win rate
+            if (GameMode == GameModeEnum.Single)
+            {
+                await CalculateHumanWinRate(selectedGameMode, startDate);
+            }
+            else
+            {
+                WinRate = 0;
+            }
+
+            UpdateFilteredPlayers();
         }
 
-        // Set Game Mode
+        private async Task CalculateHumanWinRate(string difficulty, DateTime? startDate)
+        {
+            var filteredGames = await GameDetailRepo.GetGameDetailsAsync(difficulty, startDate);
+            int totalGames = filteredGames.Count();
+            int humanWins = filteredGames.Count(g => g.GameWinner == g.PlayerCharacter);
+
+            WinRate = totalGames > 0 ? (double)humanWins / totalGames * 100 : 0;
+        }
+
+        private void UpdateFilteredPlayers()
+        {
+            FilteredPlayers = AllPlayers.Skip(3).ToList();
+
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                FilteredPlayers = FilteredPlayers
+                    .Where(p => p.PlayerName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            int? currentPlayerId = GetCurrentPlayerId();
+            if (currentPlayerId.HasValue)
+            {
+                var myPlayer = AllPlayers.FirstOrDefault(p => p.PlayerId == currentPlayerId.Value);
+                if (myPlayer != null)
+                {
+                    MyRank = AllPlayers.IndexOf(myPlayer) + 1;
+                    MyScore = (int)myPlayer.TotalScoreInMode;
+                }
+                else
+                {
+                    MyRank = -1;
+                    MyScore = 0;
+                }
+            }
+        }
+
         private void SetGameMode(GameModeEnum mode)
         {
             GameMode = mode;
+            if (GameMode != GameModeEnum.Single)
+            {
+                Difficulty = DifficultyEnum.Easy;
+            }
+            _ = LoadLeaderboardData();
         }
 
-        // Set Time Filter
+        private void SetDifficulty(DifficultyEnum difficulty)
+        {
+            Difficulty = difficulty;
+            _ = LoadLeaderboardData();
+        }
+
         private void SetTimeFilter(TimeFilterEnum timeFilter)
         {
-            SelectedTimeFilter = timeFilter;
+            TimeFilter = timeFilter;
             IsDropdownOpen = false;
-            FilterPlayers();
-            UpdateTopThree();
-            LastUpdated = DateTime.Now;
+            _ = LoadLeaderboardData();
         }
 
-        // Toggle Time Filter Dropdown
         private void ToggleDropdown()
         {
             IsDropdownOpen = !IsDropdownOpen;
         }
 
-        // Refresh Leaderboard
-        private void RefreshLeaderboard()
-        {
-            GenerateMockData();
-            FilterPlayers();
-            UpdateTopThree();
-            LastUpdated = DateTime.Now;
-        }
-
-        // Handle Search
         private void HandleSearch()
         {
-            FilterPlayers();
-            UpdateTopThree();
+            UpdateFilteredPlayers();
         }
 
-        private string GetGameModeButtonClass(GameModeEnum mode)
+        private void RefreshLeaderboard()
         {
-            return mode == GameMode ? "active" : "";
+            _ = LoadLeaderboardData();
         }
 
-        private string GetDifficultyButtonClass(DifficultyEnum difficulty)
-        {
-            return difficulty == Difficulty ? "active" : "";
-        }
-
-        private string GetTimeFilterButtonClass(TimeFilterEnum timeFilter)
-        {
-            return timeFilter == SelectedTimeFilter ? "active" : "";
-        }
-
-        // Player Class
-        public class Player
-        {
-            public int Rank { get; set; }
-            public string? Name { get; set; }
-            public int Score { get; set; }
-            public string? AvatarUrl { get; set; }
-        }
-
-        // Method to show the modal
         private void ShowRulesModal()
         {
             IsRulesModalVisible = true;
         }
 
-        // Method to hide the modal
         private void CloseRulesModal()
         {
             IsRulesModalVisible = false;
         }
+
+        private int? GetCurrentPlayerId()
+        {
+            var currentPlayer = PlayerStateService.CurrentPlayer;
+            return currentPlayer?.Id;
+        }
+
+        private string GetRandomAvatarUrl(int? playerId)
+        {
+            if (playerId.HasValue)
+            {
+                int avatarIndex = (playerId.Value % 2) + 1;
+                return $"/Images/Avatar/Avatar{avatarIndex}.png";
+            }
+            return "/Images/Avatar/AvatarDefault.png";
+        }
+
+        private string GetGameModeButtonClass(GameModeEnum mode)
+        {
+            return GameMode == mode ? "active" : "";
+        }
+
+        private string GetDifficultyButtonClass(DifficultyEnum difficulty)
+        {
+            return Difficulty == difficulty ? "active" : "";
+        }
+
+        private string GetTimeFilterButtonClass(TimeFilterEnum timeFilter)
+        {
+            return TimeFilter == timeFilter ? "selected" : "";
+        }
+
+        private string SelectedTime => TimeFilter switch
+        {
+            TimeFilterEnum.Today => "Today",
+            TimeFilterEnum.Week => "This Week",
+            TimeFilterEnum.Month => "This Month",
+            _ => "All Time"
+        };
     }
 }

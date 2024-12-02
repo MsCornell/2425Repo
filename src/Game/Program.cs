@@ -106,10 +106,11 @@ builder.Services.AddScoped(serviceProvider =>
     }
     else
     {
-        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/PalyerWinRate";
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/PlayerWinRate";
     }
 
-    return new Logic.PlayerWinRateRepository(url);
+    var httpClient = serviceProvider.GetRequiredService<HttpClient>();
+    return new Logic.PlayerWinRateRepository(url, httpClient);
 });
 //GameBoardDetail
 builder.Services.AddScoped(serviceProvider =>

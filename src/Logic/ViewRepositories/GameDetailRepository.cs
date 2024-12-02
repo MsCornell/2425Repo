@@ -8,10 +8,25 @@ public class GameDetailRepository
     private readonly string baseUrl;
     private readonly HttpClient http = new();
 
+    // Get game details based on game mode and start date
     public GameDetailRepository(string baseUrl)
     {
         this.baseUrl = baseUrl;
     }
+
+        public async Task<List<GameDetail>> GetGameDetailsAsync(string gameMode, DateTime? startDate = null)
+    {
+        var url = $"{baseUrl}?$filter=GameMode eq '{gameMode}'";
+        if (startDate.HasValue)
+        {
+            url += $" and Started ge '{startDate.Value:yyyy-MM-dd}'";
+        }
+
+        var response = await http.GetAsync(url);
+        var root = await GetRootFromResponseAsync(response);
+        return root.GameDetails.ToList();
+    }
+
     public async Task<GameDetail?> GetOneGameDetailAsync(int gameId)
     {
         var url = $"{baseUrl}/GameId/{gameId}";

@@ -50,7 +50,7 @@
             <div class="player second">
                 <div class="medal">🥈</div>
                 <div class="avatar">
-                    <img src="@SecondPlacePlayer?.AvatarUrl" alt="Avatar">
+                    <img src="@GetRandomAvatarUrl(@SecondPlacePlayer?.PlayerId)"
                 </div>
                 <div class="player-info">
                     <span class="name">@SecondPlacePlayer?.Name</span>
@@ -62,7 +62,7 @@
             <div class="player first">
                 <div class="medal">🥇</div>
                 <div class="avatar">
-                    <img src="@FirstPlacePlayer?.AvatarUrl" alt="Avatar">
+                    <img src="@GetRandomAvatarUrl(@FirstPlacePlayer?.PlayerId)"
                 </div>
                 <div class="player-info">
                     <span class="name">@FirstPlacePlayer?.Name</span>
@@ -74,7 +74,7 @@
             <div class="player third">
                 <div class="medal">🥉</div>
                 <div class="avatar">
-                    <img src="@ThirdPlacePlayer?.AvatarUrl" alt="Avatar">
+                    <img src="@GetRandomAvatarUrl(@ThirdPlacePlayer?.PlayerId)"
                 </div>
                 <div class="player-info">
                     <span class="name">@ThirdPlacePlayer?.Name</span>
@@ -131,14 +131,14 @@
                 <div class="avatar">
                     <img src="/Images/Avatar/Avatar1.png" alt="Your Avatar">
                 </div>
-                <div class="info">
-                    <span class="label">Your Rank</span>
-                    <span class="value">#42</span>
-                </div>
-                <div class="info">
-                    <span class="label">Score</span>
-                    <span class="value">1850</span>
-                </div>
+        <div class="info">
+            <span class="label">Your Rank</span>
+            <span class="value">@(MyRank > 0 ? $"#{MyRank}" : "Unranked")</span>
+        </div>
+        <div class="info">
+            <span class="label">Score</span>
+            <span class="value">@MyScore</span>
+        </div>
             </div>
         </div>
     </div>
@@ -175,7 +175,7 @@
     <!-- Footer with Last Updated and Refresh Button -->
     <footer>
         <div class="last-updated">
-            Last updated: <span>@LastUpdated.ToString("T")</span>
+            Last updated: <span>@LastUpdated.ToString("MM/dd/yyyy hh:mm tt")</span>
             <button @onclick="RefreshLeaderboard" class="refresh-btn" title="Refresh">↻</button>
         </div>
     </footer>

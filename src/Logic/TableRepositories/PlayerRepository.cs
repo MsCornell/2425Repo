@@ -21,16 +21,19 @@ public class PlayerRepository
         return root.Players.FirstOrDefault();
     }
 
-    public async Task<Player?> GetAsync(string email, string password)
-    {
-        ArgumentNullException.ThrowIfNullOrEmpty(email);
-        ArgumentNullException.ThrowIfNullOrEmpty(password);
+    public async Task<Player?> GetAsync(string Email, string _password)
+{
+    ArgumentNullException.ThrowIfNullOrEmpty(Email);
+    ArgumentNullException.ThrowIfNullOrEmpty(_password);
 
-        var url = $"{baseUrl}?$filter=Email '{email}' and _password eq '{password}'";
-        var response = await http.GetAsync(url);
-        var root = await GetRootFromResponseAsync(response);
-        return root.Players.FirstOrDefault();
-    }
+    var encodedEmail = Uri.EscapeDataString(Email);
+    var encodedPassword = Uri.EscapeDataString(_password);
+    
+    var url = $"{baseUrl}?$filter=Email eq '{encodedEmail}' and _password eq '{encodedPassword}'";
+    var response = await http.GetAsync(url);
+    var root = await GetRootFromResponseAsync(response);
+    return root.Players.FirstOrDefault();
+}
 
     public async Task<Player> CreateAsync(Player player)
     {
