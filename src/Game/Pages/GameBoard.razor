@@ -16,9 +16,16 @@
         <div class="spacer"></div>
     </nav>
 
+ <div class="player-indicator-container">
     <div class="player-indicator">
         Player <span class="@(game.NextPlayer == Players.X ? "player-x" : "player-o")">@game.NextPlayer</span>'s Turn
     </div>
+    <div class="player-indicator">
+        Player 1: <span>X</span>  
+        Player 2: <span>O</span>
+    </div>
+</div>
+
 
     <div class="ultimate-board" id="ultimate-board">
         @foreach (var boardIndex in GetAllBoardIndices())
@@ -39,8 +46,6 @@
     <div class="button-container">
    <!-- Game Rules -->
     <button id="rulesBtn" @onclick="ShowRulesModal" class="btn">Basic Rules</button>
-    <!-- Game Rules -->
-    <button id="restartBtn" @onclick="ResetGame" class="btn">Play Again</button>
     </div>
 
 @if (IsRulesModalVisible)

@@ -30,7 +30,7 @@ body {
   font-family: 'Quicksand', sans-serif;
   padding: 20px;
   box-sizing: border-box;
-  padding-top: 80px;
+  padding-top: 60px;
   overflow-x: hidden;
   flex-direction: column;
   gap: 2rem;
@@ -85,11 +85,17 @@ body {
 
 /*=============== GAME BOARD ===============*/
 /* Player indicator styles */
+.player-indicator-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: var(--board-size);
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
 .player-indicator {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
   background: var(--white);
   padding: 0.8rem 2rem;
   border-radius: 1rem;
@@ -99,7 +105,6 @@ body {
   z-index: 100;
   transition: all 0.3s ease;
   animation: slideDown 0.5s ease-out;
-  margin-top: 2rem;
 }
 
 @keyframes slideDown {
@@ -499,14 +504,6 @@ body {
 .btn:hover {
   background-color: var(--primary-dark);
   transform: translateY(-2px);
-}
-
-#restartBtn {
-  background-color: var(--primary-dark);
-}
-
-#restartBtn:hover {
-  background-color: var(--primary-color);
 }
 
 /* Pop-up styles */

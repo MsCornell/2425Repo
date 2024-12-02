@@ -42,7 +42,7 @@ namespace Game.Pages.Admin
             }
             catch
             {
-                JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid username or password.");
+                JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid email address or password.");
             }
         }
 
