@@ -24,7 +24,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         board = req_body['board_state']
         next_player = req_body['next_player']
-        difficulty = req_body['difficulty']
+        difficulty_level = req_body['difficulty_level']
     
         # Check the board state contains 9 cells
         if len(board) != 9:
@@ -93,13 +93,13 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                 )
         logging.info(board_state)
         
-        if difficulty == "easy":
+        if difficulty_level == "easy":
             # Use random to get the next move
             next_move = {
                 "next_move": random.choice(board_empty)
             }
            
-        elif difficulty == "medium":
+        elif difficulty_level == "medium":
             # Use random and best next move to get the next move
             best_move = 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
             if random.random() < 0.5:
@@ -111,7 +111,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                     "next_move": best_move
                 }
       
-        elif difficulty == "hard":
+        elif difficulty_level == "hard":
             # Use minimax to get the next move
             next_move = {
                 "next_move": 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
