@@ -12,8 +12,6 @@ namespace Game.Pages.Admin
         private IJSRuntime JSRuntime { get; set; } = default!;
 
         private string userName = string.Empty;
-        private string firstName = string.Empty;
-        private string lastName = string.Empty;
         private string userEmail = string.Empty;
         private string userPassword = string.Empty;
         private string confirmPassword = string.Empty;
@@ -40,11 +38,6 @@ namespace Game.Pages.Admin
                 await JSRuntime.InvokeVoidAsync("alert", "Please enter a username.");
                 return;
             }
-            else if(string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-            {
-                await JSRuntime.InvokeVoidAsync("alert", "Please enter a valid name.");
-                return;
-            }
             else
             {
                 try
@@ -52,8 +45,8 @@ namespace Game.Pages.Admin
                     // create new player dataset
                     var newPlayer = new Logic.Player
                     {
-                        Name = firstName + " " + lastName,
-                       Username = userName,
+                       Name = userName,
+                       Email = userEmail,
                        Created = DateTime.Now,
                       Password = userPassword
                     };
@@ -61,7 +54,7 @@ namespace Game.Pages.Admin
                      // load to database
                     var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
                     await playerRepository.CreateAsync(newPlayer);
-                    await JSRuntime.InvokeVoidAsync("alert", "Email and user information saved successfully!");
+                    await JSRuntime.InvokeVoidAsync("alert", "Email and username saved successfully!");
                     }
                     catch
                     {
