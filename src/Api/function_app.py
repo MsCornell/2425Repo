@@ -4,6 +4,7 @@ import json
 import logging
 import sys
 import os
+import random
 #from ...src.ML.minimax import minimax
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Ml')))
 from minimax import TicTacToe
@@ -23,6 +24,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         board = req_body['board_state']
         next_player = req_body['next_player']
+        difficulty = req_body['difficulty']
     
         # Check the board state contains 9 cells
         if len(board) != 9:
@@ -47,6 +49,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         board_state = []
+        board_empty = []
         for row in range(3):
             board_row = []
             i = 0
@@ -57,13 +60,14 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                     board_row.append(-1)
                 elif board[3*row+i] == "_":
                     board_row.append(0)
+                    board_empty.append(3*row+i+1)
                 else:  # Check the cell information is valid
                     return func.HttpResponse(
                         "Invalid cell information",
                         status_code=400)
                 i += 1
             board_state.append(board_row)
-        
+       
         # Check there is a win in the board state
         # Check the rows
         for row in board_state:
@@ -89,10 +93,29 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                 )
         logging.info(board_state)
         
-        # Use minimax to get the next move
-        next_move = {
-            "next_move": 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
-        }
+        if difficulty == "easy":
+            # Use random to get the next move
+            next_move = {
+                "next_move": random.choice(board_empty)
+            }
+           
+        elif difficulty == "medium":
+            # Use random and best next move to get the next move
+            best_move = 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
+            if random.random() < 0.5:
+                next_move = {
+                    "next_move": random.choice(board_empty)
+                }
+            else:
+                next_move = {
+                    "next_move": best_move
+                }
+      
+        elif difficulty == "hard":
+            # Use minimax to get the next move
+            next_move = {
+                "next_move": 3 * TicTacToe(board_state).best_move()[0] + TicTacToe(board_state).best_move()[1] + 1
+            }
 
         json_object = json.dumps(next_move)
         
