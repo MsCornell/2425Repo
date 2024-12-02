@@ -30,7 +30,7 @@ namespace Game.Pages.Admin
             try
             {
                 var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
-                var player = await playerRepository.GetAsync(loginModel.Username, loginModel.Password);
+                var player = await playerRepository.GetAsync(loginModel.Email, loginModel.Password);
                 // check if player is null
                 if (player == null)
                 {
@@ -42,7 +42,7 @@ namespace Game.Pages.Admin
             }
             catch
             {
-                JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid username or password.");
+                JSRuntime.InvokeVoidAsync("alert", "You have entered an invalid email address or password.");
             }
         }
 
@@ -70,7 +70,7 @@ namespace Game.Pages.Admin
 
         public class LoginModel
         {
-            public string Username { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
             public string Password { get; set; } = string.Empty;
             public bool RememberMe { get; set; } = false;
         }
