@@ -12,8 +12,7 @@ app = func.FunctionApp()
 
 @app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS, methods=['GET'])
 def test(req: func.HttpRequest) -> func.HttpResponse:
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return func.HttpResponse(current_time)
+    return func.HttpResponse("Hello")
 
 @app.route(route="minimax", auth_level=func.AuthLevel.ANONYMOUS)
 def minimax(req: func.HttpRequest) -> func.HttpResponse:
