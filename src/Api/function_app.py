@@ -10,6 +10,10 @@ from minimax import TicTacToe
 
 app = func.FunctionApp()
 
+@app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS. methods=['GET'])
+def test(req: func.HttpRequest) -> func.HttpResponse:
+    return func.HttpResponse(datetime.now())
+
 @app.route(route="minimax", auth_level=func.AuthLevel.ANONYMOUS)
 def minimax(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
