@@ -55,10 +55,18 @@ namespace Game.Pages.Admin
                     };
 
                      // load to database
+<<<<<<< Updated upstream
                     await playerRepository.CreateAsync(newPlayer);
                     await JSRuntime.InvokeVoidAsync("alert", "Email and username saved successfully!");
                     }
                     catch(Exception e)
+=======
+                    //var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
+                    await playerRepository.CreateAsync(newPlayer);
+                    await JSRuntime.InvokeVoidAsync("alert", "Email and username saved successfully!");
+                    }
+                    catch(Exception ex)
+>>>>>>> Stashed changes
                     {
                         await JSRuntime.InvokeVoidAsync("alert", "Something went wrong. Please try again.");
                         return;

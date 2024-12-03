@@ -10,22 +10,22 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddSingleton<Game.Services.GameStateService>();
 builder.Services.AddSingleton<Game.Services.PlayerStateService>();
 
-//player
-builder.Services.AddScoped(serviceProvider =>
-{
-    string url;
 
-    if (builder.HostEnvironment.IsDevelopment())
+string url;
+
+if (builder.HostEnvironment.IsDevelopment())
     {
-        url = "http://localhost:5000/api/Player";
+        url = "http://localhost:5000/api/";
     }
     else
     {
-        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/Player";
+        url = "https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/";
     }
 
-    return new Logic.PlayerRepository(url);
-});
+//player
+builder.Services.AddScoped(x => new Logic.PlayerRepository(url + "Player"));
+
+
 //game
 builder.Services.AddScoped(serviceProvider =>
 {

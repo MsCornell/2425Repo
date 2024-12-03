@@ -5,7 +5,7 @@ using Game.Services; // Assuming GameStateService is in the Game.Services namesp
 
 namespace Game.Pages
 {
-    public partial class GameBoard : ComponentBase
+    public partial class GameBoardAI : ComponentBase
     {
         /*
         [Parameter]
@@ -24,7 +24,7 @@ namespace Game.Pages
         [Inject]
         private GameRepository GameRepository { get; set; }
 
-        private GameInfo game = new GameInfo(GameMode.MultiPlayer);
+        private GameInfo game = new GameInfo(GameMode.SinglePlayer);
         private bool ShowResultModal { get; set; } = false;
         private string ResultTitle { get; set; } = string.Empty;
         private string ResultMessage { get; set; } = string.Empty;

@@ -17,7 +17,11 @@
     },
     "host": {
       "cors": {
+<<<<<<< Updated upstream
         "origins": ["*"],
+=======
+        "origins": ["https://localhost:1234", "http://localhost:2345"],
+>>>>>>> Stashed changes
         "allow-credentials": false
       },
       "authentication": {
