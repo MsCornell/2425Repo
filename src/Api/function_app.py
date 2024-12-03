@@ -6,7 +6,6 @@ import sys
 import os
 import random
 #from ...src.ML.minimax import minimax
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Ml')))
 from minimax import TicTacToe
 
 app = func.FunctionApp()

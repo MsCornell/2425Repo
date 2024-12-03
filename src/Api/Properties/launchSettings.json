@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Api": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 1000",
-      "launchBrowser": false
-    }
-  }
-}
