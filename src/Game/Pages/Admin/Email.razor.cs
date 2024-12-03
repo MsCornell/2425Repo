@@ -11,6 +11,9 @@ namespace Game.Pages.Admin
         [Inject]
         private IJSRuntime JSRuntime { get; set; } = default!;
 
+        [Inject]
+        private Logic.PlayerRepository playerRepository { get; set; } = default!;
+
         private string userName = string.Empty;
         private string userEmail = string.Empty;
         private string userPassword = string.Empty;
@@ -52,11 +55,10 @@ namespace Game.Pages.Admin
                     };
 
                      // load to database
-                    var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
                     await playerRepository.CreateAsync(newPlayer);
                     await JSRuntime.InvokeVoidAsync("alert", "Email and username saved successfully!");
                     }
-                    catch
+                    catch(Exception e)
                     {
                         await JSRuntime.InvokeVoidAsync("alert", "Something went wrong. Please try again.");
                         return;
