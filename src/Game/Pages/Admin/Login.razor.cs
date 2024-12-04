@@ -15,6 +15,9 @@ namespace Game.Pages.Admin
         [Inject]
         public PlayerStateService PlayerStateService { get; set; } 
 
+        [Inject]
+        private Logic.PlayerRepository playerRepository { get; set; } = default!;
+
         private LoginModel loginModel = new LoginModel();
         private bool showPassword = false;
         //private Logic.Player? currentPlayer;
@@ -29,7 +32,7 @@ namespace Game.Pages.Admin
 
             try
             {
-                var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
+                //var playerRepository = new Logic.PlayerRepository("http://localhost:5000/api/Player");
                 var player = await playerRepository.GetAsync(loginModel.Email, loginModel.Password);
                 // check if player is null
                 if (player == null)

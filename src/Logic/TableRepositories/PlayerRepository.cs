@@ -26,7 +26,7 @@ public class PlayerRepository
         ArgumentNullException.ThrowIfNullOrEmpty(email);
         ArgumentNullException.ThrowIfNullOrEmpty(password);
 
-        var url = $"{baseUrl}?$filter=Email '{email}' and _password eq '{password}'";
+        var url = $"{baseUrl}?$filter=Email eq '{email}' and _password eq '{password}'";
         var response = await http.GetAsync(url);
         var root = await GetRootFromResponseAsync(response);
         return root.Players.FirstOrDefault();
@@ -44,6 +44,8 @@ public class PlayerRepository
         var response = await http.PostAsync(url, content);
         var root = await GetRootFromResponseAsync(response);
         return root.Players.Single();
+        
+        
     }
 
     public async Task<Player> UpdateAsync(Player player)

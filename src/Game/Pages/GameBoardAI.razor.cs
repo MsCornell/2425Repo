@@ -5,7 +5,7 @@ using Game.Services; // Assuming GameStateService is in the Game.Services namesp
 
 namespace Game.Pages
 {
-    public partial class GameBoard : ComponentBase
+    public partial class GameBoardAI : ComponentBase
     {
         /*
         [Parameter]
@@ -24,12 +24,12 @@ namespace Game.Pages
         [Inject]
         private GameRepository GameRepository { get; set; }
 
-        private GameInfo game = new GameInfo();
         private bool ShowResultModal { get; set; } = false;
         private string ResultTitle { get; set; } = string.Empty;
         private string ResultMessage { get; set; } = string.Empty;
         private bool IsRulesModalVisible { get; set; } = false;
         private Logic.Game? currentGame;
+        private AIGameInfo game = default;
 
         private void NavigateToStartGame()
         {
@@ -39,6 +39,7 @@ namespace Game.Pages
         protected override void OnInitialized()
         {
             currentGame = GameStateService.CurrentGame;
+            game = new AIGameInfo(currentGame.GameMode);
             game.WinnerChanged += OnWinnerChanged;
             //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
         }
@@ -84,7 +85,7 @@ namespace Game.Pages
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
-                game.Play(boardIndex, cellIndex);
+                game.PlayAsync(boardIndex, cellIndex);
                 InvokeAsync(StateHasChanged);
             }
         }
@@ -93,7 +94,7 @@ namespace Game.Pages
         private void ResetGame()
         {
             /*
-            game = new GameInfo();
+            game = new AIGameInfo(game.CurrentGameMode);
             game.WinnerChanged += OnWinnerChanged;
             ShowResultModal = false;
             InvokeAsync(StateHasChanged);
