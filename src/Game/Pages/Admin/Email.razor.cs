@@ -41,6 +41,21 @@ namespace Game.Pages.Admin
                 await JSRuntime.InvokeVoidAsync("alert", "Please enter a username.");
                 return;
             }
+            else if (string.IsNullOrEmpty(userEmail))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Please enter an email address.");
+                return;
+            }
+            else if (!userEmail.Contains("@") || !userEmail.Contains("."))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Please enter a valid email address.");
+                return;
+            }
+            else if (userPassword.Length < 8)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Password must be at least 8 characters long.");
+                return;
+            }
             else
             {
                 try
