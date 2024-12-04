@@ -4,7 +4,7 @@
  
     <div class="container">
         <div class="inner-container">
-            <div class="back-button" @onclick="NavigateToLogin">
+            <div class="back-button" @onclick="NavigateBackToLogin">
                 <div class="arrow"></div>
             </div>
 
@@ -15,7 +15,7 @@
                 <label class="input-label" for="email">Email Address</label>
                 <div class="input-box">
                     <img src="/Images/envelope-icon.jpg" alt="Email Icon">
-                    <input type="email" id="email" placeholder="Your email address">
+                    <input type="email" @bind="userEmail" id="email" placeholder="Your email address">
                 </div>
             </div>
 
@@ -23,7 +23,7 @@
                 <label class="input-label" for="password">Password</label>
                 <div class="input-box">
                     <img src="/Images/lock-icon.jpg" alt="Password Icon">
-                    <input type="password" id="password" placeholder="Your password">
+                    <input type="password" @bind="userPassword" id="password" placeholder="Your password">
                 </div>
                 <div class="description">Must be at least 8 characters.</div>
             </div>        
@@ -32,11 +32,11 @@
                 <label class="input-label" for="password">Confirm Password</label>
                 <div class="input-box">
                     <img src="/Images/lock-icon.jpg" alt="Password Icon">
-                    <input type="password" id="confirm-password" placeholder="Confirm your password">
+                    <input type="password" @bind="confirmedPassword" id="confirm-password" placeholder="Confirm your password">
                 </div>
             </div>
 
-            <div class="submite-btn">Reset Password</div>
+            <div class="submite-btn" @onclick="NavigateToLogin">Reset Password</div>
         </div>
   </div>
 
