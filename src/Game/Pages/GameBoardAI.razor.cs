@@ -41,6 +41,7 @@ namespace Game.Pages
             currentGame = GameStateService.CurrentGame;
             game = new AIGameInfo(currentGame.GameMode);
             game.WinnerChanged += OnWinnerChanged;
+            await Task.Delay(TimeSpan.FromSeconds(0.3));
             //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
             await InvokeAsync(StateHasChanged);
         }
@@ -89,6 +90,8 @@ namespace Game.Pages
                 game.Play(boardIndex, cellIndex);
                 await InvokeAsync(StateHasChanged);
             }
+            int AiThinkingTime = new Random().Next(20, 120) / 100;
+            await Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
             await game.PlayAIAsync(boardIndex);
             await InvokeAsync(StateHasChanged);
         }
