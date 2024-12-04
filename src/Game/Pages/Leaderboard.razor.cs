@@ -265,9 +265,9 @@ namespace Game.Pages
         // LeaderboardPlayer Model
         public class LeaderboardPlayer
         {
-            public int Rank { get; set; }
+            public int? Rank { get; set; }
             public string? Name { get; set; }
-            public int Score { get; set; }
+            public int? Score { get; set; }
             public string? AvatarUrl { get; set; }
             public GameModeEnum GameMode { get; set; }
             public DifficultyEnum? Difficulty { get; set; }
