@@ -52,11 +52,11 @@ namespace Game.Pages
             currentGame.GameWinner = e == GameResult.XWins ? "X" : e == GameResult.OWins ? "O" : "-";
             if (currentGame.GameWinner == "-")
             {
-                currentGame.GameScore = 10;
+                currentGame.GameScore = currentGame.GameMode == "easy" ? 5 : currentGame.GameMode == "medium" ? 10 : 20;
             }
             else if (currentGame.GameWinner == currentGame.PlayerCharacter)
             {
-                currentGame.GameScore = 40;
+                currentGame.GameScore = currentGame.GameMode == "easy" ? 10 : currentGame.GameMode == "medium" ? 20 : 40;
             }
             else
             {
