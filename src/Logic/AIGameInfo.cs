@@ -63,7 +63,22 @@ public class AIGameInfo
 
         if (NextPlayer == Players.O)
         {
-            Play(BoardIndex.Board5, CellIndex.Cell5);
+            if (CurrentGameMode == "hard")
+            {
+                Play(BoardIndex.Board5, CellIndex.Cell5);
+            }
+            else if (CurrentGameMode == "medium")
+            {
+                var cellIndex = new Random().Next(1, 10);
+                Play(BoardIndex.Board5, (CellIndex)cellIndex);
+            }
+            else
+            {
+                var cellIndex = new Random().Next(1, 10);
+                var boardIndex = new Random().Next(1, 10);
+                Play((BoardIndex)boardIndex, (CellIndex)cellIndex);
+            }
+            
         }
     }
 
