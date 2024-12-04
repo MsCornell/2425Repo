@@ -133,17 +133,17 @@
                 </div>
                 <div class="info">
                     <span class="label">Your Rank</span>
-                    <span class="value">#42</span>
+                    <span class="value">@((CurrentPlayer?.Rank != null) ? $"#{CurrentPlayer.Rank}" : "N/A")</span>
                 </div>
                 <div class="info">
                     <span class="label">Score</span>
-                    <span class="value">1850</span>
+                    <span class="value">@((CurrentPlayer?.Score != null) ? CurrentPlayer.Score.ToString() : "N/A")</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scoring rubric--> 
+    <!-- Scoring Rubric--> 
     <div class="rules-container">
         <button id="rulesBtn" @onclick="ShowRulesModal" class="rules-btn">Ranking Rules</button>
     </div>

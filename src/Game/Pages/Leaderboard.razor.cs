@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Game.Services;
+using Logic; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,111 +10,200 @@ namespace Game.Pages
 {
     public partial class Leaderboard : ComponentBase
     {
+        // Inject Services
+        [Inject]
+        public PlayerStateService PlayerStateService { get; set; } 
+
+        [Inject]
+        private Logic.PlayerWinRateRepository PlayerWinRateRepository { get; set; } = default!;
+
+        [Inject]
+        private Logic.GameDetailRepository GameDetailRepository { get; set; } = default!; 
+
+        // Enums
         public enum DifficultyEnum { Easy, Medium, Hard }
         public enum GameModeEnum { Single, LocalMulti, OnlineMulti }
         public enum TimeFilterEnum { Today, Week, Month, All }
-        private bool IsRulesModalVisible { get; set; } = false;
 
-        // Game Mode
-        private GameModeEnum GameMode = GameModeEnum.Single;
-
-        // AI Difficulty
-        private DifficultyEnum Difficulty = DifficultyEnum.Easy;
-
-        // AI Win Rate
-        private string WinRate = "75%";
-
-        // Time Filter
-        private TimeFilterEnum SelectedTimeFilter = TimeFilterEnum.Today;
-
+        // Setup
+        private GameModeEnum GameMode = GameModeEnum.Single; 
+        private DifficultyEnum? Difficulty = DifficultyEnum.Easy; 
+        private TimeFilterEnum SelectedTimeFilter = TimeFilterEnum.All; 
         private bool IsDropdownOpen = false;
+        private string SearchTerm = string.Empty; 
+        private DateTime LastUpdated = DateTime.Now; 
+        private bool IsRulesModalVisible { get; set; } = false; 
 
-        // Search Bar
-        private string SearchTerm = string.Empty;
+        // Leaderboard Data
+        private string WinRate = "75%"; // AI win rate
 
         // Player Data
-        private List<Player> Players = new List<Player>();
+        private List<LeaderboardPlayer> Players = new List<LeaderboardPlayer>(); 
+        private List<LeaderboardPlayer> FilteredPlayers = new List<LeaderboardPlayer>(); // After filtering
 
-        // Player Data after filtering
-        private List<Player> FilteredPlayers = new List<Player>();
+        // Top 3 Players
+        private LeaderboardPlayer? FirstPlacePlayer;
+        private LeaderboardPlayer? SecondPlacePlayer;
+        private LeaderboardPlayer? ThirdPlacePlayer;
 
-        // Individual Top 3 Players
-        private Player? FirstPlacePlayer;
-        private Player? SecondPlacePlayer;
-        private Player? ThirdPlacePlayer;
+        // Current Player
+        private LeaderboardPlayer? CurrentPlayer;
 
-        // Last Updated Time
-        private DateTime LastUpdated = DateTime.Now;
-
-        // Selected Time Filter Display
+        // Time Filter Options
         private string SelectedTime => SelectedTimeFilter switch
         {
             TimeFilterEnum.Today => "Today",
             TimeFilterEnum.Week => "This Week",
             TimeFilterEnum.Month => "This Month",
-            TimeFilterEnum.All => "All Time",
             _ => "All Time"
         };
 
-        // init
-        protected override void OnInitialized()
+        // Initialize
+        protected override async Task OnInitializedAsync()
         {
-            GenerateMockData();
+            await LoadDataAsync();
             FilterPlayers();
             UpdateTopThree();
         }
 
-        private void GenerateMockData()
+        private async Task LoadDataAsync()
         {
-            Random random = new Random();
-            Players = Enumerable.Range(1, 20).Select(i => new Player
+            var playerWinRates = await PlayerWinRateRepository.GetAllPlayerAsync();
+            var gameDetails = await GameDetailRepository.GetAllGameDetailsAsync();
+
+            if (playerWinRates != null && gameDetails != null)
             {
-                Name = $"Player {i}",
-                Score = random.Next(1500, 3500),
-                AvatarUrl = $"/Images/Avatar/Avatar{random.Next(1, 3)}.png" 
-            })
-            .OrderByDescending(p => p.Score)
-            .Select((p, index) => new Player
+                Random random = new Random();
+
+                var gameGroups = gameDetails.GroupBy(g => new { g.PlayerName, g.GameMode });
+
+                var playerScores = gameGroups.Select(g => new
+                {
+                    PlayerName = g.Key.PlayerName,
+                    GameMode = g.Key.GameMode,
+                    TotalScoreInMode = g.Sum(game => game.GameScore),
+                    TotalGamesInMode = g.Count(),
+                    WinsInMode = g.Count(game => game.GameWinner == g.Key.PlayerName), 
+                    LastGameDate = g.Max(game => game.Ended)
+                }).ToList();
+
+                var totalScores = gameDetails.GroupBy(g => g.PlayerName).Select(g => new
+                {
+                    PlayerName = g.Key,
+                    TotalScore = g.Sum(game => game.GameScore),
+                    TotalGames = g.Count(),
+                    TotalWins = g.Count(game => game.GameWinner == g.Key),
+                    LastGameDate = g.Max(game => game.Ended)
+                }).ToList();
+
+                Players = playerWinRates.Select(pwr =>
+                {
+                    var (gameModeEnum, difficultyEnum) = MapGameMode(pwr.GameMode);
+
+                    var playerScore = playerScores.FirstOrDefault(ps => ps.PlayerName == pwr.PlayerName && ps.GameMode.Equals(pwr.GameMode, StringComparison.OrdinalIgnoreCase));
+                    var totalScore = totalScores.FirstOrDefault(ts => ts.PlayerName == pwr.PlayerName);
+
+                    return new LeaderboardPlayer
+                    {
+                        Name = pwr.PlayerName,
+                        Score = playerScore != null ? playerScore.TotalScoreInMode : 0,
+                        AvatarUrl = $"/Images/Avatar/Avatar{random.Next(1, 3)}.png", 
+                        GameMode = gameModeEnum,
+                        Difficulty = difficultyEnum,
+                        TotalGamesInMode = playerScore != null ? playerScore.TotalGamesInMode : 0,
+                        WinsInMode = playerScore != null ? playerScore.WinsInMode : 0,
+                        WinRateInMode = playerScore != null && playerScore.TotalGamesInMode > 0 ? (double)playerScore.WinsInMode / playerScore.TotalGamesInMode * 100 : 0,
+                        TotalGames = totalScore != null ? totalScore.TotalGames : 0,
+                        TotalWins = totalScore != null ? totalScore.TotalWins : 0,
+                        OverallWinRate = totalScore != null && totalScore.TotalGames > 0 ? (double)totalScore.TotalWins / totalScore.TotalGames * 100 : 0,
+                        TotalScoreInMode = playerScore != null ? playerScore.TotalScoreInMode : 0,
+                        TotalScore = totalScore != null ? totalScore.TotalScore : 0,
+                        LastGameDate = totalScore != null ? totalScore.LastGameDate : DateTime.MinValue
+                    };
+                })
+                .OrderByDescending(p => p.Score)
+                .Select((p, index) =>
+                {
+                    p.Rank = index + 1;
+                    return p;
+                })
+                .ToList();
+            }
+            else
             {
-                Rank = index + 1,
-                Name = p.Name,
-                Score = p.Score,
-                AvatarUrl = p.AvatarUrl
-            })
-            .ToList();
+                Players = new List<LeaderboardPlayer>();
+            }
+        }
+
+        private (GameModeEnum, DifficultyEnum?) MapGameMode(string gameMode)
+        {
+            switch (gameMode.ToLower())
+            {
+                case "easy":
+                    return (GameModeEnum.Single, DifficultyEnum.Easy);
+                case "medium":
+                    return (GameModeEnum.Single, DifficultyEnum.Medium);
+                case "hard":
+                    return (GameModeEnum.Single, DifficultyEnum.Hard);
+                case "local":
+                    return (GameModeEnum.LocalMulti, null);
+                default:
+                    return (GameModeEnum.OnlineMulti, null);
+            }
         }
 
         private void FilterPlayers()
         {
-            int scoreThreshold = GetScoreThreshold();
+            var filteredPlayers = Players.AsEnumerable();
 
-            FilteredPlayers = Players.Where(p =>
-                (string.IsNullOrEmpty(SearchTerm) || (p.Name != null && p.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))) &&
-                (SelectedTimeFilter == TimeFilterEnum.All || p.Score >= scoreThreshold)
-            )
-            .OrderByDescending(p => p.Score)
-            .Select((p, index) => new Player
-            {
-                Rank = index + 1,
-                Name = p.Name,
-                Score = p.Score,
-                AvatarUrl = p.AvatarUrl
-            })
-            .ToList();
-        }
+            // Filter by game mode
+            filteredPlayers = filteredPlayers.Where(p => p.GameMode == GameMode);
 
-        private int GetScoreThreshold()
-        {
-            return SelectedTimeFilter switch
+            // Filter by difficulty
+            if (GameMode == GameModeEnum.Single && Difficulty != null)
             {
-                TimeFilterEnum.Today => 2000,
-                TimeFilterEnum.Week => 1800,
-                TimeFilterEnum.Month => 1600,
-                _ => 0
+                filteredPlayers = filteredPlayers.Where(p => p.Difficulty == Difficulty);
+            }
+
+            // Time filter
+            DateTime fromDate = SelectedTimeFilter switch
+            {
+                TimeFilterEnum.Today => DateTime.Today,
+                TimeFilterEnum.Week => DateTime.Today.AddDays(-7),
+                TimeFilterEnum.Month => DateTime.Today.AddMonths(-1),
+                _ => DateTime.MinValue
             };
+
+            filteredPlayers = filteredPlayers.Where(p => p.LastGameDate >= fromDate);
+
+            // Filter by search term
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                filteredPlayers = filteredPlayers.Where(p => p.Name != null && p.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Re-rank players
+            FilteredPlayers = filteredPlayers
+                .OrderByDescending(p => p.Score)
+                .Select((p, index) =>
+                {
+                    p.Rank = index + 1;
+                    return p;
+                })
+                .ToList();
+
+            // Set CurrentPlayer
+            if (PlayerStateService.CurrentPlayer != null)
+            {
+                var currentPlayerName = PlayerStateService.CurrentPlayer.Name;
+                CurrentPlayer = FilteredPlayers.FirstOrDefault(p => p.Name == currentPlayerName);
+            }
+            else
+            {
+                CurrentPlayer = null;
+            }
         }
 
-        // Update Top 3 Players
         private void UpdateTopThree()
         {
             var topThree = FilteredPlayers.Take(3).ToList();
@@ -121,7 +212,7 @@ namespace Game.Pages
             ThirdPlacePlayer = topThree.ElementAtOrDefault(2);
         }
 
-        // Set AI Difficulty
+        // Set AI difficulty
         private void SetDifficulty(DifficultyEnum difficulty)
         {
             Difficulty = difficulty;
@@ -132,15 +223,31 @@ namespace Game.Pages
                 DifficultyEnum.Hard => "25%",
                 _ => WinRate
             };
+            FilterPlayers();
+            UpdateTopThree();
         }
 
-        // Set Game Mode
+        // Set game mode
         private void SetGameMode(GameModeEnum mode)
+    {
+    GameMode = mode;
+    if (GameMode != GameModeEnum.Single)
+    {
+        Difficulty = null;
+    }
+    else
+    {
+        if (Difficulty == null)
         {
-            GameMode = mode;
+            Difficulty = DifficultyEnum.Easy; 
+            WinRate = "75%"; 
         }
+    }
+    FilterPlayers();
+    UpdateTopThree();
+    }
 
-        // Set Time Filter
+        // Set time filter
         private void SetTimeFilter(TimeFilterEnum timeFilter)
         {
             SelectedTimeFilter = timeFilter;
@@ -150,28 +257,49 @@ namespace Game.Pages
             LastUpdated = DateTime.Now;
         }
 
-        // Toggle Time Filter Dropdown
+        // Toggle dropdown
         private void ToggleDropdown()
         {
             IsDropdownOpen = !IsDropdownOpen;
         }
 
-        // Refresh Leaderboard
-        private void RefreshLeaderboard()
-        {
-            GenerateMockData();
-            FilterPlayers();
-            UpdateTopThree();
-            LastUpdated = DateTime.Now;
-        }
-
-        // Handle Search
+        // Handle search
         private void HandleSearch()
         {
             FilterPlayers();
             UpdateTopThree();
         }
 
+        // LeaderboardPlayer Model
+        public class LeaderboardPlayer
+        {
+            public int? Rank { get; set; }
+            public string? Name { get; set; }
+            public int? Score { get; set; }
+            public string? AvatarUrl { get; set; }
+            public GameModeEnum GameMode { get; set; }
+            public DifficultyEnum? Difficulty { get; set; }
+            public int TotalGamesInMode { get; set; }
+            public int WinsInMode { get; set; }
+            public double WinRateInMode { get; set; }
+            public int TotalGames { get; set; }
+            public int TotalWins { get; set; }
+            public double OverallWinRate { get; set; }
+            public int TotalScoreInMode { get; set; }
+            public int TotalScore { get; set; }
+            public DateTime LastGameDate { get; set; } 
+        }
+
+        // Refresh Leaderboard
+        private async Task RefreshLeaderboard()
+        {
+            await LoadDataAsync();
+            FilterPlayers();
+            UpdateTopThree();
+            LastUpdated = DateTime.Now;
+        }
+
+        // CSS Classes
         private string GetGameModeButtonClass(GameModeEnum mode)
         {
             return mode == GameMode ? "active" : "";
@@ -187,23 +315,12 @@ namespace Game.Pages
             return timeFilter == SelectedTimeFilter ? "active" : "";
         }
 
-        // Player Class
-        public class Player
-        {
-            public int Rank { get; set; }
-            public string? Name { get; set; }
-            public int Score { get; set; }
-            public string? AvatarUrl { get; set; }
-        }
-
-        // Method to show the modal
-        private void ShowRulesModal()
+        private void ShowRulesModal() 
         {
             IsRulesModalVisible = true;
         }
 
-        // Method to hide the modal
-        private void CloseRulesModal()
+        private void CloseRulesModal() 
         {
             IsRulesModalVisible = false;
         }

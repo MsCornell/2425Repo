@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Game.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,12 @@ namespace Game.Pages
 {
     public partial class Profile : ComponentBase
     {
-        // Player Info
-        private string PlayerName = "Player Name";
+        // Inject Services
+        [Inject]
+        public PlayerStateService PlayerStateService { get; set; } 
+
+        // Current Player Info
+        private string PlayerName;
         private string PlayerRank = string.Empty;
         private string AvatarUrl = "/Images/Avatar/Avatar1.png";
 
@@ -37,6 +42,7 @@ namespace Game.Pages
 
         protected override void OnInitialized()
         {
+            PlayerName = PlayerStateService.CurrentPlayer? .Name ?? "Player";
             InitializeData();
         }
 
@@ -93,7 +99,7 @@ namespace Game.Pages
                 Result = "Victory",
                 Mode = "Single Player",
                 Difficulty = "Hard",
-                Score = "5-4",
+                Score = "+30",
                 Time = "3:45",
                 Date = new DateTime(2024, 2, 20)
             });
@@ -101,7 +107,7 @@ namespace Game.Pages
             {
                 Result = "Draw",
                 Mode = "Local Multiplayer",
-                Score = "4-4",
+                Score = "+0",
                 Time = "4:20",
                 Date = new DateTime(2024, 2, 19)
             });
@@ -110,7 +116,7 @@ namespace Game.Pages
                 Result = "Victory",
                 Mode = "Single Player",
                 Difficulty = "Medium",
-                Score = "6-3",
+                Score = "+20",
                 Time = "2:55",
                 Date = new DateTime(2024, 2, 18)
             });
@@ -119,7 +125,7 @@ namespace Game.Pages
                 Result = "Defeat",
                 Mode = "Single Player",
                 Difficulty = "Hard",
-                Score = "3-6",
+                Score = "+30",
                 Time = "5:10",
                 Date = new DateTime(2024, 2, 17)
             });
@@ -127,7 +133,7 @@ namespace Game.Pages
             {
                 Result = "Victory",
                 Mode = "Local Multiplayer",
-                Score = "5-2",
+                Score = "+40",
                 Time = "3:30",
                 Date = new DateTime(2024, 2, 16)
             });
