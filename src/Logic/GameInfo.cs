@@ -93,11 +93,12 @@ public class GameInfo
         NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
         // Send the current game state to the API after a valid move
-        Task.Run(SendBoardStateToFunctionAsync);
-        Console.WriteLine("1234");
+        //Task.Run(SendBoardStateToFunctionAsync);
+        //Console.WriteLine("1234");
 
     }
 
+    /*
     public async Task SendBoardStateToFunctionAsync()
     {
         // var gameState = new
@@ -132,6 +133,7 @@ public class GameInfo
         //     Console.WriteLine($"Error sending game state: {ex.Message}");
         // }
     }
+    */
 
     // public async Task<String> CreateBoardAsync()
     // {

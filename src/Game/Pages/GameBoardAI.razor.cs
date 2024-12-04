@@ -29,19 +29,20 @@ namespace Game.Pages
         private string ResultMessage { get; set; } = string.Empty;
         private bool IsRulesModalVisible { get; set; } = false;
         private Logic.Game? currentGame;
-        private AIGameInfo game = default;
+        private AIGameInfo game;
 
         private void NavigateToStartGame()
         {
             NavigationManager?.NavigateTo("/StartGame");
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             currentGame = GameStateService.CurrentGame;
             game = new AIGameInfo(currentGame.GameMode);
             game.WinnerChanged += OnWinnerChanged;
             //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
+            await InvokeAsync(StateHasChanged);
         }
 
         private async void OnWinnerChanged(object? sender, GameResult e)
@@ -51,11 +52,11 @@ namespace Game.Pages
             currentGame.GameWinner = e == GameResult.XWins ? "X" : e == GameResult.OWins ? "O" : "-";
             if (currentGame.GameWinner == "-")
             {
-                currentGame.GameScore = 10;
+                currentGame.GameScore = currentGame.GameMode == "easy" ? 5 : currentGame.GameMode == "medium" ? 10 : 20;
             }
             else if (currentGame.GameWinner == currentGame.PlayerCharacter)
             {
-                currentGame.GameScore = 40;
+                currentGame.GameScore = currentGame.GameMode == "easy" ? 10 : currentGame.GameMode == "medium" ? 20 : 40;
             }
             else
             {
@@ -81,16 +82,17 @@ namespace Game.Pages
             await GameRepository.CreateGameAsync(currentGame);
         }
 
-        private void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
+        private async void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
-                game.PlayAsync(boardIndex, cellIndex);
-                InvokeAsync(StateHasChanged);
+                game.Play(boardIndex, cellIndex);
+                await InvokeAsync(StateHasChanged);
             }
+            await game.PlayAIAsync(boardIndex);
+            await InvokeAsync(StateHasChanged);
         }
 
-        //TODO
         private void ResetGame()
         {
             /*

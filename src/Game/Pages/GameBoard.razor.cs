@@ -54,7 +54,7 @@ namespace Game.Pages
             }
             else if (currentGame.GameWinner == currentGame.PlayerCharacter)
             {
-                currentGame.GameScore = 40;
+                currentGame.GameScore = 30;
             }
             else
             {
@@ -89,7 +89,6 @@ namespace Game.Pages
             }
         }
 
-        //TODO
         private void ResetGame()
         {
             /*
