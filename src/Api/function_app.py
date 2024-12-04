@@ -45,7 +45,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
 
         # Check player O has 1 less move than player X (X plays first)
 
-        if board.count("X") != board.count("O") + 1:
+        if board.count("X") != board.count("O") + 1 and board.count("X") != board.count("O"):
             return func.HttpResponse(
                 "Invalid move numbers on the board.",
                 status_code=400
@@ -71,6 +71,18 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                 i += 1
             board_state.append(board_row)
        
+        if(board.count("X") == board.count("O")):
+            next_move = {
+                "next_move": random.choice(board_empty)
+            }
+            json_object = json.dumps(next_move)
+        
+            return func.HttpResponse(
+                f"{json_object}",
+                status_code=200
+            )
+        
+
         # Check there is a win in the board state
         # Check the rows
         for row in board_state:

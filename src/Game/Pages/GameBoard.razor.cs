@@ -89,7 +89,6 @@ namespace Game.Pages
             }
         }
 
-        //TODO
         private void ResetGame()
         {
             /*
