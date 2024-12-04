@@ -229,15 +229,23 @@ namespace Game.Pages
 
         // Set game mode
         private void SetGameMode(GameModeEnum mode)
+    {
+    GameMode = mode;
+    if (GameMode != GameModeEnum.Single)
+    {
+        Difficulty = null;
+    }
+    else
+    {
+        if (Difficulty == null)
         {
-            GameMode = mode;
-            if (GameMode != GameModeEnum.Single)
-            {
-                Difficulty = null;
-            }
-            FilterPlayers();
-            UpdateTopThree();
+            Difficulty = DifficultyEnum.Easy; 
+            WinRate = "75%"; 
         }
+    }
+    FilterPlayers();
+    UpdateTopThree();
+    }
 
         // Set time filter
         private void SetTimeFilter(TimeFilterEnum timeFilter)
