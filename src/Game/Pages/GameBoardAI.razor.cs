@@ -90,7 +90,7 @@ namespace Game.Pages
                 game.Play(boardIndex, cellIndex);
                 await InvokeAsync(StateHasChanged);
             }
-            int AiThinkingTime = new Random().Next(20, 150) / 100;
+            int AiThinkingTime = new Random().Next(20, 120) / 100;
             await Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
             await game.PlayAIAsync(boardIndex);
             await InvokeAsync(StateHasChanged);
