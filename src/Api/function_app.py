@@ -10,7 +10,7 @@ from minimax import TicTacToe
 
 app = func.FunctionApp()
 
-@app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS. methods=['GET'])
+@app.route(route="test", auth_level=func.AuthLevel.ANONYMOUS, methods=['GET'])
 def test(req: func.HttpRequest) -> func.HttpResponse:
     return func.HttpResponse(datetime.now())
 

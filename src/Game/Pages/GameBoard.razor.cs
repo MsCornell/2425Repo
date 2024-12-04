@@ -24,7 +24,7 @@ namespace Game.Pages
         [Inject]
         private GameRepository GameRepository { get; set; }
 
-        private GameInfo game = new GameInfo(GameMode.MultiPlayer);
+        private GameInfo game = new GameInfo();
         private bool ShowResultModal { get; set; } = false;
         private string ResultTitle { get; set; } = string.Empty;
         private string ResultMessage { get; set; } = string.Empty;
@@ -84,7 +84,7 @@ namespace Game.Pages
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
-                game.PlayAsync(boardIndex, cellIndex);
+                game.Play(boardIndex, cellIndex);
                 InvokeAsync(StateHasChanged);
             }
         }
@@ -92,10 +92,13 @@ namespace Game.Pages
         //TODO
         private void ResetGame()
         {
-            game = new GameInfo(game.CurrentGameMode);
+            /*
+            game = new GameInfo();
             game.WinnerChanged += OnWinnerChanged;
             ShowResultModal = false;
             InvokeAsync(StateHasChanged);
+            */
+            NavigationManager?.NavigateTo("/startgame");
         }
 
         private string GetCellContent(BoardIndex boardIndex, CellIndex cellIndex)

@@ -41,18 +41,11 @@ public class PlayerRepository
         var content = JsonContent.Create(node);
 
         var url = $"{baseUrl}";
-        try{
-            var response = await http.PostAsync(url, content);
-            var root = await GetRootFromResponseAsync(response);
-            return root.Players.Single();
-        }
-        catch(Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        var response = await http.PostAsync(url, content);
+        var root = await GetRootFromResponseAsync(response);
+        return root.Players.Single();
         
         
-        return player;
     }
 
     public async Task<Player> UpdateAsync(Player player)

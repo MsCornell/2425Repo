@@ -4,7 +4,7 @@ namespace Logic.Tests;
 
 public class PlayerTests
 {
-    private PlayerRepository repository = new("http://localhost:5000/api/Player");
+    private PlayerRepository repository = new("https://icy-sea-07449320f.5.azurestaticapps.net/data-api/api/Player");
 
     [Fact]
     public async void Create_Valid_NoError()

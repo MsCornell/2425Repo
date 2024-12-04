@@ -24,12 +24,12 @@ namespace Game.Pages
         [Inject]
         private GameRepository GameRepository { get; set; }
 
-        private GameInfo game = new GameInfo(GameMode.SinglePlayer);
         private bool ShowResultModal { get; set; } = false;
         private string ResultTitle { get; set; } = string.Empty;
         private string ResultMessage { get; set; } = string.Empty;
         private bool IsRulesModalVisible { get; set; } = false;
         private Logic.Game? currentGame;
+        private AIGameInfo game = default;
 
         private void NavigateToStartGame()
         {
@@ -39,6 +39,7 @@ namespace Game.Pages
         protected override void OnInitialized()
         {
             currentGame = GameStateService.CurrentGame;
+            game = new AIGameInfo(currentGame.GameMode);
             game.WinnerChanged += OnWinnerChanged;
             //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
         }
@@ -92,10 +93,13 @@ namespace Game.Pages
         //TODO
         private void ResetGame()
         {
-            game = new GameInfo(game.CurrentGameMode);
+            /*
+            game = new AIGameInfo(game.CurrentGameMode);
             game.WinnerChanged += OnWinnerChanged;
             ShowResultModal = false;
             InvokeAsync(StateHasChanged);
+            */
+            NavigationManager?.NavigateTo("/startgame");
         }
 
         private string GetCellContent(BoardIndex boardIndex, CellIndex cellIndex)

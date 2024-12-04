@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Logic;
 
-public class GameInfo
+public class AIGameInfo
 {
     private readonly Dictionary<BoardIndex, BoardInfo> boards;
 
@@ -29,9 +29,11 @@ public class GameInfo
 
     public Players NextPlayer { get; private set; }
     public BoardIndex[] NextBoards { get; private set; }
+    public String CurrentGameMode { get; private set; }
 
-    public GameInfo()
+    public AIGameInfo(String mode)
     {
+        CurrentGameMode = mode;
         httpClient = new HttpClient();
 
         boards = new Dictionary<BoardIndex, BoardInfo>
@@ -53,104 +55,101 @@ public class GameInfo
         }
 
         // Randomly assign the starting player & initialize
+       
         NextPlayer = new Random().Next(0, 2) == 0 ? Players.X : Players.O;
 
         // At the start, all boards are available for play
         NextBoards = Boards(GameResult.InProgress);
     }
 
-    public void Play(BoardIndex boardIndex, CellIndex cellIndex)
+    public async Task PlayAsync(BoardIndex boardIndex, CellIndex cellIndex)
+{
+    if (!CanPlay(boardIndex, cellIndex))
     {
-        if (!CanPlay(boardIndex, cellIndex))
+        throw new Exception("Selected play is invalid.");
+    }
+
+    var board = boards[boardIndex];
+    board.Play(cellIndex, NextPlayer);
+
+    if (board.Winner != GameResult.InProgress)
+    {
+        NextBoards = Boards(GameResult.InProgress);
+        Winner = CalculateOverallWinner();
+        if (Winner != GameResult.InProgress)
         {
-            throw new Exception("Selected play is invalid.");
+            return;
         }
+    }
+    else
+    {
+        NextBoards = new[] { boardIndex };
+    }
 
-        var board = boards[boardIndex];
-        board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
+    NextPlayer = Players.O;
 
-
-        // Check if the current board has ended (there is a winner or it's full)
+    if (NextPlayer == Players.O)
+    {
+        await PlayAIAsync(boardIndex);
+        NextPlayer = Players.X;
         if (board.Winner != GameResult.InProgress)
         {
-            // Let the player choose from other unfinished boards
-            NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
-
-            // If all boards are completed, end the game
+            NextBoards = Boards(GameResult.InProgress);
             Winner = CalculateOverallWinner();
             if (Winner != GameResult.InProgress)
             {
+                NextPlayer = Players.X;
                 return;
             }
         }
         else
         {
-            // If the current board is not finished, restrict the next move to this board
             NextBoards = new[] { boardIndex };
+            NextPlayer = Players.X;
         }
-
-        // Switch player
-        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
-
-        // Send the current game state to the API after a valid move
-        Task.Run(SendBoardStateToFunctionAsync);
-        Console.WriteLine("1234");
-
     }
+}
 
-    public async Task SendBoardStateToFunctionAsync()
+private async Task PlayAIAsync(BoardIndex boardIndex)
+{
+    var board = boards[boardIndex];
+    string boardStateString = "";
+    for (var cell = 1; cell <= 9; cell++)
     {
-        // var gameState = new
-        // {
-        //     Winner = Winner.ToString(),
-        //     NextPlayer = NextPlayer.ToString(),
-        //     Boards = boards.ToDictionary(b => b.Key.ToString(), b => b.Value.Winner.ToString())
-        // };
+        string cellString = board.GetCell((CellIndex)cell).Value.ToString();
+        Console.WriteLine(cellString);
+        boardStateString += cellString == "Blank" ? "_" : cellString;
+    }
+    //Console.WriteLine(boardStateString);
+    var boardState = new Dictionary<string, string>
+    {
+        { "board_state", boardStateString },
+        { "next_player", Players.O.ToString() },
+        { "difficulty_level", CurrentGameMode }
+    };
 
-        Dictionary<string, string> boardState = new Dictionary<string, string>
-            {
-                { "board", "XOXOXOXOX" },
-                { "next", "O" }
-            };
+    var nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
 
-        var node = JsonSerializer.SerializeToNode(boardState);
-        node?.AsObject();
-        var content = JsonContent.Create(node);
-        Console.WriteLine(content);
+    if (nextMoveIndex != -1 && CanPlay(boardIndex, (CellIndex)nextMoveIndex))
+    {
+        board.Play((CellIndex)nextMoveIndex, Players.O);
+            
+    }
+}
 
-        var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
+
+
+
+    public async Task<int> SendBoardStateToFunctionAsync(Dictionary<string, string> boardState)
+    {
+        var content = JsonContent.Create(boardState);
+        var response = await httpClient.PostAsync("http://localhost:7071/api/minimax", content);
         response.EnsureSuccessStatusCode();
-
-        // try
-        // {
-        //     var response = await httpClient.PostAsync("https://localhost:7071/api/minimax", content);
-        //     response.EnsureSuccessStatusCode(); // Throw if not a success code.
-        // }
-        // catch (Exception ex)
-        // {
-        //     // Handle exceptions (e.g., logging)
-        //     Console.WriteLine($"Error sending game state: {ex.Message}");
-        // }
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var nextMoveData = JsonSerializer.Deserialize<Dictionary<string, int>>(responseContent);
+        return nextMoveData != null && nextMoveData.ContainsKey("next_move") ? nextMoveData["next_move"] : -1;
     }
 
-    // public async Task<String> CreateBoardAsync()
-    // {
-    //     //ArgumentNullException.ThrowIfNull(board);
-
-    //     Dictionary<string, string> boardState = new Dictionary<string, string>
-    //         {
-    //             { "board", "XOXOXOXOX" },
-    //             { "next", "O" }
-    //         };
-
-    //     var node = JsonSerializer.SerializeToNode(boardState);
-    //     node?.AsObject();
-    //     var content = JsonContent.Create(node);
-    //     var url = $"http://localhost:7071/api/minimax";
-    //     var response = await http.PostAsync(url, content);
-    //     var root = await GetRootFromResponseAsync(response);
-    //     return root.NextMove.Single();
-    // }
 
     public bool CanPlay(BoardIndex boardIndex, CellIndex cellIndex)
     {

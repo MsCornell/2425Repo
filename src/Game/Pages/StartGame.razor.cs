@@ -27,7 +27,7 @@ namespace Game.Pages
                 Started = DateTime.Now,
                 Ended = DateTime.Now,
                 PlayerId = PlayerStateService.CurrentPlayer.Id,  // TODO
-                PlayerCharacter = "O",  // bond to botton
+                PlayerCharacter = "X",  // bond to botton
                 GameWinner = "X",  // bond to botton
                 GameScore = 0  // bond to botton
             };
@@ -46,7 +46,7 @@ namespace Game.Pages
             {
                 Id = 1,  // TODO:change
                 AiCharacter = true,  
-                GameMode = "Easy", // bond to botton
+                GameMode = "easy", // bond to botton
                 Started = DateTime.Now,
                 Ended = DateTime.Now,
                 PlayerId = PlayerStateService.CurrentPlayer.Id,  // TODO
@@ -69,7 +69,7 @@ namespace Game.Pages
             {
                 Id = 1,  // TODO:change
                 AiCharacter = true,  
-                GameMode = "Med", // bond to botton
+                GameMode = "medium", // bond to botton
                 Started = DateTime.Now,
                 Ended = DateTime.Now,
                 PlayerId = PlayerStateService.CurrentPlayer.Id,  // TODO
@@ -93,7 +93,7 @@ namespace Game.Pages
             {
                 Id = 1,  // TODO:change
                 AiCharacter = true,  
-                GameMode = "Hard", // bond to botton
+                GameMode = "hard", // bond to botton
                 Started = DateTime.Now,
                 Ended = DateTime.Now,
                 PlayerId = PlayerStateService.CurrentPlayer.Id,  // TODO
