@@ -12,13 +12,15 @@
         <button class="back-button" @onclick="NavigateToStartGame">
             <span class="material-icons">arrow_back</span>
         </button>
-        <h1>Ultimate Tic Tac Toe</h1>
+        <h1>Ultimate Tic Tac Toe -- AI: <span>@AIDifficultyLevel</span></h1>
         <div class="spacer"></div>
     </nav>
 
  <div class="player-indicator-container">
     <div class="player-indicator">
         Player <span class="@(game.NextPlayer == Players.X ? "player-x" : "player-o")">@game.NextPlayer</span>'s Turn
+        @(game.NextPlayer == Players.O ? " - AI is thinking..." : "")
+        @(game.NextPlayer == Players.X ? " - Your turn!" : "")
     </div>
     <div class="player-indicator">
         Player 1: <span>X</span>  
