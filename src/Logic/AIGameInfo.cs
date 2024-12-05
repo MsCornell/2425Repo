@@ -27,9 +27,10 @@ public class AIGameInfo
         }
     }
 
-    private string minimaxUrl => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development" 
-    ? "http://localhost:7071/api/minimax" 
-    : "https://icy-sea-07449320f.5.azurestaticapps.net/api/minimax";
+    // private string minimaxUrl => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development" 
+    // ? "http://localhost:7071/api/minimax" 
+    // : "https://icy-sea-07449320f.5.azurestaticapps.net/api/minimax";
+    private string minimaxUrl => "https://icy-sea-07449320f.5.azurestaticapps.net/api/minimax";
 
     public Players NextPlayer { get; private set; }
     public BoardIndex[] NextBoards { get; private set; }
