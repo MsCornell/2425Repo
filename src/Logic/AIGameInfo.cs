@@ -82,41 +82,48 @@ public class AIGameInfo
         }
     }
 
-    public void Play(BoardIndex boardIndex, CellIndex cellIndex)
+    public Boolean  Play(BoardIndex boardIndex, CellIndex cellIndex)
     {
         if (!CanPlay(boardIndex, cellIndex))
         {
-            throw new Exception("Selected play is invalid.");
-        }
-
-        var board = boards[boardIndex];
-        board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
-
-        // Switch player
-        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
-
-        // Check if the current board has ended (there is a winner or it's full)
-        if (board.Winner != GameResult.InProgress)
-        {
-            // Let the player choose from other unfinished boards
-            NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
-
-            // If all boards are completed, end the game
-            Winner = CalculateOverallWinner();
-            if (Winner != GameResult.InProgress)
-            {
-                return;
-            }
+            //throw new Exception("Selected play is invalid.");
+            return true;
         }
         else
         {
-            // If the current board is not finished, restrict the next move to this board
-            NextBoards = new[] { boardIndex };
+            var board = boards[boardIndex];
+            board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
+
+
+            // Check if the current board has ended (there is a winner or it's full)
+            if (board.Winner != GameResult.InProgress)
+            {
+                // Let the player choose from other unfinished boards
+                NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
+
+                // If all boards are completed, end the game
+                Winner = CalculateOverallWinner();
+                if (Winner != GameResult.InProgress)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // If the current board is not finished, restrict the next move to this board
+                NextBoards = new[] { boardIndex };
+            }
+
+            // Switch player
+            NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
+
+            // Send the current game state to the API after a valid move
+            //Task.Run(SendBoardStateToFunctionAsync);
+            //Console.WriteLine("1234");
+            return true ;
         }
 
-        // Send the current game state to the API after a valid move
-        //Task.Run(SendBoardStateToFunctionAsync);
-        //Console.WriteLine("1234");
+        
 
     }
 
@@ -176,8 +183,7 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
             board.Play((CellIndex)nextIndex, NextPlayer);
         }
         
-        // Switch player
-        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
+        
 
         // Check if the current board has ended (there is a winner or it's full)
         if (board.Winner != GameResult.InProgress)
@@ -197,6 +203,9 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
             // If the current board is not finished, restrict the next move to this board
             NextBoards = new[] { boardIndex };
         }
+
+        // Switch player
+        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
     }
 

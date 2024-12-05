@@ -31,6 +31,14 @@ namespace Game.Pages
         private Logic.Game? currentGame;
         private AIGameInfo game;
 
+        private string AIDifficultyLevel => game.CurrentGameMode switch
+        {
+            "easy" => "Easy",
+            "medium" => "Medium",
+            "hard" => "Hard",
+            _ => ""
+        };
+
         private void NavigateToStartGame()
         {
             NavigationManager?.NavigateTo("/StartGame");
@@ -41,7 +49,7 @@ namespace Game.Pages
             currentGame = GameStateService.CurrentGame;
             game = new AIGameInfo(currentGame.GameMode);
             game.WinnerChanged += OnWinnerChanged;
-            await Task.Delay(TimeSpan.FromSeconds(0.3));
+            await Task.Delay(TimeSpan.FromSeconds(0.6));
             //currentGame.PlayerCharacter = game.NextPlayer == Players.X ? "X" : "O";
             await InvokeAsync(StateHasChanged);
         }
@@ -83,17 +91,26 @@ namespace Game.Pages
             await GameRepository.CreateGameAsync(currentGame);
         }
 
-        private void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
+        private async void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
+            if (game.NextPlayer == Players.O)
+            {
+                return;
+            }
             if (game.CanPlay(boardIndex, cellIndex))
             {
-                game.Play(boardIndex, cellIndex);
-                InvokeAsync(StateHasChanged);
+                Boolean  continueGame = game.Play(boardIndex, cellIndex);
+                await InvokeAsync(StateHasChanged);
+                if (continueGame)
+                {
+                    int AiThinkingTime = new Random().Next(60, 125) / 100;
+                    await Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
+                    await game.PlayAIAsync(boardIndex);
+                    await InvokeAsync(StateHasChanged);
+                }
+                
             }
-            //int AiThinkingTime = new Random().Next(45) / 100;
-            //Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
-            game.PlayAIAsync(boardIndex);
-            InvokeAsync(StateHasChanged);
+            
         }
 
         private void ResetGame()
