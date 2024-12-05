@@ -92,6 +92,8 @@ public class AIGameInfo
         var board = boards[boardIndex];
         board.Play(cellIndex, NextPlayer);  // Perform a move on the specified board
 
+        // Switch player
+        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
         // Check if the current board has ended (there is a winner or it's full)
         if (board.Winner != GameResult.InProgress)
@@ -111,9 +113,6 @@ public class AIGameInfo
             // If the current board is not finished, restrict the next move to this board
             NextBoards = new[] { boardIndex };
         }
-
-        // Switch player
-        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
 
         // Send the current game state to the API after a valid move
         //Task.Run(SendBoardStateToFunctionAsync);
@@ -141,18 +140,45 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
         var boardState = new Dictionary<string, string>
         {
             { "board_state", boardStateString },
-            { "next_player", Players.O.ToString() },
+            //{ "next_player", Players.O.ToString() },
             { "difficulty_level", CurrentGameMode }
         };
 
-        var nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
+        //var nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
+
+        var nextMoveIndex = -1;
+
+        try
+        {
+            nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
+        }
+        catch
+        {
+            Console.WriteLine("Error in AI function");
+        }
 
         // If the AI function returns a valid move, play it
         if (nextMoveIndex != -1)
         {
             board.Play((CellIndex)nextMoveIndex, NextPlayer);
         }
+        else
+        {
+            var boardArray = boardStateString.ToCharArray();
+
+                var nextIndex = boardArray
+                    .Select((value, index) => new { value, index })
+                    .Where(x => x.value == '-')
+                    .Select(x => x.index + 1)
+                    .OrderBy(_ => Guid.NewGuid())
+                    .FirstOrDefault();
+
+            board.Play((CellIndex)nextIndex, NextPlayer);
+        }
         
+        // Switch player
+        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
+
         // Check if the current board has ended (there is a winner or it's full)
         if (board.Winner != GameResult.InProgress)
         {
@@ -172,8 +198,6 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
             NextBoards = new[] { boardIndex };
         }
 
-        // Switch player
-        NextPlayer = NextPlayer == Players.X ? Players.O : Players.X;
     }
 
     
@@ -181,20 +205,21 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
 
     public async Task aiHelper()
     {
-        
+        /*
         NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
         var nextIndex = NextBoards[new Random().Next(0, NextBoards.Length)];
 
         await PlayAIAsync((BoardIndex)nextIndex);
-        /*
+        */
         // go through all boards and create a string representation of the overall board state
         string overallBoardStateString = "";
         foreach (var board in boards.Values)
         {
             overallBoardStateString += board.Winner switch
             {
-                GameResult.X => "X",
-                GameResult.O => "O",
+                GameResult.XWins => "X",
+                GameResult.OWins => "O",
+                GameResult.Cat => "C",
                 _ => "_"
             };
         }
@@ -202,13 +227,23 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
         var boardState = new Dictionary<string, string>
         {
             { "board_state", overallBoardStateString },
-            { "next_player", Players.O.ToString() },
+            //{ "next_player", Players.O.ToString() },
             { "difficulty_level", CurrentGameMode }
         };
 
         // Send the overall board state to the AI function
 
-        var nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
+        var nextMoveIndex = -1;
+
+        try
+        {
+            nextMoveIndex = await SendBoardStateToFunctionAsync(boardState);
+        }
+        catch
+        {
+            Console.WriteLine("Error in AI function");
+        }
+        
 
         // If the AI function returns a valid move, play it
         if (nextMoveIndex != -1)
@@ -217,18 +252,11 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
         }
         else
         {
-            var boardArray = overallBoardStateString.ToCharArray();
+            NextBoards = Boards(GameResult.InProgress);  // Switch to other unfinished boards
+            var nextIndex = NextBoards[new Random().Next(0, NextBoards.Length)];
 
-            var nextIndex = boardArray
-                .Select((value, index) => new { value, index })
-                .Where(x => x.value == '-')
-                .Select(x => x.index + 1)
-                .OrderBy(_ => Guid.NewGuid())
-                .FirstOrDefault();
-        
             await PlayAIAsync((BoardIndex)nextIndex);
-        }
-        */     
+        } 
 }
 
     public async Task<int> SendBoardStateToFunctionAsync(Dictionary<string, string> boardState)

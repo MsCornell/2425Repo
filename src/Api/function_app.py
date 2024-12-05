@@ -26,7 +26,7 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
     else:
         req_body = req.get_json()
         board = req_body['board_state']
-        next_player = req_body['next_player']
+        #next_player = req_body['next_player']
         difficulty_level = req_body['difficulty_level']
     
         # Check the board state contains 9 cells
@@ -37,19 +37,20 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         # Check the next player is O (AI player)
-        if next_player != "O":
-            return func.HttpResponse(
-                "Invalid next player",
-                status_code=400
-            )
+        
+        # if next_player != "O":
+        #     return func.HttpResponse(
+        #         "Invalid next player",
+        #         status_code=400
+        #     )
 
         # Check player O has 1 less move than player X (X plays first)
 
-        if board.count("X") != board.count("O") + 1 and board.count("X") != board.count("O"):
-            return func.HttpResponse(
-                "Invalid move numbers on the board.",
-                status_code=400
-            )
+        # if board.count("X") != board.count("O") + 1 and board.count("X") != board.count("O"):
+        #     return func.HttpResponse(
+        #         "Invalid move numbers on the board.",
+        #         status_code=400
+        #     )
 
         board_state = []
         board_empty = []
@@ -64,6 +65,8 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                 elif board[3*row+i] == "_":
                     board_row.append(0)
                     board_empty.append(3*row+i+1)
+                elif board[3*row+i] == "C":
+                    board_row.append(2)
                 else:  # Check the cell information is valid
                     return func.HttpResponse(
                         "Invalid cell information",
@@ -71,16 +74,16 @@ def minimax(req: func.HttpRequest) -> func.HttpResponse:
                 i += 1
             board_state.append(board_row)
        
-        if(board.count("X") == board.count("O")):
-            next_move = {
-                "next_move": random.choice(board_empty)
-            }
-            json_object = json.dumps(next_move)
+        # if(board.count("X") == board.count("O")):
+        #     next_move = {
+        #         "next_move": random.choice(board_empty)
+        #     }
+        #     json_object = json.dumps(next_move)
         
-            return func.HttpResponse(
-                f"{json_object}",
-                status_code=200
-            )
+        #     return func.HttpResponse(
+        #         f"{json_object}",
+        #         status_code=200
+        #     )
         
 
         # Check there is a win in the board state
