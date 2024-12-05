@@ -27,6 +27,10 @@ public class AIGameInfo
         }
     }
 
+    private string minimaxUrl => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development" 
+    ? "http://localhost:7071/api/minimax" 
+    : "https://icy-sea-07449320f.5.azurestaticapps.net/api/minimax";
+
     public Players NextPlayer { get; private set; }
     public BoardIndex[] NextBoards { get; private set; }
     public String CurrentGameMode { get; private set; }
@@ -271,7 +275,7 @@ public async Task PlayAIAsync(BoardIndex boardIndex)
     public async Task<int> SendBoardStateToFunctionAsync(Dictionary<string, string> boardState)
     {
         var content = JsonContent.Create(boardState);
-        var response = await httpClient.PostAsync("http://localhost:7071/api/minimax", content);
+        var response = await httpClient.PostAsync(minimaxUrl, content);
         response.EnsureSuccessStatusCode();
         var responseContent = await response.Content.ReadAsStringAsync();
         var nextMoveData = JsonSerializer.Deserialize<Dictionary<string, int>>(responseContent);
