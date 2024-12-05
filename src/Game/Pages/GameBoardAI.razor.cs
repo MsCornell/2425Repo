@@ -83,17 +83,17 @@ namespace Game.Pages
             await GameRepository.CreateGameAsync(currentGame);
         }
 
-        private async void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
+        private void HandleCellClick(BoardIndex boardIndex, CellIndex cellIndex)
         {
             if (game.CanPlay(boardIndex, cellIndex))
             {
                 game.Play(boardIndex, cellIndex);
-                await InvokeAsync(StateHasChanged);
+                InvokeAsync(StateHasChanged);
             }
-            int AiThinkingTime = new Random().Next(20, 120) / 100;
-            await Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
-            await game.PlayAIAsync(boardIndex);
-            await InvokeAsync(StateHasChanged);
+            //int AiThinkingTime = new Random().Next(45) / 100;
+            //Task.Delay(TimeSpan.FromSeconds(AiThinkingTime));
+            game.PlayAIAsync(boardIndex);
+            InvokeAsync(StateHasChanged);
         }
 
         private void ResetGame()
